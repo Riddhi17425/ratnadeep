@@ -24,11 +24,11 @@
                 </thead>
                 <tbody>
                     @foreach($blogs as $key => $blog)
-                    <tr>
+                    <tr class="{{ $blog->trashed() ? 'table-light text-muted' : '' }}">
                         <td>{{ $key + 1 }}</td>
                         <td>
                             @if($blog->front_image)
-                                <img src="{{ asset('storage/'.$blog->front_image) }}" alt="{{ $blog->front_image_alt }}" width="50">
+                                <img src="{{ asset($blog->front_image) }}" alt="{{ $blog->front_image_alt }}" width="50" style="{{ $blog->trashed() ? 'opacity:0.5' : '' }}">
                             @else
                                 N/A
                             @endif
@@ -37,32 +37,56 @@
                         <td>{{ $blog->category }}</td>
                         <td>{{ $blog->date?->format('d M Y') }}</td>
                         <td>
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="form-check form-switch mb-0">
-                                    <input
-                                        type="checkbox"
-                                        class="form-check-input status-toggle"
-                                        data-id="{{ $blog->id }}"
-                                        {{ $blog->status == 'published' ? 'checked' : '' }}
-                                        style="width: 3em; height: 1.5em; cursor: pointer;"
-                                    >
+                            @if($blog->trashed())
+                                <span class="badge bg-danger">Trashed</span>
+                            @else
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="form-check form-switch mb-0">
+                                        <input
+                                            type="checkbox"
+                                            class="form-check-input status-toggle"
+                                            data-id="{{ $blog->id }}"
+                                            {{ $blog->status == 'published' ? 'checked' : '' }}
+                                            style="width: 3em; height: 1.5em; cursor: pointer;"
+                                        >
+                                    </div>
+                                    <span class="status-text badge bg-{{ $blog->status == 'published' ? 'success' : 'secondary' }}">
+                                        {{ $blog->status == 'published' ? 'Active' : 'Inactive' }}
+                                    </span>
                                 </div>
-                                <span class="status-text badge bg-{{ $blog->status == 'published' ? 'success' : 'secondary' }}">
-                                    {{ $blog->status == 'published' ? 'Active' : 'Inactive' }}
-                                </span>
-                            </div>
+                            @endif
                         </td>
                         <td>
-                            <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-sm btn-info">
-                                <i class="icofont-edit"></i>
-                            </a>
-                            <form action="{{ route('blogs.destroy', $blog->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">
-                                    <i class="icofont-trash"></i>
+                            @if($blog->trashed())
+                                {{-- Trashed row: Restore + Permanent Delete --}}
+                                <form action="{{ route('blogs.restore', $blog->id) }}" method="POST" class="d-inline restore-form">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-sm btn-success">
+                                        <i class="icofont-refresh"></i> Restore
+                                    </button>
+                                </form>
+
+                                <button type="button"
+                                    class="btn btn-sm btn-danger btn-force-delete-open"
+                                    data-id="{{ $blog->id }}"
+                                    data-title="{{ $blog->title }}">
+                                    <i class="icofont-close-circled"></i> Delete Permanently
                                 </button>
-                            </form>
+                            @else
+                                {{-- Active row: Edit + Simple Delete (SweetAlert confirm) --}}
+                                <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-sm btn-info">
+                                    <i class="icofont-edit"></i>
+                                </a>
+
+                                <form action="{{ route('blogs.destroy', $blog->id) }}" method="POST" class="d-inline delete-form">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="icofont-trash"></i>
+                                    </button>
+                                </form>
+                            @endif
                         </td>
                     </tr>
                     @endforeach
@@ -71,6 +95,12 @@
         </div>
     </div>
 </div>
+
+{{-- Hidden form used only for trashed row's "Delete Permanently" button --}}
+<form id="forceDeleteForm" method="POST" style="display:none;">
+    @csrf
+    @method('DELETE')
+</form>
 @endsection
 
 @push('scripts')
@@ -79,37 +109,18 @@
         const existing = document.getElementById('app-toast');
         if (existing) existing.remove();
 
-        const colors = {
-            success: '#28a745',
-            error:   '#dc3545',
-            info:    '#17a2b8',
-        };
-
-        const icons = {
-            success: 'bi-check-circle-fill',
-            error:   'bi-x-circle-fill',
-            info:    'bi-info-circle-fill',
-        };
+        const colors = { success: '#28a745', error: '#dc3545', info: '#17a2b8' };
+        const icons = { success: 'bi-check-circle-fill', error: 'bi-x-circle-fill', info: 'bi-info-circle-fill' };
 
         const toast = document.createElement('div');
         toast.id = 'app-toast';
         toast.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-            min-width: 280px;
-            max-width: 380px;
-            background: #fff;
-            border-left: 5px solid ${colors[type]};
-            border-radius: 6px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            padding: 14px 18px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            opacity: 0;
-            transform: translateX(20px);
+            position: fixed; top: 20px; right: 20px; z-index: 9999;
+            min-width: 280px; max-width: 380px; background: #fff;
+            border-left: 5px solid ${colors[type]}; border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 14px 18px;
+            display: flex; align-items: center; gap: 10px;
+            opacity: 0; transform: translateX(20px);
             transition: opacity 0.3s ease, transform 0.3s ease;
         `;
 
@@ -120,7 +131,6 @@
         `;
 
         document.body.appendChild(toast);
-
         requestAnimationFrame(() => {
             toast.style.opacity = '1';
             toast.style.transform = 'translateX(0)';
@@ -136,6 +146,73 @@
     $(document).ready(function () {
         $('#blogTable').DataTable();
 
+        // Soft delete confirm
+        $(document).on('submit', '.delete-form', function (e) {
+            e.preventDefault();
+            var form = this;
+
+            Swal.fire({
+                title: 'Delete this blog?',
+                text: 'It will be moved to trash. You can restore it later.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete it',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+
+        // Restore confirm
+        $(document).on('submit', '.restore-form', function (e) {
+            e.preventDefault();
+            var form = this;
+
+            Swal.fire({
+                title: 'Restore this blog?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, restore it',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+
+        // Trashed row's direct "Delete Permanently" button
+        $(document).on('click', '.btn-force-delete-open', function () {
+            var id = $(this).data('id');
+            var title = $(this).data('title');
+
+            Swal.fire({
+                title: 'Permanently delete "' + title + '"?',
+                text: 'This action cannot be undone. All images will also be removed.',
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete permanently',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = $('#forceDeleteForm');
+                    form.attr('action', '{{ url("admin/blogs") }}/' + id + '/force-delete');
+                    form.trigger('submit');
+                }
+            });
+        });
+
         $(document).on('change', '.status-toggle', function () {
             var checkbox = $(this);
             var id = checkbox.data('id');
@@ -146,10 +223,7 @@
             $.ajax({
                 url: '/admin/blogs/' + id + '/status',
                 method: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    status: newStatus
-                },
+                data: { _token: '{{ csrf_token() }}', status: newStatus },
                 success: function (response) {
                     if (response.success) {
                         if (isChecked) {

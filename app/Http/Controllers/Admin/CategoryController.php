@@ -1,17 +1,21 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
+    protected $uploadPath = 'backend/categories';
+
+    // Ab active + trashed dono ek sath layenge
     public function index()
     {
-        $categories = Category::latest()->get();
+        $categories = Category::withTrashed()->latest()->get();
         return view('admin.categories.index', compact('categories'));
     }
 
@@ -40,7 +44,7 @@ class CategoryController extends Controller
         $data = $validator->validated();
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('categories', 'public');
+            $data['image'] = $this->uploadImage($request->file('image'));
         }
 
         Category::create($data);
@@ -74,10 +78,8 @@ class CategoryController extends Controller
         $data = $validator->validated();
 
         if ($request->hasFile('image')) {
-            if ($category->image) {
-                Storage::disk('public')->delete($category->image);
-            }
-            $data['image'] = $request->file('image')->store('categories', 'public');
+            $this->deleteImage($category->image);
+            $data['image'] = $this->uploadImage($request->file('image'));
         }
 
         $category->update($data);
@@ -86,15 +88,35 @@ class CategoryController extends Controller
             ->with('toast_success', 'Category updated successfully.');
     }
 
+    // Soft delete
     public function destroy(Category $category)
     {
-        if ($category->image) {
-            Storage::disk('public')->delete($category->image);
-        }
         $category->delete();
 
         return redirect()->route('categories.index')
-            ->with('toast_success', 'Category deleted successfully.');
+            ->with('toast_success', 'Category moved to trash.');
+    }
+
+    // Restore
+    public function restore($id)
+    {
+        $category = Category::onlyTrashed()->findOrFail($id);
+        $category->restore();
+
+        return redirect()->route('categories.index')
+            ->with('toast_success', 'Category restored successfully.');
+    }
+
+    // Permanent delete
+    public function forceDelete($id)
+    {
+        $category = Category::withTrashed()->findOrFail($id);
+
+        $this->deleteImage($category->image);
+        $category->forceDelete();
+
+        return redirect()->route('categories.index')
+            ->with('toast_success', 'Category permanently deleted.');
     }
 
     public function updateStatus(Request $request, Category $category)
@@ -108,4 +130,26 @@ class CategoryController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    private function uploadImage($file)
+    {
+        $destinationPath = public_path($this->uploadPath);
+
+        if (!File::exists($destinationPath)) {
+            File::makeDirectory($destinationPath, 0755, true);
+        }
+
+        $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $file->move($destinationPath, $fileName);
+
+        return $this->uploadPath . '/' . $fileName;
+    }
+
+    private function deleteImage($imagePath)
+    {
+        if ($imagePath && File::exists(public_path($imagePath))) {
+            File::delete(public_path($imagePath));
+        }
+    }
 }
+

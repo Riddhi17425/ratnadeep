@@ -3,13 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Category extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'title', 'slug', 'description', 'shortdescription',
-        'metatitle', 'metadescription', 'image','alt_image_text', 'status',
+        'metatitle', 'metadescription', 'image', 'alt_image_text', 'status',
     ];
 
     protected static function boot()

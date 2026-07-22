@@ -22,43 +22,67 @@
                 </thead>
                 <tbody>
                     @foreach($certificates as $key => $certificate)
-                    <tr>
+                    <tr class="{{ $certificate->trashed() ? 'table-light text-muted' : '' }}">
                         <td>{{ $key + 1 }}</td>
                         <td>
                             @if($certificate->image)
-                                <img src="{{ asset('storage/'.$certificate->image) }}" alt="{{ $certificate->alt_image_text }}" width="50">
+                                <img src="{{ asset($certificate->image) }}" alt="{{ $certificate->alt_image_text }}" width="50" style="{{ $certificate->trashed() ? 'opacity:0.5' : '' }}">
                             @else
                                 N/A
                             @endif
                         </td>
                         <td>{{ $certificate->title }}</td>
                         <td>
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="form-check form-switch mb-0">
-                                    <input
-                                        type="checkbox"
-                                        class="form-check-input status-toggle"
-                                        data-id="{{ $certificate->id }}"
-                                        {{ $certificate->status == 1 ? 'checked' : '' }}
-                                        style="width: 3em; height: 1.5em; cursor: pointer;"
-                                    >
+                            @if($certificate->trashed())
+                                <span class="badge bg-danger">Trashed</span>
+                            @else
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="form-check form-switch mb-0">
+                                        <input
+                                            type="checkbox"
+                                            class="form-check-input status-toggle"
+                                            data-id="{{ $certificate->id }}"
+                                            {{ $certificate->status == 1 ? 'checked' : '' }}
+                                            style="width: 3em; height: 1.5em; cursor: pointer;"
+                                        >
+                                    </div>
+                                    <span class="status-text badge bg-{{ $certificate->status == 1 ? 'success' : 'secondary' }}">
+                                        {{ $certificate->status == 1 ? 'Active' : 'Inactive' }}
+                                    </span>
                                 </div>
-                                <span class="status-text badge bg-{{ $certificate->status == 1 ? 'success' : 'secondary' }}">
-                                    {{ $certificate->status == 1 ? 'Active' : 'Inactive' }}
-                                </span>
-                            </div>
+                            @endif
                         </td>
                         <td>
-                            <a href="{{ route('certificates.edit', $certificate->id) }}" class="btn btn-sm btn-info">
-                                <i class="icofont-edit"></i>
-                            </a>
-                            <form action="{{ route('certificates.destroy', $certificate->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">
-                                    <i class="icofont-trash"></i>
+                            @if($certificate->trashed())
+                                {{-- Trashed row: Restore + Permanent Delete --}}
+                                <form action="{{ route('certificates.restore', $certificate->id) }}" method="POST" class="d-inline restore-form">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-sm btn-success">
+                                        <i class="icofont-refresh"></i> Restore
+                                    </button>
+                                </form>
+
+                                <button type="button"
+                                    class="btn btn-sm btn-danger btn-force-delete-open"
+                                    data-id="{{ $certificate->id }}"
+                                    data-title="{{ $certificate->title }}">
+                                    <i class="icofont-close-circled"></i> Delete Permanently
                                 </button>
-                            </form>
+                            @else
+                                {{-- Active row: Edit + Simple Delete (SweetAlert confirm) --}}
+                                <a href="{{ route('certificates.edit', $certificate->id) }}" class="btn btn-sm btn-info">
+                                    <i class="icofont-edit"></i>
+                                </a>
+
+                                <form action="{{ route('certificates.destroy', $certificate->id) }}" method="POST" class="d-inline delete-form">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="icofont-trash"></i>
+                                    </button>
+                                </form>
+                            @endif
                         </td>
                     </tr>
                     @endforeach
@@ -67,6 +91,12 @@
         </div>
     </div>
 </div>
+
+{{-- Hidden form used only for trashed row's "Delete Permanently" button --}}
+<form id="forceDeleteForm" method="POST" style="display:none;">
+    @csrf
+    @method('DELETE')
+</form>
 @endsection
 
 @push('scripts')
@@ -112,6 +142,73 @@
     $(document).ready(function () {
         $('#certificateTable').DataTable();
 
+        // Soft delete confirm
+        $(document).on('submit', '.delete-form', function (e) {
+            e.preventDefault();
+            var form = this;
+
+            Swal.fire({
+                title: 'Delete this certificate?',
+                text: 'It will be moved to trash. You can restore it later.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete it',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+
+        // Restore confirm
+        $(document).on('submit', '.restore-form', function (e) {
+            e.preventDefault();
+            var form = this;
+
+            Swal.fire({
+                title: 'Restore this certificate?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, restore it',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+
+        // Trashed row's direct "Delete Permanently" button
+        $(document).on('click', '.btn-force-delete-open', function () {
+            var id = $(this).data('id');
+            var title = $(this).data('title');
+
+            Swal.fire({
+                title: 'Permanently delete "' + title + '"?',
+                text: 'This action cannot be undone. The image will also be removed.',
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete permanently',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = $('#forceDeleteForm');
+                    form.attr('action', '{{ url("admin/certificates") }}/' + id + '/force-delete');
+                    form.trigger('submit');
+                }
+            });
+        });
+
         $(document).on('change', '.status-toggle', function () {
             var checkbox = $(this);
             var id = checkbox.data('id');
@@ -127,7 +224,7 @@
                     if (response.success) {
                         if (isChecked) {
                             statusText.text('Active').removeClass('bg-secondary').addClass('bg-success');
-                            showAppToast('success', 'This  Certificate is now Active.');
+                            showAppToast('success', 'This Certificate is now Active.');
                         } else {
                             statusText.text('Inactive').removeClass('bg-success').addClass('bg-secondary');
                             showAppToast('success', 'This Certificate is now Inactive.');

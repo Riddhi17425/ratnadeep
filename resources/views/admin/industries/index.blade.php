@@ -22,43 +22,67 @@
                 </thead>
                 <tbody>
                     @foreach($industries as $key => $industry)
-                    <tr>
+                    <tr class="{{ $industry->trashed() ? 'table-light text-muted' : '' }}">
                         <td>{{ $key + 1 }}</td>
                         <td>
                             @if($industry->image)
-                                <img src="{{ asset('storage/'.$industry->image) }}" alt="{{ $industry->alt_image_text }}" width="50">
+                                <img src="{{ asset($industry->image) }}" alt="{{ $industry->alt_image_text }}" width="50" style="{{ $industry->trashed() ? 'opacity:0.5' : '' }}">
                             @else
                                 N/A
                             @endif
                         </td>
                         <td>{{ $industry->title }}</td>
                         <td>
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="form-check form-switch mb-0">
-                                    <input
-                                        type="checkbox"
-                                        class="form-check-input status-toggle"
-                                        data-id="{{ $industry->id }}"
-                                        {{ $industry->status == 1 ? 'checked' : '' }}
-                                        style="width: 3em; height: 1.5em; cursor: pointer;"
-                                    >
+                            @if($industry->trashed())
+                                <span class="badge bg-danger">Trashed</span>
+                            @else
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="form-check form-switch mb-0">
+                                        <input
+                                            type="checkbox"
+                                            class="form-check-input status-toggle"
+                                            data-id="{{ $industry->id }}"
+                                            {{ $industry->status == 1 ? 'checked' : '' }}
+                                            style="width: 3em; height: 1.5em; cursor: pointer;"
+                                        >
+                                    </div>
+                                    <span class="status-text badge bg-{{ $industry->status == 1 ? 'success' : 'secondary' }}">
+                                        {{ $industry->status == 1 ? 'Active' : 'Inactive' }}
+                                    </span>
                                 </div>
-                                <span class="status-text badge bg-{{ $industry->status == 1 ? 'success' : 'secondary' }}">
-                                    {{ $industry->status == 1 ? 'Active' : 'Inactive' }}
-                                </span>
-                            </div>
+                            @endif
                         </td>
                         <td>
-                            <a href="{{ route('industries.edit', $industry->id) }}" class="btn btn-sm btn-info">
-                                <i class="icofont-edit"></i>
-                            </a>
-                            <form action="{{ route('industries.destroy', $industry->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">
-                                    <i class="icofont-trash"></i>
+                            @if($industry->trashed())
+                                {{-- Trashed row: Restore + Permanent Delete --}}
+                                <form action="{{ route('industries.restore', $industry->id) }}" method="POST" class="d-inline restore-form">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-sm btn-success">
+                                        <i class="icofont-refresh"></i> Restore
+                                    </button>
+                                </form>
+
+                                <button type="button"
+                                    class="btn btn-sm btn-danger btn-force-delete-open"
+                                    data-id="{{ $industry->id }}"
+                                    data-title="{{ $industry->title }}">
+                                    <i class="icofont-close-circled"></i> Delete Permanently
                                 </button>
-                            </form>
+                            @else
+                                {{-- Active row: Edit + Simple Delete (SweetAlert confirm) --}}
+                                <a href="{{ route('industries.edit', $industry->id) }}" class="btn btn-sm btn-info">
+                                    <i class="icofont-edit"></i>
+                                </a>
+
+                                <form action="{{ route('industries.destroy', $industry->id) }}" method="POST" class="d-inline delete-form">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="icofont-trash"></i>
+                                    </button>
+                                </form>
+                            @endif
                         </td>
                     </tr>
                     @endforeach
@@ -67,6 +91,12 @@
         </div>
     </div>
 </div>
+
+{{-- Hidden form used only for trashed row's "Delete Permanently" button --}}
+<form id="forceDeleteForm" method="POST" style="display:none;">
+    @csrf
+    @method('DELETE')
+</form>
 @endsection
 
 @push('scripts')
@@ -111,6 +141,73 @@
 
     $(document).ready(function () {
         $('#industryTable').DataTable();
+
+        // Soft delete confirm
+        $(document).on('submit', '.delete-form', function (e) {
+            e.preventDefault();
+            var form = this;
+
+            Swal.fire({
+                title: 'Delete this industry?',
+                text: 'It will be moved to trash. You can restore it later.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete it',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+
+        // Restore confirm
+        $(document).on('submit', '.restore-form', function (e) {
+            e.preventDefault();
+            var form = this;
+
+            Swal.fire({
+                title: 'Restore this industry?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, restore it',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+
+        // Trashed row's direct "Delete Permanently" button
+        $(document).on('click', '.btn-force-delete-open', function () {
+            var id = $(this).data('id');
+            var title = $(this).data('title');
+
+            Swal.fire({
+                title: 'Permanently delete "' + title + '"?',
+                text: 'This action cannot be undone. The image will also be removed.',
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete permanently',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = $('#forceDeleteForm');
+                    form.attr('action', '{{ url("admin/industries") }}/' + id + '/force-delete');
+                    form.trigger('submit');
+                }
+            });
+        });
 
         $(document).on('change', '.status-toggle', function () {
             var checkbox = $(this);

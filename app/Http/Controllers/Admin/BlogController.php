@@ -5,21 +5,26 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class BlogController extends Controller
 {
+    protected $frontUploadPath  = 'backend/blogs/front';
+    protected $detailUploadPath = 'backend/blogs/detail';
+    protected $ctaUploadPath    = 'backend/blogs/cta';
+
+    // Ab active + trashed dono ek sath layenge
     public function index()
     {
-        $blogs = Blog::with('category')->latest()->get();
+        $blogs = Blog::withTrashed()->with('category')->latest()->get();
         return view('admin.blogs.index', compact('blogs'));
     }
 
     public function create()
     {
-        return view('admin.blogs.create'); 
+        return view('admin.blogs.create');
     }
 
     private function rules($blogId = null)
@@ -78,21 +83,19 @@ class BlogController extends Controller
 
         $data = $validator->validated();
 
-        // url ko slug format me convert kar do
         $data['url'] = Str::slug($data['url']);
-
         $data['faqs'] = $this->prepareFaqs($request);
 
         if ($request->hasFile('front_image')) {
-            $data['front_image'] = $request->file('front_image')->store('blogs/front', 'public');
+            $data['front_image'] = $this->uploadImage($request->file('front_image'), $this->frontUploadPath);
         }
 
         if ($request->hasFile('detail_image')) {
-            $data['detail_image'] = $request->file('detail_image')->store('blogs/detail', 'public');
+            $data['detail_image'] = $this->uploadImage($request->file('detail_image'), $this->detailUploadPath);
         }
 
         if ($request->hasFile('cta_image')) {
-            $data['cta_image'] = $request->file('cta_image')->store('blogs/cta', 'public');
+            $data['cta_image'] = $this->uploadImage($request->file('cta_image'), $this->ctaUploadPath);
         }
 
         unset($data['faq_question'], $data['faq_answer']);
@@ -105,7 +108,7 @@ class BlogController extends Controller
 
     public function edit(Blog $blog)
     {
-         return view('admin.blogs.edit', compact('blog'));
+        return view('admin.blogs.edit', compact('blog'));
     }
 
     public function update(Request $request, Blog $blog)
@@ -122,24 +125,18 @@ class BlogController extends Controller
         $data['faqs'] = $this->prepareFaqs($request);
 
         if ($request->hasFile('front_image')) {
-            if ($blog->front_image) {
-                Storage::disk('public')->delete($blog->front_image);
-            }
-            $data['front_image'] = $request->file('front_image')->store('blogs/front', 'public');
+            $this->deleteImage($blog->front_image);
+            $data['front_image'] = $this->uploadImage($request->file('front_image'), $this->frontUploadPath);
         }
 
         if ($request->hasFile('detail_image')) {
-            if ($blog->detail_image) {
-                Storage::disk('public')->delete($blog->detail_image);
-            }
-            $data['detail_image'] = $request->file('detail_image')->store('blogs/detail', 'public');
+            $this->deleteImage($blog->detail_image);
+            $data['detail_image'] = $this->uploadImage($request->file('detail_image'), $this->detailUploadPath);
         }
 
         if ($request->hasFile('cta_image')) {
-            if ($blog->cta_image) {
-                Storage::disk('public')->delete($blog->cta_image);
-            }
-            $data['cta_image'] = $request->file('cta_image')->store('blogs/cta', 'public');
+            $this->deleteImage($blog->cta_image);
+            $data['cta_image'] = $this->uploadImage($request->file('cta_image'), $this->ctaUploadPath);
         }
 
         unset($data['faq_question'], $data['faq_answer']);
@@ -150,25 +147,41 @@ class BlogController extends Controller
             ->with('toast_success', 'Blog updated successfully.');
     }
 
+    // Soft delete
     public function destroy(Blog $blog)
     {
-        if ($blog->front_image) {
-            Storage::disk('public')->delete($blog->front_image);
-        }
-        if ($blog->detail_image) {
-            Storage::disk('public')->delete($blog->detail_image);
-        }
-        if ($blog->cta_image) {
-            Storage::disk('public')->delete($blog->cta_image);
-        }
-
         $blog->delete();
 
         return redirect()->route('blogs.index')
-            ->with('toast_success', 'Blog deleted successfully.');
+            ->with('toast_success', 'Blog moved to trash.');
     }
 
-   public function updateStatus(Request $request, Blog $blog)
+    // Restore
+    public function restore($id)
+    {
+        $blog = Blog::onlyTrashed()->findOrFail($id);
+        $blog->restore();
+
+        return redirect()->route('blogs.index')
+            ->with('toast_success', 'Blog restored successfully.');
+    }
+
+    // Permanent delete
+    public function forceDelete($id)
+    {
+        $blog = Blog::withTrashed()->findOrFail($id);
+
+        $this->deleteImage($blog->front_image);
+        $this->deleteImage($blog->detail_image);
+        $this->deleteImage($blog->cta_image);
+
+        $blog->forceDelete();
+
+        return redirect()->route('blogs.index')
+            ->with('toast_success', 'Blog permanently deleted.');
+    }
+
+    public function updateStatus(Request $request, Blog $blog)
     {
         $request->validate([
             'status' => 'required|in:draft,published',
@@ -178,5 +191,26 @@ class BlogController extends Controller
         $blog->save();
 
         return response()->json(['success' => true]);
+    }
+
+    private function uploadImage($file, $uploadPath)
+    {
+        $destinationPath = public_path($uploadPath);
+
+        if (!File::exists($destinationPath)) {
+            File::makeDirectory($destinationPath, 0755, true);
+        }
+
+        $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $file->move($destinationPath, $fileName);
+
+        return $uploadPath . '/' . $fileName;
+    }
+
+    private function deleteImage($imagePath)
+    {
+        if ($imagePath && File::exists(public_path($imagePath))) {
+            File::delete(public_path($imagePath));
+        }
     }
 }

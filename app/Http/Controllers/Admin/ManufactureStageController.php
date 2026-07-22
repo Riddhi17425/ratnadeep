@@ -5,14 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ManufactureStage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class ManufactureStageController extends Controller
 {
+    protected $uploadPath = 'backend/manufacture-stages';
+
+    // Ab active + trashed dono ek sath layenge
     public function index()
     {
-        $manufactureStages = ManufactureStage::latest()->get();
+        $manufactureStages = ManufactureStage::withTrashed()->latest()->get();
         return view('admin.manufacture-stages.index', compact('manufactureStages'));
     }
 
@@ -44,7 +47,7 @@ class ManufactureStageController extends Controller
         $data = $validator->validated();
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('manufacture-stages', 'public');
+            $data['image'] = $this->uploadImage($request->file('image'));
         }
 
         ManufactureStage::create($data);
@@ -69,10 +72,8 @@ class ManufactureStageController extends Controller
         $data = $validator->validated();
 
         if ($request->hasFile('image')) {
-            if ($manufacture_stage->image) {
-                Storage::disk('public')->delete($manufacture_stage->image);
-            }
-            $data['image'] = $request->file('image')->store('manufacture-stages', 'public');
+            $this->deleteImage($manufacture_stage->image);
+            $data['image'] = $this->uploadImage($request->file('image'));
         }
 
         $manufacture_stage->update($data);
@@ -81,15 +82,35 @@ class ManufactureStageController extends Controller
             ->with('toast_success', 'Manufacture Stage updated successfully.');
     }
 
+    // Soft delete
     public function destroy(ManufactureStage $manufacture_stage)
     {
-        if ($manufacture_stage->image) {
-            Storage::disk('public')->delete($manufacture_stage->image);
-        }
         $manufacture_stage->delete();
 
         return redirect()->route('manufacture-stages.index')
-            ->with('toast_success', 'Manufacture Stage deleted successfully.');
+            ->with('toast_success', 'Manufacture Stage moved to trash.');
+    }
+
+    // Restore
+    public function restore($id)
+    {
+        $manufacture_stage = ManufactureStage::onlyTrashed()->findOrFail($id);
+        $manufacture_stage->restore();
+
+        return redirect()->route('manufacture-stages.index')
+            ->with('toast_success', 'Manufacture Stage restored successfully.');
+    }
+
+    // Permanent delete
+    public function forceDelete($id)
+    {
+        $manufacture_stage = ManufactureStage::withTrashed()->findOrFail($id);
+
+        $this->deleteImage($manufacture_stage->image);
+        $manufacture_stage->forceDelete();
+
+        return redirect()->route('manufacture-stages.index')
+            ->with('toast_success', 'Manufacture Stage permanently deleted.');
     }
 
     public function updateStatus(Request $request, ManufactureStage $manufacture_stage)
@@ -102,5 +123,26 @@ class ManufactureStageController extends Controller
         $manufacture_stage->save();
 
         return response()->json(['success' => true]);
+    }
+
+    private function uploadImage($file)
+    {
+        $destinationPath = public_path($this->uploadPath);
+
+        if (!File::exists($destinationPath)) {
+            File::makeDirectory($destinationPath, 0755, true);
+        }
+
+        $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $file->move($destinationPath, $fileName);
+
+        return $this->uploadPath . '/' . $fileName;
+    }
+
+    private function deleteImage($imagePath)
+    {
+        if ($imagePath && File::exists(public_path($imagePath))) {
+            File::delete(public_path($imagePath));
+        }
     }
 }

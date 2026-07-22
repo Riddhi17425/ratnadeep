@@ -59,7 +59,7 @@
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Front Image</label><br>
                         @if($blog->front_image)
-                            <img src="{{ asset('storage/'.$blog->front_image) }}" width="80" class="mb-2 d-block">
+                            <img src="{{ asset($blog->front_image) }}" width="80" class="mb-2 d-block">
                         @endif
                         <input type="file" name="front_image" class="form-control">
                         @error('front_image') <small class="text-danger">{{ $message }}</small> @enderror
@@ -74,7 +74,7 @@
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Detail Image</label><br>
                         @if($blog->detail_image)
-                            <img src="{{ asset('storage/'.$blog->detail_image) }}" width="80" class="mb-2 d-block">
+                            <img src="{{ asset($blog->detail_image) }}" width="80" class="mb-2 d-block">
                         @endif
                         <input type="file" name="detail_image" class="form-control">
                         @error('detail_image') <small class="text-danger">{{ $message }}</small> @enderror
@@ -88,8 +88,8 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">CTA Image</label><br>
-                        @if($blog->cta_image)
-                            <img src="{{ asset('storage/'.$blog->cta_image) }}" width="80" class="mb-2 d-block">
+                       @if($blog->cta_image)
+                            <img src="{{ asset($blog->cta_image) }}" width="80" class="mb-2 d-block">
                         @endif
                         <input type="file" name="cta_image" class="form-control">
                         @error('cta_image') <small class="text-danger">{{ $message }}</small> @enderror

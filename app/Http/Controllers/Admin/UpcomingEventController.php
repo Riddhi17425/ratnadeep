@@ -5,14 +5,18 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\UpcomingEvent;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class UpcomingEventController extends Controller
 {
+    protected $iconUploadPath  = 'backend/upcoming-events/icons';
+    protected $videoUploadPath = 'backend/upcoming-events/videos';
+
+    // Ab active + trashed dono ek sath layenge
     public function index()
     {
-        $events = UpcomingEvent::latest()->get();
+        $events = UpcomingEvent::withTrashed()->latest()->get();
         return view('admin.upcoming-events.index', compact('events'));
     }
 
@@ -48,11 +52,11 @@ class UpcomingEventController extends Controller
         $data = $validator->validated();
 
         if ($request->hasFile('video')) {
-            $data['video'] = $request->file('video')->store('upcoming-events/videos', 'public');
+            $data['video'] = $this->uploadFile($request->file('video'), $this->videoUploadPath);
         }
 
         if ($request->hasFile('icon')) {
-            $data['icon'] = $request->file('icon')->store('upcoming-events/icons', 'public');
+            $data['icon'] = $this->uploadFile($request->file('icon'), $this->iconUploadPath);
         }
 
         UpcomingEvent::create($data);
@@ -77,17 +81,13 @@ class UpcomingEventController extends Controller
         $data = $validator->validated();
 
         if ($request->hasFile('video')) {
-            if ($upcoming_event->video) {
-                Storage::disk('public')->delete($upcoming_event->video);
-            }
-            $data['video'] = $request->file('video')->store('upcoming-events/videos', 'public');
+            $this->deleteFile($upcoming_event->video);
+            $data['video'] = $this->uploadFile($request->file('video'), $this->videoUploadPath);
         }
 
         if ($request->hasFile('icon')) {
-            if ($upcoming_event->icon) {
-                Storage::disk('public')->delete($upcoming_event->icon);
-            }
-            $data['icon'] = $request->file('icon')->store('upcoming-events/icons', 'public');
+            $this->deleteFile($upcoming_event->icon);
+            $data['icon'] = $this->uploadFile($request->file('icon'), $this->iconUploadPath);
         }
 
         $upcoming_event->update($data);
@@ -96,18 +96,36 @@ class UpcomingEventController extends Controller
             ->with('toast_success', 'Upcoming Event updated successfully.');
     }
 
+    // Soft delete
     public function destroy(UpcomingEvent $upcoming_event)
     {
-        if ($upcoming_event->video) {
-            Storage::disk('public')->delete($upcoming_event->video);
-        }
-        if ($upcoming_event->icon) {
-            Storage::disk('public')->delete($upcoming_event->icon);
-        }
         $upcoming_event->delete();
 
         return redirect()->route('upcoming-events.index')
-            ->with('toast_success', 'Upcoming Event deleted successfully.');
+            ->with('toast_success', 'Upcoming Event moved to trash.');
+    }
+
+    // Restore
+    public function restore($id)
+    {
+        $upcoming_event = UpcomingEvent::onlyTrashed()->findOrFail($id);
+        $upcoming_event->restore();
+
+        return redirect()->route('upcoming-events.index')
+            ->with('toast_success', 'Upcoming Event restored successfully.');
+    }
+
+    // Permanent delete
+    public function forceDelete($id)
+    {
+        $upcoming_event = UpcomingEvent::withTrashed()->findOrFail($id);
+
+        $this->deleteFile($upcoming_event->icon);
+        $this->deleteFile($upcoming_event->video);
+        $upcoming_event->forceDelete();
+
+        return redirect()->route('upcoming-events.index')
+            ->with('toast_success', 'Upcoming Event permanently deleted.');
     }
 
     public function updateStatus(Request $request, UpcomingEvent $upcoming_event)
@@ -120,5 +138,26 @@ class UpcomingEventController extends Controller
         $upcoming_event->save();
 
         return response()->json(['success' => true]);
+    }
+
+    private function uploadFile($file, $uploadPath)
+    {
+        $destinationPath = public_path($uploadPath);
+
+        if (!File::exists($destinationPath)) {
+            File::makeDirectory($destinationPath, 0755, true);
+        }
+
+        $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $file->move($destinationPath, $fileName);
+
+        return $uploadPath . '/' . $fileName;
+    }
+
+    private function deleteFile($filePath)
+    {
+        if ($filePath && File::exists(public_path($filePath))) {
+            File::delete(public_path($filePath));
+        }
     }
 }

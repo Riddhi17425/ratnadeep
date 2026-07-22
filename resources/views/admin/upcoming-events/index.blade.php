@@ -24,11 +24,11 @@
                 </thead>
                 <tbody>
                     @foreach($events as $key => $event)
-                    <tr>
+                    <tr class="{{ $event->trashed() ? 'table-light text-muted' : '' }}">
                         <td>{{ $key + 1 }}</td>
                         <td>
                             @if($event->icon)
-                                <img src="{{ asset('storage/'.$event->icon) }}" alt="{{ $event->alt_icon_text }}" width="40">
+                                <img src="{{ asset($event->icon) }}" alt="{{ $event->alt_icon_text }}" width="40" style="{{ $event->trashed() ? 'opacity:0.5' : '' }}">
                             @else
                                 N/A
                             @endif
@@ -37,32 +37,56 @@
                         <td>{{ $event->date_from?->format('d M Y') ?? '-' }}</td>
                         <td>{{ $event->date_to?->format('d M Y') ?? '-' }}</td>
                         <td>
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="form-check form-switch mb-0">
-                                    <input
-                                        type="checkbox"
-                                        class="form-check-input status-toggle"
-                                        data-id="{{ $event->id }}"
-                                        {{ $event->status == 1 ? 'checked' : '' }}
-                                        style="width: 3em; height: 1.5em; cursor: pointer;"
-                                    >
+                            @if($event->trashed())
+                                <span class="badge bg-danger">Trashed</span>
+                            @else
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="form-check form-switch mb-0">
+                                        <input
+                                            type="checkbox"
+                                            class="form-check-input status-toggle"
+                                            data-id="{{ $event->id }}"
+                                            {{ $event->status == 1 ? 'checked' : '' }}
+                                            style="width: 3em; height: 1.5em; cursor: pointer;"
+                                        >
+                                    </div>
+                                    <span class="status-text badge bg-{{ $event->status == 1 ? 'success' : 'secondary' }}">
+                                        {{ $event->status == 1 ? 'Active' : 'Inactive' }}
+                                    </span>
                                 </div>
-                                <span class="status-text badge bg-{{ $event->status == 1 ? 'success' : 'secondary' }}">
-                                    {{ $event->status == 1 ? 'Active' : 'Inactive' }}
-                                </span>
-                            </div>
+                            @endif
                         </td>
                         <td>
-                            <a href="{{ route('upcoming-events.edit', $event->id) }}" class="btn btn-sm btn-info">
-                                <i class="icofont-edit"></i>
-                            </a>
-                            <form action="{{ route('upcoming-events.destroy', $event->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">
-                                    <i class="icofont-trash"></i>
+                            @if($event->trashed())
+                                {{-- Trashed row: Restore + Permanent Delete --}}
+                                <form action="{{ route('upcoming-events.restore', $event->id) }}" method="POST" class="d-inline restore-form">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-sm btn-success">
+                                        <i class="icofont-refresh"></i> Restore
+                                    </button>
+                                </form>
+
+                                <button type="button"
+                                    class="btn btn-sm btn-danger btn-force-delete-open"
+                                    data-id="{{ $event->id }}"
+                                    data-title="{{ $event->title }}">
+                                    <i class="icofont-close-circled"></i> Delete Permanently
                                 </button>
-                            </form>
+                            @else
+                                {{-- Active row: Edit + Simple Delete (SweetAlert confirm) --}}
+                                <a href="{{ route('upcoming-events.edit', $event->id) }}" class="btn btn-sm btn-info">
+                                    <i class="icofont-edit"></i>
+                                </a>
+
+                                <form action="{{ route('upcoming-events.destroy', $event->id) }}" method="POST" class="d-inline delete-form">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="icofont-trash"></i>
+                                    </button>
+                                </form>
+                            @endif
                         </td>
                     </tr>
                     @endforeach
@@ -71,6 +95,12 @@
         </div>
     </div>
 </div>
+
+{{-- Hidden form used only for trashed row's "Delete Permanently" button --}}
+<form id="forceDeleteForm" method="POST" style="display:none;">
+    @csrf
+    @method('DELETE')
+</form>
 @endsection
 
 @push('scripts')
@@ -115,6 +145,73 @@
 
     $(document).ready(function () {
         $('#eventTable').DataTable();
+
+        // Soft delete confirm
+        $(document).on('submit', '.delete-form', function (e) {
+            e.preventDefault();
+            var form = this;
+
+            Swal.fire({
+                title: 'Delete this event?',
+                text: 'It will be moved to trash. You can restore it later.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete it',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+
+        // Restore confirm
+        $(document).on('submit', '.restore-form', function (e) {
+            e.preventDefault();
+            var form = this;
+
+            Swal.fire({
+                title: 'Restore this event?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, restore it',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+
+        // Trashed row's direct "Delete Permanently" button
+        $(document).on('click', '.btn-force-delete-open', function () {
+            var id = $(this).data('id');
+            var title = $(this).data('title');
+
+            Swal.fire({
+                title: 'Permanently delete "' + title + '"?',
+                text: 'This action cannot be undone. The icon and video will also be removed.',
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete permanently',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = $('#forceDeleteForm');
+                    form.attr('action', '{{ url("admin/upcoming-events") }}/' + id + '/force-delete');
+                    form.trigger('submit');
+                }
+            });
+        });
 
         $(document).on('change', '.status-toggle', function () {
             var checkbox = $(this);

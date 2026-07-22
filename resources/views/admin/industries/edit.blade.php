@@ -18,11 +18,10 @@
                 <div class="mb-3">
                     <label class="form-label">Image</label><br>
                     @if($industry->image)
-                        <img src="{{ asset('storage/'.$industry->image) }}" width="80" class="mb-2 d-block">
+                        <img src="{{ asset($industry->image) }}" width="80" class="mb-2 d-block">
                     @endif
                     <input type="file" name="image" class="form-control">
                 </div>
-
                 <div class="mb-3">
                     <label class="form-label">Alt Image Text</label>
                     <input type="text" name="alt_image_text" class="form-control" value="{{ old('alt_image_text', $industry->alt_image_text) }}">
