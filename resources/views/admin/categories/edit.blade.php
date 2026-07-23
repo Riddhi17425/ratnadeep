@@ -17,22 +17,26 @@
 
                 <div class="mb-3">
                     <label class="form-label">Short Description</label>
-                    <textarea name="shortdescription" class="form-control" rows="3">{{ old('shortdescription', $category->shortdescription) }}</textarea>
+                    <textarea name="shortdescription" id="shortdescription" class="form-control">{{ old('shortdescription', $category->shortdescription) }}</textarea>
+                    @error('shortdescription') <small class="text-danger">{{ $message }}</small> @enderror
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Description</label>
                     <textarea name="description" id="description" class="form-control">{{ old('description', $category->description) }}</textarea>
+                    @error('description') <small class="text-danger">{{ $message }}</small> @enderror
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Meta Title</label>
                     <input type="text" name="metatitle" class="form-control" value="{{ old('metatitle', $category->metatitle) }}">
+                    @error('metatitle') <small class="text-danger">{{ $message }}</small> @enderror
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Meta Description</label>
                     <textarea name="metadescription" class="form-control" rows="3">{{ old('metadescription', $category->metadescription) }}</textarea>
+                    @error('metadescription') <small class="text-danger">{{ $message }}</small> @enderror
                 </div>
 
                 <div class="mb-3">
@@ -41,11 +45,13 @@
                         <img src="{{ asset($category->image) }}" width="80" class="mb-2 d-block">
                     @endif
                     <input type="file" name="image" class="form-control">
+                    @error('image') <small class="text-danger">{{ $message }}</small> @enderror
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Alt Image Text</label>
                     <input type="text" name="alt_image_text" class="form-control" value="{{ old('alt_image_text', $category->alt_image_text) }}">
+                    @error('alt_image_text') <small class="text-danger">{{ $message }}</small> @enderror
                 </div>
 
                 <div class="mb-3">
@@ -54,6 +60,7 @@
                         <option value="1" {{ $category->status == 1 ? 'selected' : '' }}>Active</option>
                         <option value="0" {{ $category->status == 0 ? 'selected' : '' }}>Inactive</option>
                     </select>
+                    @error('status') <small class="text-danger">{{ $message }}</small> @enderror
                 </div>
 
                 <button type="submit" class="btn btn-primary">Update</button>
@@ -67,6 +74,7 @@
 @push('scripts')
 <script>
     $(document).ready(function () {
+        $('#shortdescription').summernote({ height: 200 });
         $('#description').summernote({ height: 250 });
     });
 </script>

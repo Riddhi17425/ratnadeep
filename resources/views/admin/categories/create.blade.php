@@ -16,7 +16,7 @@
 
                 <div class="mb-3">
                     <label class="form-label">Short Description</label>
-                    <textarea name="shortdescription" class="form-control" rows="3">{{ old('shortdescription') }}</textarea>
+                    <textarea name="shortdescription" id="shortdescription" class="form-control">{{ old('shortdescription') }}</textarea>
                     @error('shortdescription') <small class="text-danger">{{ $message }}</small> @enderror
                 </div>
 
@@ -70,6 +70,7 @@
 @push('scripts')
 <script>
     $(document).ready(function () {
+        $('#shortdescription').summernote({ height: 200 });
         $('#description').summernote({ height: 250 });
     });
 </script>
