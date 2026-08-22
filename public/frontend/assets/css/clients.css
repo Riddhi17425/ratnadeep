@@ -1,0 +1,194 @@
+.page-clients {
+    background: #ffffff;
+}
+.page-clients .clients-intro-section {
+    margin-top: 115px;
+}
+.page-clients .clients-intro-grid {
+    display: grid;
+    grid-template-columns: 613px 1fr;
+    gap: 67px;
+    align-items: start;
+}
+.page-clients .clients-intro-left {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.page-clients .clients-intro-left .section-badge {
+    margin-bottom: 0;
+}
+.page-clients .clients-intro-title {
+    font-family: 'Arimo', sans-serif;
+    font-size: 54px;
+    font-weight: 400;
+    line-height: 66px;
+    color: #1d1d20;
+    margin: 0;
+    max-width: 744px;
+}
+.page-clients .clients-intro-right {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 795px;
+}
+.page-clients .clients-intro-right p {
+    font-size: 24px;
+    line-height: 34px;
+    color: #666666;
+    margin: 0;
+}
+.page-clients .clients-logos-section {
+    margin-top: 80px;
+    padding-bottom: 100px;
+}
+.page-clients .clients-logos-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 80px;
+}
+.page-clients .clients-logos-header .section-badge {
+    margin-bottom: 0;
+}
+.page-clients .clients-logos-title {
+    font-family: 'Arimo', sans-serif;
+    font-size: 64px;
+    font-weight: 400;
+    line-height: 79px;
+    color: #1d1d20;
+    margin: 0;
+    text-align: center;
+}
+.page-clients .clients-logo-grid {
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    gap: clamp(12px, 1.15vw, 22px);
+    justify-content: center;
+    max-width: 1795px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+.page-clients .clients-logo-column {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(14px, 1.25vw, 24px);
+}
+.page-clients .clients-logo-column--offset {
+    padding-top: clamp(50px, 5.7vw, 109px);
+}
+.page-clients .clients-logo-column--last .clients-logo-card {
+    width: 100%;
+}
+.page-clients .clients-logo-card {
+    width: 100%;
+    aspect-ratio: 180 / 190;
+    min-height: 120px;
+    border: 1px solid #dddddd;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(12px, 1vw, 20px);
+    box-sizing: border-box;
+}
+.page-clients .clients-logo-card img {
+    max-width: min(130px, 72%);
+    max-height: min(116px, 62%);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+@media (max-width: 1776px) {
+    .page-clients .clients-intro-title {
+        font-size: 48px;
+        line-height: 1.2;
+    }
+    .page-clients .clients-logos-title {
+        font-size: 54px;
+        line-height: 1.2;
+    }
+    .page-clients .clients-intro-right p {
+        font-size: 22px;
+        line-height: 32px;
+    }
+}
+@media (max-width: 1281px) {
+    .page-clients .clients-intro-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 40px;
+    }
+    .page-clients .clients-intro-title {
+        font-size: 44px;
+        line-height: 1.2;
+    }
+    .page-clients .clients-logos-title {
+        font-size: 48px;
+        line-height: 1.2;
+    }
+    .page-clients .clients-intro-right p {
+        font-size: 20px;
+        line-height: 1.6;
+    }
+}
+@media (max-width: 1024px) {
+    .page-clients .clients-intro-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+    .page-clients .clients-logos-header {
+        margin-bottom: 48px;
+    }
+    .page-clients .clients-logo-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        max-width: 100%;
+        padding: 0;
+    }
+    .page-clients .clients-logo-column {
+        display: contents;
+    }
+    .page-clients .clients-logo-column--offset {
+        padding-top: 0;
+    }
+    .page-clients .clients-logo-card {
+        min-height: 140px;
+        aspect-ratio: auto;
+        height: 150px;
+    }
+}
+@media (max-width: 767px) {
+    .page-clients .clients-intro-section {
+        margin-top: 60px;
+    }
+    .page-clients .clients-logos-section {
+        margin-top: 60px;
+        padding-bottom: 60px;
+    }
+    .page-clients .clients-logos-header {
+        margin-bottom: 40px;
+    }
+    .page-clients .clients-logos-title {
+        font-size: 36px;
+    }
+    .page-clients .clients-intro-title {
+        font-size: 32px;
+        line-height: 1.3;
+    }
+    .page-clients .clients-logo-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+    }
+    .page-clients .clients-logo-card {
+        height: 130px;
+        min-height: 0;
+        padding: 14px;
+    }
+    .page-clients .clients-logo-card img {
+        max-width: 100px;
+        max-height: 80px;
+    }
+}

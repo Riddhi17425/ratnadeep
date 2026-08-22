@@ -12,9 +12,14 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\CertificateController;
 use App\Http\Controllers\Admin\ManufactureStageController;
 
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('front/index');
 });
+
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [LoginController::class, 'register_page'])->name('register');

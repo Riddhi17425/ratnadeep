@@ -1,0 +1,92 @@
+.page-blogs .blog-listing-section {
+    padding-bottom: 100px;
+}
+.page-blogs .blog-listing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px 30px;
+}
+.page-blogs .blog-listing-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+.page-blogs .blog-listing-image {
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+.page-blogs .blog-listing-image img {
+    width: 100%;
+    aspect-ratio: 507 / 310;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+.page-blogs .blog-listing-card:hover .blog-listing-image img {
+    transform: scale(1.05);
+}
+.page-blogs .blog-listing-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+.page-blogs .blog-listing-date {
+    font-size: 16px;
+    line-height: 1;
+    color: #666666;
+}
+.page-blogs .blog-listing-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(227, 30, 36, 0.4);
+    border-radius: 100px;
+    color: var(--primary-red);
+    flex-shrink: 0;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+.page-blogs .blog-listing-card:hover .blog-listing-arrow {
+    background-color: var(--primary-red);
+    border-color: var(--primary-red);
+    color: var(--white);
+}
+.page-blogs .blog-listing-title {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--black);
+    margin-bottom: 10px;
+}
+.page-blogs .blog-listing-desc {
+    font-size: 18px;
+    line-height: 28px;
+    color: var(--text-muted);
+    margin: 0;
+}
+@media (max-width: 1199px) {
+    .page-blogs .blog-listing-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 30px 24px;
+    }
+}
+@media (max-width: 767px) {
+    .page-blogs .blog-listing-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    .page-blogs .blog-listing-title {
+        font-size: 20px;
+    }
+    .page-blogs .blog-listing-desc,
+    .page-blogs .blog-listing-date {
+        font-size: 16px;
+    }
+    .page-blogs .blog-listing-section {
+        padding-bottom: 60px;
+    }
+}
