@@ -1,10 +1,10 @@
-@include('front.includes.header')
+@include('front.layouts.partials.header')
 <main>
     <section class="hero-section container-fluid position-relative p-0">
         <!-- Slick Slider -->
         <div class="hero-slick-slider h-100 w-100 z-1">
             <!-- Slide 1 -->
-            <div class="slick-slide-item h-100 position-relative" style="background-image:var(--hero-gradient), url('assets/images/Stainless Steel-slider.webp'); background-position: center; background-size: cover; background-repeat: no-repeat;">
+            <div class="slick-slide-item h-100 position-relative" style="background-image:var(--hero-gradient), url('frontend/assets/images/Stainless Steel-slider.webp'); background-position: center; background-size: cover; background-repeat: no-repeat;">
                 <div class="container hero-content-wrapper h-100">
                     <div class="hero-content">
                         <div class="hero-badge">
@@ -135,7 +135,7 @@
                 <!-- Card 1 -->
                 <div class="product-card">
                     <div class="product-image">
-                        <img src="assets/images/Stainless Steel.webp" alt="Stainless Steel">
+                        <img src="{{ asset('frontend/assets/images/Stainless Steel.webp') }}" alt="Stainless Steel">
                     </div>
                     <div class="product-info">
                         <div class="product-header">
@@ -149,7 +149,7 @@
                 <!-- Card 2 -->
                 <div class="product-card">
                     <div class="product-image">
-                        <img src="assets/images/Nickel Alloy.webp" alt="Nickel Alloy">
+                        <img src="{{ asset('frontend/assets/images/Nickel Alloy.webp') }}" alt="Nickel Alloy">
                     </div>
                     <div class="product-info">
                         <div class="product-header">
@@ -163,7 +163,7 @@
                 <!-- Card 3 -->
                 <div class="product-card">
                     <div class="product-image">
-                        <img src="assets/images/Carbon Steel.webp" alt="Carbon Steel">
+                        <img src="{{ asset('frontend/assets/images/Carbon Steel.webp') }}" alt="Carbon Steel">
                     </div>
                     <div class="product-info">
                         <div class="product-header">
@@ -177,7 +177,7 @@
                 <!-- Card 4 -->
                 <div class="product-card">
                     <div class="product-image">
-                        <img src="assets/images/Low Alloy Steel.webp" alt="Low Alloy Steel">
+                        <img src="{{ asset('frontend/assets/images/Low Alloy Steel.webp') }}" alt="Low Alloy Steel">
                     </div>
                     <div class="product-info">
                         <div class="product-header">
@@ -191,7 +191,7 @@
                 <!-- Card 5 (Spans 2 columns) -->
                 <div class="product-card span-2">
                     <div class="product-image">
-                        <img src="assets/images/Low Fin Seamless Straight & _U_ Tubes.webp" alt="Low Fin Seamless Straight & 'U' Tubes">
+                        <img src="{{ asset('frontend/assets/images/Low Fin Seamless Straight & _U_ Tubes.webp') }}" alt="Low Fin Seamless Straight & 'U' Tubes">
                     </div>
                     <div class="product-info">
                         <div class="product-header">
@@ -297,25 +297,25 @@
             
             <div class="industries-grid mobile-slider">
                 <div class="industry-card">
-                    <img src="assets/images/Oil & Gas.webp" alt="Oil & Gas">
+                    <img src="{{ asset('frontend/assets/images/Oil & Gas.webp') }}" alt="Oil & Gas">
                     <div class="industry-overlay">
                         <h3 class="industry-title">Oil & Gas</h3>
                     </div>
                 </div>
                 <div class="industry-card">
-                    <img src="assets/images/Petrochemicals & Refineries.webp" alt="Petrochemicals & Refineries">
+                    <img src="{{ asset('frontend/assets/images/Petrochemicals & Refineries.webp') }}" alt="Petrochemicals & Refineries">
                     <div class="industry-overlay">
                         <h3 class="industry-title">Petrochemicals & Refineries</h3>
                     </div>
                 </div>
                 <div class="industry-card">
-                    <img src="assets/images/Power Plants.webp" alt="Power Plants">
+                    <img src="{{ asset('frontend/assets/images/Power Plants.webp') }}" alt="Power Plants">
                     <div class="industry-overlay">
                         <h3 class="industry-title">Power Plants</h3>
                     </div>
                 </div>
                 <div class="industry-card">
-                    <img src="assets/images/Automotive.webp" alt="Automotive">
+                    <img src="{{ asset('frontend/assets/images/Automotive.webp') }}" alt="Automotive">
                     <div class="industry-overlay">
                         <h3 class="industry-title">Automotive</h3>
                     </div>
@@ -341,7 +341,7 @@
             
             <div class="map-container">
                 <!-- IMPORTANT: Replace this placeholder image with the actual map image exported from Figma -->
-                <img src="assets/images/Map.webp" alt="Global Network Map" class="img-fluid map-image">
+                <img src="{{ asset('frontend/assets/images/Map.webp') }}" alt="Global Network Map" class="img-fluid map-image">
             </div>
             
             <div class="map-legend">
@@ -402,7 +402,7 @@
                 <div class="col-lg-6 mb-5 mb-lg-0">
                     <div class="video-thumbnail">
                         <a href="https://www.youtube.com/watch?v=cx0G18ZacJ4" class="d-block w-100 play-inline-video">
-                            <img src="assets/images/Video.webp" alt="Factory Video" class="img-fluid w-100">
+                            <img src="{{ asset('frontend/assets/images/Video.webp') }}" alt="Factory Video" class="img-fluid w-100">
                         </a>
                     </div>
                 </div>
@@ -420,7 +420,7 @@
                             <!-- Slide 1 -->
                             <div class="event-slide-item">
                                 <div class="event-logo mb-4">
-                                    <img src="assets/images/event-1.webp" alt="Event Logo" class="img-fluid event-logo-img">
+                                    <img src="{{ asset('frontend/assets/images/event-1.webp') }}" alt="Event Logo" class="img-fluid event-logo-img">
                                 </div>
                                 <h3 class="event-name">Stainless Steel World Middle East</h3>
                                 <div class="event-date">09 - 11 JUN 2020</div>
@@ -432,7 +432,7 @@
                             <!-- Slide 2 -->
                             <div class="event-slide-item">
                                 <div class="event-logo mb-4">
-                                    <img src="assets/images/event-2.webp" alt="Event Logo" class="img-fluid event-logo-img">
+                                    <img src="{{ asset('frontend/assets/images/event-2.webp') }}" alt="Event Logo" class="img-fluid event-logo-img">
                                 </div>
                                 <h3 class="event-name">Global Tube & Pipe Expo Europe</h3>
                                 <div class="event-date">15 - 18 AUG 2021</div>
@@ -444,7 +444,7 @@
                             <!-- Slide 3 -->
                             <div class="event-slide-item">
                                 <div class="event-logo mb-4">
-                                    <img src="assets/images/event-3.webp" alt="Event Logo" class="img-fluid event-logo-img">
+                                    <img src="{{ asset('frontend/assets/images/event-3.webp') }}" alt="Event Logo" class="img-fluid event-logo-img">
                                 </div>
                                 <h3 class="event-name">International Steel Conference</h3>
                                 <div class="event-date">22 - 25 OCT 2022</div>
@@ -481,7 +481,7 @@
                 <!-- Blog 1 -->
                 <a href="blog-detail.php" class="blog-card text-decoration-none">
                     <div class="blog-image">
-                        <img src="assets/images/Homepage/From Our Desk/Blog-1.webp" alt="Seamless vs Welded Tubes">
+                        <img src="{{ asset('frontend/assets/images/Homepage/From Our Desk/Blog-1.webp') }}" alt="Seamless vs Welded Tubes">
                     </div>
                     <div class="blog-content">
                         <h3 class="blog-title">Seamless vs Welded Tubes: Choosing the Right Solution</h3>
@@ -492,7 +492,7 @@
                 <!-- Blog 2 -->
                 <a href="blog-detail.php" class="blog-card text-decoration-none">
                     <div class="blog-image">
-                        <img src="assets/images/Homepage/From Our Desk/Blog-2.webp" alt="Understanding ASTM Standards">
+                        <img src="{{ asset('frontend/assets/images/Homepage/From Our Desk/Blog-2.webp') }}" alt="Understanding ASTM Standards">
                     </div>
                     <div class="blog-content">
                         <h3 class="blog-title">Understanding ASTM, ASME & EN Standards in Tubing</h3>
@@ -503,7 +503,7 @@
                 <!-- Blog 3 -->
                 <a href="blog-detail.php" class="blog-card text-decoration-none">
                     <div class="blog-image">
-                        <img src="assets/images/Homepage/From Our Desk/Blog-3.webp" alt="Heat Treatment">
+                        <img src="{{ asset('frontend/assets/images/Homepage/From Our Desk/Blog-3.webp') }}" alt="Heat Treatment">
                     </div>
                     <div class="blog-content">
                         <h3 class="blog-title">How Heat Treatment Improves Tube Performance</h3>
@@ -518,4 +518,4 @@
         </div>
     </section>
 </main>
-@include('front.includes.footer')
+@include('front.layouts.partials.footer')

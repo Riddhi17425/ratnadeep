@@ -12,14 +12,10 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\CertificateController;
 use App\Http\Controllers\Admin\ManufactureStageController;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
 Route::get('/', function () {
     return view('front/index');
-});
-
+})->name('home');
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [LoginController::class, 'register_page'])->name('register');
@@ -61,11 +57,6 @@ Route::middleware(['auth', 'role:admin,super_admin'])->prefix('admin')->group(fu
     ->parameters(['manufacture-stages' => 'manufacture_stage']);
     Route::post('manufacture-stages/{manufacture_stage}/status', [ManufactureStageController::class, 'updateStatus'])->name('manufacture-stages.status');
     Route::put('manufacture-stages/{id}/restore', [ManufactureStageController::class, 'restore'])->name('manufacture-stages.restore');
-    Route::delete('manufacture-stages/{id}/force-delete', [ManufactureStageController::class, 'forceDelete'])->name('manufacture-stages.force-delete');
-
-
-
-
-    
-    });
+    Route::delete('manufacture-stages/{id}/force-delete', [ManufactureStageController::class, 'forceDelete'])->name('manufacture-stages.force-delete');    
+});
 

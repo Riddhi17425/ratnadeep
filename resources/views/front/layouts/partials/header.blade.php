@@ -7,15 +7,15 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    <link rel="icon" type="image/png" href="{{ asset('frontend/assets/images/favicon.png') }}">
     <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
     <!-- Fancybox CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/responsive.css') }}">
     <?php if (!empty($page_css)): ?>
     <link rel="stylesheet" href="<?php echo htmlspecialchars($page_css); ?>">
     <?php endif; ?>
@@ -44,9 +44,6 @@
         }
     </style>
     <script>
-        /*if (sessionStorage.getItem('loaderShown')) {
-            document.documentElement.classList.add('loader-skipped');
-        }*/
     </script>
     <style>
         .loader-skipped #gsap-loader {
@@ -58,11 +55,10 @@
     </style>
 </head>
 <body>
-    <!-- PREMIUM GLASSMORPHISM SVG DRAW LOADER -->
-    <div id="gsap-loader" style="position: fixed; inset: 0; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); display: flex; align-items: center; justify-content: center; z-index: 999999; opacity: 1; visibility: visible; overflow: hidden; pointer-events: auto;">
-        <div id="loader-logo-wrap" style="width: 250px; position: relative; display: flex; justify-content: center; align-items: center;">
+<!-- PREMIUM GLASSMORPHISM SVG DRAW LOADER -->
+<div id="gsap-loader" style="position: fixed; inset: 0; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); display: flex; align-items: center; justify-content: center; z-index: 999999; opacity: 1; visibility: visible; overflow: hidden; pointer-events: auto;">
+<div id="loader-logo-wrap" style="width: 250px; position: relative; display: flex; justify-content: center; align-items: center;">
           
-
 <svg id="loader-inline-logo" width="156" height="80" viewBox="0 0 156 80" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_1_397)">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M77.1707 40.8381C88.4512 40.8381 97.5859 31.7034 97.5859 20.4229C97.5859 9.14233 88.4512 0.000312805 77.1707 0.000312805C65.8901 0.000312805 56.7407 9.14968 56.7407 20.4302C56.7407 31.7108 65.8901 40.8454 77.1707 40.8454" fill="#FEFEFE"/>
@@ -98,29 +94,27 @@
 </clipPath>
 </defs>
 </svg>
-
-        </div>
+</div>
     </div>
-
     <header class="header">
         <div class="container-fluid">
-            <a href="index.php" class="logo">
-                <img src="assets/images/header-logo.svg" alt="Ratnadeep Metal and Tubes Limited">
+            <a href="{{ route('home') }}" class="logo">
+                <img src="{{ asset('frontend/assets/images/header-logo.svg') }}" alt="Ratnadeep Metal and Tubes Limited">
             </a>
             <nav class="main-nav">
                 <ul class="nav-links">
-                    <li><a href="about.php">About us </a></li>
+                    <li><a href="#">About us </a></li>
                     <li class="nav-item-has-mega">
-                        <a href="index.php#products" class="nav-mega-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="productsMegaMenu">
+                        <a href="#" class="nav-mega-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="productsMegaMenu">
                             Products <span class="dot"></span>
                         </a>
-                        @include('front.includes.products-mega-menu')
+                        @include('front.layouts.partials.products-mega-menu')
                     </li>
-                    <li><a href="#applications">Applications</a></li>
-                    <li><a href="#packaging">Packaging & Shipping</a></li>
-                    <li><a href="blogs.php">Blogs</a></li>
-                    <li><a href="events.php">Events</a></li>
-                    <li><a href="contact.php">Contact Us</a></li>
+                    <li><a href="#">Applications</a></li>
+                    <li><a href="#">Packaging & Shipping</a></li>
+                    <li><a href="#">Blogs</a></li>
+                    <li><a href="#">Events</a></li>
+                    <li><a href="#">Contact Us</a></li>
                 </ul>
             </nav>
             <div class="header-actions">

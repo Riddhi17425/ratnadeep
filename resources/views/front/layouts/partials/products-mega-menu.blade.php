@@ -18,11 +18,11 @@ $product_mega_ranges_col_one = array_slice($product_mega_ranges, 0, 6);
 $product_mega_ranges_col_two = array_slice($product_mega_ranges, 6);
 
 $product_mega_industries = [
-    ['icon' => 'assets/images/MegaMenu/icon-oil-gas.png', 'label' => 'Oil & Gas'],
-    ['icon' => 'assets/images/MegaMenu/icon-shipbuilding.png', 'label' => 'Shipbuilding'],
-    ['icon' => 'assets/images/MegaMenu/icon-chemical.png', 'label' => 'Chemical'],
-    ['icon' => 'assets/images/MegaMenu/icon-power-plant.png', 'label' => 'Power Plant'],
-    ['icon' => 'assets/images/MegaMenu/icon-automotive.png', 'label' => 'Automotive'],
+    ['icon' => asset('frontend/assets/images/MegaMenu/icon-oil-gas.png'), 'label' => 'Oil & Gas'],
+    ['icon' => asset('frontend/assets/images/MegaMenu/icon-shipbuilding.png'), 'label' => 'Shipbuilding'],
+    ['icon' => asset('frontend/assets/images/MegaMenu/icon-chemical.png'), 'label' => 'Chemical'],
+    ['icon' => asset('frontend/assets/images/MegaMenu/icon-power-plant.png'), 'label' => 'Power Plant'],
+    ['icon' => asset('frontend/assets/images/MegaMenu/icon-automotive.png'), 'label' => 'Automotive'],
 ];
 ?>
 
@@ -56,13 +56,13 @@ $product_mega_industries = [
                 <div class="products-mega-ranges-grid">
                     <ul class="products-mega-range-list">
                         <?php foreach ($product_mega_ranges_col_one as $item): ?>
-                            <li><a href="index.php#products"><?php echo htmlspecialchars($item); ?></a></li>
+                            <li><a href="#"><?php echo htmlspecialchars($item); ?></a></li>
                         <?php endforeach; ?>
                     </ul>
                     <div class="products-mega-ranges-divider" aria-hidden="true"></div>
                     <ul class="products-mega-range-list">
                         <?php foreach ($product_mega_ranges_col_two as $item): ?>
-                            <li><a href="index.php#products"><?php echo htmlspecialchars($item); ?></a></li>
+                            <li><a href="#"><?php echo htmlspecialchars($item); ?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </div>

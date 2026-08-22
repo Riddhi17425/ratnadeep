@@ -5,7 +5,7 @@
                  <!-- Top Section -->
             <div class="footer-top d-flex justify-content-center align-items-end">
                 <div class="footer-logo-area">
-                    <img src="assets/images/footer-logo.svg" alt="Ratnadeep Logo" class="footer-logo">
+                    <img src="{{ asset('frontend/assets/images/footer-logo.svg') }}" alt="Ratnadeep Logo" class="footer-logo">
                 </div>
                 <div class="footer-tagline">
                     Illuminating Excellence.
@@ -144,9 +144,8 @@
            </div>
     </footer>
     
-     @include('front.includes.whatsapp')
-
-
+    @include('front.layouts.partials.whatsapp')
+    
     <!-- jQuery and Select2 JS -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <!-- Select2 JS -->
@@ -170,10 +169,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
-    <script src="assets/js/gsap-animations.js"></script>
+    <script src="{{ asset('frontend/assets/js/gsap-animations.js') }}"></script>
 
     <!-- Custom JS -->
-    <script src="assets/js/script.js"></script>
+    <script src="{{ asset('frontend/assets/js/script.js') }}"></script>
     <script>
         // Helper to read cookies
         function getCookie(name) {
