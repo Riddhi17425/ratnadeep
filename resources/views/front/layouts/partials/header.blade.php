@@ -106,7 +106,7 @@
                     <li><a href="#">About us </a></li>
                     <li class="nav-item-has-mega">
                         <a href="#" class="nav-mega-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="productsMegaMenu">
-                            Products <span class="dot"></span>
+                            Industries <span class="dot"></span>
                         </a>
                         @include('front.layouts.partials.products-mega-menu')
                     </li>
