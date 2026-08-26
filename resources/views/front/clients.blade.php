@@ -1,16 +1,19 @@
-<?php
-$page_title = 'Our Clients';
-$page_css = 'assets/css/clients.css';
-include 'includes/header.php';
-?>
+@extends('front.layouts.main')
 
+@section('title', 'Our Clients | Ratnadeep Metal & Tubes Ltd.')
+
+@section('page_css')
+<link rel="stylesheet" href="{{ asset('frontend/assets/css/clients.css') }}">
+@endsection
+
+@section('content')
 <main class="page-clients">
     <!-- Hero -->
     <section class="inner-hero-section inner-hero-section--split inner-hero-section--clients container-fluid position-relative p-0">
         <div class="inner-hero-bg h-100 position-relative">
             <div class="inner-hero-media" aria-hidden="true">
                 <div class="inner-hero-media-inner">
-                    <img src="assets/images/Clients/clients-hero.png" alt="" class="inner-hero-image">
+                    <img src="{{ asset('frontend/assets/images/Clients/clients-hero.png') }}" alt="" class="inner-hero-image">
                 </div>
                 <div class="inner-hero-overlay"></div>
             </div>
@@ -26,8 +29,8 @@ include 'includes/header.php';
                     <div class="inner-hero-copy">
                         <p class="hero-subtitle">Ratnadeep Metal And Tubes Limited manufactures seamless and welded pipes and tubes trusted by engineering, energy, and process industries worldwide for consistent quality, dependable supply, and manufacturing excellence.</p>
                         <div class="hero-buttons">
-                            <a href="contact.php#write-to-us" class="com_btn_red">Get a Technical Quote <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-                            <a href="index.php#products" class="com_btn_outline_white">Browse Our Products</a>
+                            <a href="{{ route('contact') }}#write-to-us" class="com_btn_red">Get a Technical Quote <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                            <a href="{{ route('home') }}#products" class="com_btn_outline_white">Browse Our Products</a>
                         </div>
                     </div>
                 </div>
@@ -68,73 +71,72 @@ include 'includes/header.php';
             <div class="clients-logo-grid">
                 <div class="clients-logo-column clients-logo-column--offset">
                     <div class="clients-logo-card">
-                        <img src="assets/images/Clients/sabic.svg" alt="SABIC">
+                        <img src="{{ asset('frontend/assets/images/Clients/sabic.svg') }}" alt="SABIC">
                     </div>
                 </div>
                 <div class="clients-logo-column">
                     <div class="clients-logo-card">
-                        <img src="assets/images/Clients/thyssenkrupp.svg" alt="Thyssenkrupp">
+                        <img src="{{ asset('frontend/assets/images/Clients/thyssenkrupp.svg') }}" alt="Thyssenkrupp">
                     </div>
                     <div class="clients-logo-card">
-                        <img src="assets/images/Clients/reliance.png" alt="Reliance Industries Limited">
+                        <img src="{{ asset('frontend/assets/images/Clients/reliance.png') }}" alt="Reliance Industries Limited">
                     </div>
                 </div>
                 <div class="clients-logo-column clients-logo-column--offset">
                     <div class="clients-logo-card">
-                        <img src="assets/images/Clients/tecnicas-reunidas.png" alt="Técnicas Reunidas">
+                        <img src="{{ asset('frontend/assets/images/Clients/tecnicas-reunidas.png') }}" alt="Técnicas Reunidas">
                     </div>
                     <div class="clients-logo-card">
-                        <img src="assets/images/Clients/linde.png" alt="Linde">
+                        <img src="{{ asset('frontend/assets/images/Clients/linde.png') }}" alt="Linde">
                     </div>
                 </div>
                 <div class="clients-logo-column">
                     <div class="clients-logo-card">
-                        <img src="assets/images/Clients/jacobs.png" alt="Jacobs">
+                        <img src="{{ asset('frontend/assets/images/Clients/jacobs.png') }}" alt="Jacobs">
                     </div>
                     <div class="clients-logo-card">
-                        <img src="assets/images/Clients/saipem.png" alt="Saipem">
+                        <img src="{{ asset('frontend/assets/images/Clients/saipem.png') }}" alt="Saipem">
                     </div>
                 </div>
                 <div class="clients-logo-column clients-logo-column--offset">
                     <div class="clients-logo-card">
-                        <img src="assets/images/Clients/ntpc.svg" alt="NTPC">
+                        <img src="{{ asset('frontend/assets/images/Clients/ntpc.svg') }}" alt="NTPC">
                     </div>
                     <div class="clients-logo-card">
-                        <img src="assets/images/Clients/bhel.png" alt="BHEL">
+                        <img src="{{ asset('frontend/assets/images/Clients/bhel.png') }}" alt="BHEL">
                     </div>
                 </div>
                 <div class="clients-logo-column">
                     <div class="clients-logo-card">
-                        <img src="assets/images/Clients/technip.svg" alt="Technip">
+                        <img src="{{ asset('frontend/assets/images/Clients/technip.svg') }}" alt="Technip">
                     </div>
                     <div class="clients-logo-card">
-                        <img src="assets/images/Clients/tecnimont.png" alt="Tecnimont">
+                        <img src="{{ asset('frontend/assets/images/Clients/tecnimont.png') }}" alt="Tecnimont">
                     </div>
                 </div>
                 <div class="clients-logo-column clients-logo-column--offset">
                     <div class="clients-logo-card">
-                        <img src="assets/images/Clients/eil.svg" alt="Engineers India Limited">
+                        <img src="{{ asset('frontend/assets/images/Clients/eil.svg') }}" alt="Engineers India Limited">
                     </div>
                     <div class="clients-logo-card">
-                        <img src="assets/images/Clients/thermocables.png" alt="Thermo Cables">
+                        <img src="{{ asset('frontend/assets/images/Clients/thermocables.png') }}" alt="Thermo Cables">
                     </div>
                 </div>
                 <div class="clients-logo-column">
                     <div class="clients-logo-card">
-                        <img src="assets/images/Clients/valmet.png" alt="Valmet">
+                        <img src="{{ asset('frontend/assets/images/Clients/valmet.png') }}" alt="Valmet">
                     </div>
                     <div class="clients-logo-card">
-                        <img src="assets/images/Clients/yaar.png" alt="Yaar">
+                        <img src="{{ asset('frontend/assets/images/Clients/yaar.png') }}" alt="Yaar">
                     </div>
                 </div>
                 <div class="clients-logo-column clients-logo-column--offset clients-logo-column--last">
                     <div class="clients-logo-card">
-                        <img src="assets/images/Clients/petrofac.png" alt="Petrofac">
+                        <img src="{{ asset('frontend/assets/images/Clients/petrofac.png') }}" alt="Petrofac">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 </main>
-
-<?php include 'includes/footer.php'; ?>
+@endsection

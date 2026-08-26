@@ -1,4 +1,4 @@
-<?php
+@php
 $product_mega_ranges = [
     '1. Stainless Steel Seamless Straight & U Tubes',
     '2. Stainless Steel Seamless Pipes',
@@ -24,7 +24,7 @@ $product_mega_industries = [
     ['icon' => asset('frontend/assets/images/MegaMenu/icon-power-plant.png'), 'label' => 'Power Plant'],
     ['icon' => asset('frontend/assets/images/MegaMenu/icon-automotive.png'), 'label' => 'Automotive'],
 ];
-?>
+@endphp
 
 <div class="products-mega-backdrop" id="productsMegaBackdrop" aria-hidden="true"></div>
 
@@ -42,8 +42,7 @@ $product_mega_industries = [
                         <p class="products-mega-overview-text">ASTM / ASME certified tubes and pipes engineered for critical industrial applications worldwide.</p>
                     </div>
                 </div>
-                <a href="index.php#products" class="com_btn_red">Explore All Products <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-                
+                <a href="{{ route('home') }}#products" class="com_btn_red">Explore All Products <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
             </div>
         </div>
 
@@ -55,15 +54,15 @@ $product_mega_industries = [
                 </div>
                 <div class="products-mega-ranges-grid">
                     <ul class="products-mega-range-list">
-                        <?php foreach ($product_mega_ranges_col_one as $item): ?>
-                            <li><a href="#"><?php echo htmlspecialchars($item); ?></a></li>
-                        <?php endforeach; ?>
+                        @foreach ($product_mega_ranges_col_one as $item)
+                            <li><a href="{{ route('home') }}#products">{{ $item }}</a></li>
+                        @endforeach
                     </ul>
                     <div class="products-mega-ranges-divider" aria-hidden="true"></div>
                     <ul class="products-mega-range-list">
-                        <?php foreach ($product_mega_ranges_col_two as $item): ?>
-                            <li><a href="#"><?php echo htmlspecialchars($item); ?></a></li>
-                        <?php endforeach; ?>
+                        @foreach ($product_mega_ranges_col_two as $item)
+                            <li><a href="{{ route('home') }}#products">{{ $item }}</a></li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -78,20 +77,20 @@ $product_mega_industries = [
                 <div class="products-mega-featured-card">
                     <div class="products-mega-industries">
                         <div class="products-mega-industries-row products-mega-industries-row-top">
-                            <?php foreach (array_slice($product_mega_industries, 0, 2) as $industry): ?>
+                            @foreach (array_slice($product_mega_industries, 0, 2) as $industry)
                                 <div class="products-mega-industry">
-                                    <img src="<?php echo $industry['icon']; ?>" alt="" class="products-mega-industry-icon" width="56" height="56">
-                                    <span class="products-mega-industry-label"><?php echo htmlspecialchars($industry['label']); ?></span>
+                                    <img src="{{ $industry['icon'] }}" alt="{{ $industry['label'] }}" class="products-mega-industry-icon" width="56" height="56">
+                                    <span class="products-mega-industry-label">{{ $industry['label'] }}</span>
                                 </div>
-                            <?php endforeach; ?>
+                            @endforeach
                         </div>
                         <div class="products-mega-industries-row products-mega-industries-row-bottom">
-                            <?php foreach (array_slice($product_mega_industries, 2) as $industry): ?>
+                            @foreach (array_slice($product_mega_industries, 2) as $industry)
                                 <div class="products-mega-industry">
-                                    <img src="<?php echo $industry['icon']; ?>" alt="" class="products-mega-industry-icon" width="56" height="56">
-                                    <span class="products-mega-industry-label"><?php echo htmlspecialchars($industry['label']); ?></span>
+                                    <img src="{{ $industry['icon'] }}" alt="{{ $industry['label'] }}" class="products-mega-industry-icon" width="56" height="56">
+                                    <span class="products-mega-industry-label">{{ $industry['label'] }}</span>
                                 </div>
-                            <?php endforeach; ?>
+                            @endforeach
                         </div>
                     </div>
                     <div class="products-mega-featured-footer">

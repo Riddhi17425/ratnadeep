@@ -1,15 +1,16 @@
-<?php
-$page_title = 'About Us';
-$page_css = 'assets/css/about.css';
-include 'includes/header.php';
+@extends('front.layouts.main')
 
-$arrow_icon = '<svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-?>
+@section('title', 'About Us | Ratnadeep Metal & Tubes Ltd.')
 
+@section('page_css')
+<link rel="stylesheet" href="{{ asset('frontend/assets/css/about.css') }}">
+@endsection
+
+@section('content')
 <main class="page-about">
     <!-- Hero -->
     <section class="inner-hero-section inner-hero-section--about container-fluid position-relative p-0">
-        <div class="inner-hero-bg inner-hero-bg--cover h-100 position-relative" style="background-image: var(--hero-gradient), url('assets/images/About/about-hero.png');">
+        <div class="inner-hero-bg inner-hero-bg--cover h-100 position-relative" style="background-image: var(--hero-gradient), url('{{ asset('frontend/assets/images/About/about-hero.png') }}');">
             <div class="container hero-content-wrapper h-100">
                 <div class="hero-content">
                     <div class="hero-badge">
@@ -19,8 +20,8 @@ $arrow_icon = '<svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="
                     <h1 class="hero-title">Manufacturing Excellence<br>Strengthened by Experience</h1>
                     <p class="hero-subtitle">For over four decades, Ratnadeep Metal And Tubes Limited has been a trusted pipe and tube manufacturer, delivering seamless and welded pipes and tubes supported by advanced manufacturing infrastructure, in-house testing, and disciplined quality systems for industrial applications across domestic and international markets.</p>
                     <div class="hero-buttons">
-                        <a href="#manufacturing" class="com_btn_red">Explore Our Manufacturing <span class="ms-2"><?php echo $arrow_icon; ?></span></a>
-                        <a href="#products" class="com_btn_outline_white">View Product Portfolio</a>
+                        <a href="#manufacturing" class="com_btn_red">Explore Our Manufacturing <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                        <a href="{{ route('home') }}#products" class="com_btn_outline_white">View Product Portfolio</a>
                     </div>
                 </div>
             </div>
@@ -82,33 +83,33 @@ $arrow_icon = '<svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="
             <div class="about-mv-grid">
                 <div class="about-mv-card">
                     <div class="about-mv-card-top">
-                        <img src="assets/images/About/mission-icon.svg" alt="" class="about-mv-icon" width="80" height="80">
+                        <img src="{{ asset('frontend/assets/images/About/mission-icon.svg') }}" alt="" class="about-mv-icon" width="80" height="80">
                         <div>
                             <h3 class="about-mv-heading">OUR MISSION</h3>
                             <p class="about-mv-text">To manufacture seamless and welded pipes and tubes through disciplined processes, advanced technology, and uncompromising quality standards, delivering reliable solutions that create lasting value for customers across global industries.</p>
                         </div>
                     </div>
                     <div class="about-mv-image">
-                        <img src="assets/images/About/mission-image.png" alt="Ratnadeep manufacturing facility" class="img-fluid w-100">
+                        <img src="{{ asset('frontend/assets/images/About/mission-image.png') }}" alt="Ratnadeep manufacturing facility" class="img-fluid w-100">
                     </div>
                 </div>
                 <div class="about-mv-card">
                     <div class="about-mv-card-top">
-                        <img src="assets/images/About/vision-icon.png" alt="" class="about-mv-icon" width="80" height="80">
+                        <img src="{{ asset('frontend/assets/images/About/vision-icon.png') }}" alt="" class="about-mv-icon" width="80" height="80">
                         <div>
                             <h3 class="about-mv-heading">Our Vision</h3>
                             <p class="about-mv-text">To be a globally trusted pipe and tube manufacturer, recognized for manufacturing excellence, continuous advancement, and a commitment to supporting industries with dependable products and responsible business practices.</p>
                         </div>
                     </div>
                     <div class="about-mv-image">
-                        <img src="assets/images/About/vision-image.png" alt="Ratnadeep team at manufacturing site" class="img-fluid w-100">
+                        <img src="{{ asset('frontend/assets/images/About/vision-image.png') }}" alt="Ratnadeep team at manufacturing site" class="img-fluid w-100">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- What We Stand For (reuse features-grid) -->
+    <!-- What We Stand For -->
     <section class="mt_80">
         <div class="container">
             <div class="text-center section-header-gap">
@@ -163,35 +164,35 @@ $arrow_icon = '<svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="
             </div>
             <div class="about-strengths-grid">
                 <div class="about-strength-card about-strength-card--sm">
-                    <img src="assets/images/About/strength-1.png" alt="Complete Material Traceability">
+                    <img src="{{ asset('frontend/assets/images/About/strength-1.png') }}" alt="Complete Material Traceability">
                     <div class="about-strength-overlay"></div>
                     <div class="about-strength-content">
                         <h3 class="about-strength-title">Complete Material Traceability</h3>
-                        <p class="about-strength-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        <p class="about-strength-desc">Every batch of raw material is fully documented and traceable from mill origin through all stages of production.</p>
                     </div>
                 </div>
                 <div class="about-strength-card about-strength-card--lg">
-                    <img src="assets/images/About/strength-2.png" alt="End-to-End In-House Manufacturing">
+                    <img src="{{ asset('frontend/assets/images/About/strength-2.png') }}" alt="End-to-End In-House Manufacturing">
                     <div class="about-strength-overlay about-strength-overlay--gradient"></div>
                     <div class="about-strength-content">
                         <h3 class="about-strength-title">End-to-End In-House Manufacturing</h3>
-                        <p class="about-strength-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
+                        <p class="about-strength-desc">Equipped with specialized cold drawing, pilgering, and finishing lines for total quality assurance.</p>
                     </div>
                 </div>
                 <div class="about-strength-card about-strength-card--sm">
-                    <img src="assets/images/About/strength-3.png" alt="Approved by Global Industries">
+                    <img src="{{ asset('frontend/assets/images/About/strength-3.png') }}" alt="Approved by Global Industries">
                     <div class="about-strength-overlay"></div>
                     <div class="about-strength-content">
                         <h3 class="about-strength-title">Approved by Global Industries</h3>
-                        <p class="about-strength-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p>
+                        <p class="about-strength-desc">Recognized and certified by major international engineering consultants and certification bodies.</p>
                     </div>
                 </div>
                 <div class="about-strength-card about-strength-card--sm">
-                    <img src="assets/images/About/strength-4.png" alt="100% Inspection Before Dispatch">
+                    <img src="{{ asset('frontend/assets/images/About/strength-4.png') }}" alt="100% Inspection Before Dispatch">
                     <div class="about-strength-overlay"></div>
                     <div class="about-strength-content">
                         <h3 class="about-strength-title">100% Inspection Before Dispatch</h3>
-                        <p class="about-strength-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p>
+                        <p class="about-strength-desc">Comprehensive hydro, eddy-current, and ultrasonic testing to verify defect-free tubing.</p>
                     </div>
                 </div>
             </div>
@@ -212,8 +213,8 @@ $arrow_icon = '<svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="
                 <div class="about-leader-card">
                     <div class="about-leader-image-wrap about-leader-image-wrap--bharat" role="img" aria-label="Bharat S Sanghavi, Founder">
                         <div class="about-leader-media" aria-hidden="true">
-                            <img src="assets/images/About/leader-bharat-bg.png" alt="" class="about-leader-layer about-leader-layer--bg">
-                            <img src="assets/images/About/leader-bharat-fg.png" alt="" class="about-leader-layer about-leader-layer--fg">
+                            <img src="{{ asset('frontend/assets/images/About/leader-bharat-bg.png') }}" alt="" class="about-leader-layer about-leader-layer--bg">
+                            <img src="{{ asset('frontend/assets/images/About/leader-bharat-fg.png') }}" alt="" class="about-leader-layer about-leader-layer--fg">
                         </div>
                         <div class="about-leader-badge">
                             <strong>Bharat S Sanghavi</strong>
@@ -227,8 +228,8 @@ $arrow_icon = '<svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="
                 <div class="about-leader-card">
                     <div class="about-leader-image-wrap about-leader-image-wrap--jaimik" role="img" aria-label="Jaimik B Sanghavi, Director">
                         <div class="about-leader-media" aria-hidden="true">
-                            <img src="assets/images/About/leader-jaimik-bg.png" alt="" class="about-leader-layer about-leader-layer--bg">
-                            <img src="assets/images/About/leader-jaimik-fg.png" alt="" class="about-leader-layer about-leader-layer--fg">
+                            <img src="{{ asset('frontend/assets/images/About/leader-jaimik-bg.png') }}" alt="" class="about-leader-layer about-leader-layer--bg">
+                            <img src="{{ asset('frontend/assets/images/About/leader-jaimik-fg.png') }}" alt="" class="about-leader-layer about-leader-layer--fg">
                         </div>
                         <div class="about-leader-badge">
                             <strong>Jaimik B Sanghavi</strong>
@@ -243,7 +244,7 @@ $arrow_icon = '<svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="
         </div>
     </section>
 
-    <!-- Global Network (reuse homepage section) -->
+    <!-- Global Network -->
     <section class="mt_80 global-network-section">
         <div class="container">
             <div class="section-header-gap">
@@ -254,7 +255,7 @@ $arrow_icon = '<svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="
                 <h2 class="section-title">Engineered in India. Trusted Worldwide.</h2>
             </div>
             <div class="map-container">
-                <img src="assets/images/Map.webp" alt="Global Network Map" class="img-fluid map-image">
+                <img src="{{ asset('frontend/assets/images/Map.webp') }}" alt="Global Network Map" class="img-fluid map-image">
             </div>
             <div class="map-legend">
                 <div class="legend-item">
@@ -284,7 +285,7 @@ $arrow_icon = '<svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="
         <div class="container-fluid">
             <div class="about-stages-grid">
                 <div class="about-stages-media">
-                    <img src="assets/images/About/stages-manufacturing.png" alt="Ratnadeep pipe and tube manufacturing" class="about-stages-image">
+                    <img src="{{ asset('frontend/assets/images/About/stages-manufacturing.png') }}" alt="Ratnadeep pipe and tube manufacturing" class="about-stages-image">
                 </div>
                 <div class="about-stages-content">
                     <div class="about-stages-intro">
@@ -321,18 +322,18 @@ $arrow_icon = '<svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="
                 </div>
                 <h2 class="section-title">Careers at Ratnadeep</h2>
                 <p class="about-careers-lead">Bring your expertise to a team driven by engineering precision, manufacturing discipline, and continuous improvement.</p>
-                <a href="#contact" class="com_btn_red">Join Our Team <span class="ms-2"><?php echo $arrow_icon; ?></span></a>
+                <a href="{{ route('contact') }}#write-to-us" class="com_btn_red">Join Our Team <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
             </div>
             <div class="about-careers-gallery">
                 <div class="about-career-card about-career-card--left">
-                    <img src="assets/images/About/career-1.png" alt="Ratnadeep team meeting" class="img-fluid w-100">
+                    <img src="{{ asset('frontend/assets/images/About/career-1.png') }}" alt="Ratnadeep team meeting" class="img-fluid w-100">
                 </div>
                 <div class="about-career-card about-career-card--center">
-                    <img src="assets/images/About/career-2.png" alt="" class="about-career-layer about-career-layer--bg" aria-hidden="true">
-                    <img src="assets/images/About/career-2-overlay.png" alt="Ratnadeep workforce at manufacturing facility" class="about-career-layer about-career-layer--fg">
+                    <img src="{{ asset('frontend/assets/images/About/career-2.png') }}" alt="" class="about-career-layer about-career-layer--bg" aria-hidden="true">
+                    <img src="{{ asset('frontend/assets/images/About/career-2-overlay.png') }}" alt="Ratnadeep workforce at manufacturing facility" class="about-career-layer about-career-layer--fg">
                 </div>
                 <div class="about-career-card about-career-card--right">
-                    <img src="assets/images/About/career-3.png" alt="Ratnadeep team collaboration" class="img-fluid w-100">
+                    <img src="{{ asset('frontend/assets/images/About/career-3.png') }}" alt="Ratnadeep team collaboration" class="img-fluid w-100">
                 </div>
             </div>
         </div>
@@ -350,38 +351,40 @@ $arrow_icon = '<svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="
             </div>
             <div class="about-cert-grid">
                 <div class="about-cert-card">
-                    <img src="assets/images/About/cert-iso9001.png" alt="ISO 9001:2015 certification">
+                    <img src="{{ asset('frontend/assets/images/About/cert-iso9001.png') }}" alt="ISO 9001:2015 certification">
                     <p>ISO 9001: 2015</p>
                 </div>
                 <div class="about-cert-card">
-                    <img src="assets/images/About/cert-iso45001.png" alt="ISO 45001:2018 certification">
+                    <img src="{{ asset('frontend/assets/images/About/cert-iso45001.png') }}" alt="ISO 45001:2018 certification">
                     <p>ISO 45001: 2018</p>
                 </div>
                 <div class="about-cert-card">
-                    <img src="assets/images/About/cert-ped-adwo.png" alt="PED and ADWO certification">
+                    <img src="{{ asset('frontend/assets/images/About/cert-ped-adwo.png') }}" alt="PED and ADWO certification">
                     <p>PED &amp; ADWO</p>
                 </div>
                 <div class="about-cert-card">
-                    <img src="assets/images/About/cert-iso14001.png" alt="ISO 14001:2015 certification">
+                    <img src="{{ asset('frontend/assets/images/About/cert-iso14001.png') }}" alt="ISO 14001:2015 certification">
                     <p>ISO 14001: 2015</p>
                 </div>
                 <div class="about-cert-card about-cert-card--wide-sm">
-                    <img src="assets/images/About/cert-norsok.png" alt="NORSOK certification">
+                    <img src="{{ asset('frontend/assets/images/About/cert-norsok.png') }}" alt="NORSOK certification">
                     <p>NORSOK</p>
                 </div>
                 <div class="about-cert-card about-cert-card--wide-sm">
-                    <img src="assets/images/About/cert-marine.png" alt="Marine certification">
+                    <img src="{{ asset('frontend/assets/images/About/cert-marine.png') }}" alt="Marine certification">
                     <p>Marine</p>
                 </div>
                 <div class="about-cert-card about-cert-card--wide-lg">
-                    <img src="assets/images/About/cert-cbb.png" alt="Central Boilers Board certification">
+                    <img src="{{ asset('frontend/assets/images/About/cert-cbb.png') }}" alt="Central Boilers Board certification">
                     <p>"Well Known Pipe/Tube Maker" by Central Boilers Board, India</p>
                 </div>
             </div>
         </div>
     </section>
 </main>
+@endsection
 
+@push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var stages = [
@@ -419,7 +422,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    // Add CSS transitions for smooth fade effect
     titleEl.style.transition = 'opacity 0.4s ease-in-out';
     textEl.style.transition = 'opacity 0.4s ease-in-out';
 
@@ -485,5 +487,4 @@ document.addEventListener('DOMContentLoaded', function () {
     startAutoPlay();
 });
 </script>
-
-<?php include 'includes/footer.php'; ?>
+@endpush

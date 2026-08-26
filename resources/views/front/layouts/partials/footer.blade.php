@@ -1,3 +1,6 @@
+@php
+    $setting = getSetting();
+@endphp
     <!-- Footer Section -->
     <footer class="main-footer">
            <div class="footer-container">
@@ -32,21 +35,21 @@
                         <div class="company-col">
                             <h4 class="footer-heading">Company</h4>
                             <ul class="footer-links">
-                                <li><a href="#">Overview</a></li>
-                                <li><a href="#">Inspection & Quality Testing</a></li>
-                                <li><a href="certifications.php">Certifications</a></li>
-                                <li><a href="clients.php">Clients</a></li>
-                                <li><a href="#">Download Corporate Brochure</a></li>
+                                <li><a href="{{ route('about') }}">Overview</a></li>
+                                <li><a href="{{ route('about') }}#manufacturing">Inspection & Quality Testing</a></li>
+                                <li><a href="{{ route('certifications') }}">Certifications</a></li>
+                                <li><a href="{{ route('clients') }}">Clients</a></li>
+                                <li><a href="{{ route('contact') }}">Download Corporate Brochure</a></li>
                             </ul>
                         </div>
                         <div class="quick-links-col">
                             <h4 class="footer-heading">Quick Links</h4>
                             <ul class="footer-links">
-                                <li><a href="#">Applications</a></li>
-                                <li><a href="#">Packaging & Shipping</a></li>
-                                <li><a href="blogs.php">Blogs</a></li>
-                                <li><a href="events.php">Events</a></li>
-                                <li><a href="contact.php">Contact Us</a></li>
+                                <li><a href="{{ route('home') }}#applications">Applications</a></li>
+                                <li><a href="{{ route('home') }}#capabilities">Packaging & Shipping</a></li>
+                                <li><a href="{{ route('blogs') }}">Blogs</a></li>
+                                <li><a href="{{ route('events') }}">Events</a></li>
+                                <li><a href="{{ route('contact') }}">Contact Us</a></li>
                             </ul>
                         </div>
                     </div>
@@ -60,15 +63,31 @@
                         <div class="contact-info-grid">
                             <div class="contact-office">
                                 <span class="contact-label">Corporate Office:</span>
-                                <p class="contact-text">102, "Rajgiri", 196/198, Khetwadi Back Road, Opp. 13th Khetwadi Lane, Mumbai - 400 004, INDIA</p>
+                                <p class="contact-text">{{ $setting->address ?? '102, "Rajgiri", 196/198, Khetwadi Back Road, Opp. 13th Khetwadi Lane, Mumbai - 400 004, INDIA' }}</p>
                             </div>
                             <div class="contact-phone">
                                 <span class="contact-label">Contact us:</span>
-                                <p class="contact-text"><a href="tel:+912223805700" target="_blank" style="color: inherit; text-decoration: none;">+91 22 2380 5700</a> | <a href="tel:+912223805701" target="_blank" style="color: inherit; text-decoration: none;">+91 22 2380 5701</a></p>
+                                <p class="contact-text">
+                                    @if(!empty($setting->contacts) && is_array($setting->contacts))
+                                        @foreach($setting->contacts as $contact)
+                                            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $contact) }}" target="_blank" style="color: inherit; text-decoration: none;">{{ $contact }}</a>{{ !$loop->last ? ' | ' : '' }}
+                                        @endforeach
+                                    @else
+                                        <a href="tel:+912223805700" target="_blank" style="color: inherit; text-decoration: none;">+91 22 2380 5700</a> | <a href="tel:+912223805701" target="_blank" style="color: inherit; text-decoration: none;">+91 22 2380 5701</a>
+                                    @endif
+                                </p>
                             </div>
                             <div class="contact-email">
                                 <span class="contact-label">Email us:</span>
-                                <p class="contact-text"><a href="mailto:info@ratnadeepmetal.com">info@ratnadeepmetal.com</a></p>
+                                <p class="contact-text">
+                                    @if(!empty($setting->emails) && is_array($setting->emails))
+                                        @foreach($setting->emails as $email)
+                                            <a href="mailto:{{ $email }}">{{ $email }}</a>{{ !$loop->last ? ' | ' : '' }}
+                                        @endforeach
+                                    @else
+                                        <a href="mailto:info@ratnadeepmetal.com">info@ratnadeepmetal.com</a>
+                                    @endif
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -79,22 +98,22 @@
                         <div class="products-list-grid">
                             <div class="products-col-1">
                                 <ul class="footer-links">
-                                    <li><a href="#">Stainless Steel Seamless Straight & "U" Tubes</a></li>
-                                    <li><a href="#">Stainless Steel Seamless Pipes</a></li>
-                                    <li><a href="#">Stainless Steel Welded Straight & "U" Tubes</a></li>
-                                    <li><a href="#">Stainless Steel Welded Pipes</a></li>
-                                    <li><a href="#">Stainless Steel Instrumentation & Hydraulic Tubes</a></li>
-                                    <li><a href="#">Nickel Alloy Seamless Straight & "U" Tubes</a></li>
-                                    <li><a href="#">Low Fin Seamless Straight & "U" Tubes</a></li>
+                                    <li><a href="{{ route('home') }}#products">Stainless Steel Seamless Straight & "U" Tubes</a></li>
+                                    <li><a href="{{ route('home') }}#products">Stainless Steel Seamless Pipes</a></li>
+                                    <li><a href="{{ route('home') }}#products">Stainless Steel Welded Straight & "U" Tubes</a></li>
+                                    <li><a href="{{ route('home') }}#products">Stainless Steel Welded Pipes</a></li>
+                                    <li><a href="{{ route('home') }}#products">Stainless Steel Instrumentation & Hydraulic Tubes</a></li>
+                                    <li><a href="{{ route('home') }}#products">Nickel Alloy Seamless Straight & "U" Tubes</a></li>
+                                    <li><a href="{{ route('home') }}#products">Low Fin Seamless Straight & "U" Tubes</a></li>
                                 </ul>
                             </div>
                             <div class="products-col-2">
                                 <ul class="footer-links">
-                                    <li><a href="#">Carbon Steel Seamless Straight & "U" Tubes</a></li>
-                                    <li><a href="#">Carbon Steel Seamless Pipes</a></li>
-                                    <li><a href="#">Carbon Steel Seamless Precision, Fuel Injection & Hydraulic Tubes & Pipes</a></li>
-                                    <li><a href="#">Low Alloy Steel Seamless Straight & "U" Tubes</a></li>
-                                    <li><a href="#">Low Alloy Carbon Steel Seamless Pipes</a></li>
+                                    <li><a href="{{ route('home') }}#products">Carbon Steel Seamless Straight & "U" Tubes</a></li>
+                                    <li><a href="{{ route('home') }}#products">Carbon Steel Seamless Pipes</a></li>
+                                    <li><a href="{{ route('home') }}#products">Carbon Steel Seamless Precision, Fuel Injection & Hydraulic Tubes & Pipes</a></li>
+                                    <li><a href="{{ route('home') }}#products">Low Alloy Steel Seamless Straight & "U" Tubes</a></li>
+                                    <li><a href="{{ route('home') }}#products">Low Alloy Carbon Steel Seamless Pipes</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -107,10 +126,10 @@
             <!-- Bottom Section -->
             <div class="footer-bottom">
                 <div class="copyright">
-                    &copy; 2026 Ratnadeep Metal & Tubes Ltd. All Rights Reserved.
+                    &copy; {{ date('Y') }} Ratnadeep Metal & Tubes Ltd. All Rights Reserved.
                 </div>
                 <div class="social-links">
-                    <a href="#" class="social-icon facebook">
+                    <a href="{{ $setting->facebook ?? '#' }}" target="_blank" class="social-icon facebook">
                       <svg class="svg-default" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 0C18.6274 0 24 5.37259 24 12C24 18.1352 19.3955 23.1944 13.4538 23.9121V15.667L16.7001 15.667L17.3734 12H13.4538V10.7031C13.4538 9.73417 13.6439 9.06339 14.0799 8.63483C14.5159 8.20627 15.1979 8.01993 16.1817 8.01993C16.4307 8.01993 16.6599 8.02241 16.8633 8.02736C17.1591 8.03456 17.4002 8.047 17.568 8.06467V4.74048C17.501 4.72184 17.4218 4.70321 17.3331 4.68486C17.1321 4.6433 16.8822 4.60324 16.6136 4.56806C16.0523 4.49453 15.4093 4.4423 14.9594 4.4423C13.1424 4.4423 11.7692 4.83102 10.8107 5.63619C9.65388 6.60791 9.10108 8.18622 9.10108 10.4199V12H6.62659V15.667H9.10108V23.6466C3.87432 22.3498 0 17.6277 0 12C0 5.37259 5.37259 0 12 0Z" fill="#DDDDDD"/>
                       </svg>
@@ -118,7 +137,7 @@
                         <path d="M12 0C5.37259 0 0 5.37259 0 12C0 17.9895 4.38823 22.954 10.125 23.8542V15.4688H7.07812V12H10.125V9.35625C10.125 6.34875 11.9165 4.6875 14.6576 4.6875C15.9705 4.6875 17.3438 4.92188 17.3438 4.92188V7.875H15.8306C14.3399 7.875 13.875 8.80001 13.875 9.74906V12H17.2031L16.6711 15.4688H13.875V23.8542C19.6118 22.954 24 17.9895 24 12C24 5.37259 18.6274 0 12 0Z" fill="#1877F2"/><path d="M16.6711 15.4688L17.2031 12H13.875V9.74906C13.875 8.80001 14.3399 7.875 15.8306 7.875H17.3438V4.92188C17.3438 4.92188 15.9705 4.6875 14.6576 4.6875C11.9165 4.6875 10.125 6.34875 10.125 9.35625V12H7.07812V15.4688H10.125V23.8542C10.7358 23.95 11.3626 24 12 24C12.6374 24 13.2642 23.95 13.875 23.8542V15.4688H16.6711Z" fill="white"/>
                       </svg>
                     </a>
-                    <a href="#" class="social-icon instagram">
+                    <a href="{{ $setting->instagram ?? '#' }}" target="_blank" class="social-icon instagram">
                        <svg class="svg-default" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M18.3952 7.02212C17.6005 7.02368 16.9543 6.3802 16.9528 5.58548C16.9512 4.79076 17.5947 4.14457 18.3898 4.14302C19.1848 4.14146 19.831 4.78531 19.8326 5.58004C19.8338 6.37476 19.1903 7.02057 18.3952 7.02212Z" fill="#DDDDDD"/>
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M12.0115 18.161C8.60909 18.1676 5.8451 15.4149 5.8385 12.0117C5.83188 8.60923 8.58536 5.84481 11.9878 5.8382C15.3909 5.83159 18.1553 8.5859 18.1619 11.9879C18.1685 15.3912 15.4143 18.1544 12.0115 18.161ZM11.992 8.00035C9.78365 8.00424 7.99594 9.79858 7.99983 12.0074C8.0041 14.2166 9.79882 16.0039 12.0072 15.9996C14.2164 15.9954 16.0041 14.2014 15.9998 11.9922C15.9955 9.78302 14.2008 7.99608 11.992 8.00035Z" fill="#DDDDDD"/>
@@ -130,7 +149,7 @@
                         <path d="M12 7.742C9.65 7.742 7.742 9.65 7.742 12C7.742 14.35 9.65 16.258 12 16.258C14.35 16.258 16.258 14.35 16.258 12C16.258 9.65 14.35 7.742 12 7.742ZM12 14.72C10.499 14.72 9.28 13.501 9.28 12C9.28 10.499 10.499 9.28 12 9.28C13.501 9.28 14.72 10.499 14.72 12C14.72 13.501 13.501 14.72 12 14.72ZM16.326 6.645C15.65 6.645 15.1 7.195 15.1 7.871C15.1 8.547 15.65 9.097 16.326 9.097C17.002 9.097 17.552 8.547 17.552 7.871C17.552 7.195 17.002 6.645 16.326 6.645ZM21.905 7.073C21.821 5.378 21.436 3.896 20.25 2.71C19.064 1.524 17.581 1.138 15.887 1.055C14.161 0.963 9.839 0.963 8.113 1.055C6.419 1.138 4.936 1.524 3.75 2.71C2.564 3.896 2.179 5.378 2.095 7.073C2.003 8.799 2.003 13.121 2.095 14.847C2.179 16.542 2.564 18.024 3.75 19.21C4.936 20.396 6.419 20.781 8.113 20.865C9.839 20.957 14.161 20.957 15.887 20.865C17.581 20.781 19.064 20.396 20.25 19.21C21.436 18.024 21.821 16.542 21.905 14.847C21.997 13.121 21.997 8.799 21.905 7.073ZM19.742 16.578C19.467 17.382 18.847 18.002 18.043 18.277C16.634 18.835 13.342 18.7 12 18.7C10.658 18.7 7.368 18.837 5.957 18.277C5.153 18.002 4.533 17.382 4.258 16.578C3.7 15.169 3.835 11.877 3.835 10.535C3.835 9.193 3.698 5.903 4.258 4.492C4.533 3.688 5.153 3.068 5.957 2.793C7.366 2.235 10.658 2.37 12 2.37C13.342 2.37 16.632 2.233 18.043 2.793C18.847 3.068 19.467 3.688 19.742 4.492C20.3 5.901 20.165 9.193 20.165 10.535C20.165 11.877 20.302 15.167 19.742 16.578Z" fill="white"/>
                        </svg>
                     </a>
-                    <a href="#" class="social-icon linkedin">
+                    <a href="{{ $setting->linkedin ?? '#' }}" target="_blank" class="social-icon linkedin">
                      <svg class="svg-default" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M22.2234 0H1.77187C0.792187 0 0 0.773438 0 1.72969V22.2656C0 23.2219 0.792187 24 1.77187 24H22.2234C23.2031 24 24 23.2219 24 22.2703V1.72969C24 0.773438 23.2031 0 22.2234 0ZM7.12031 20.4516H3.55781V8.99531H7.12031V20.4516ZM5.33906 7.43438C4.19531 7.43438 3.27188 6.51094 3.27188 5.37187C3.27188 4.23281 4.19531 3.30937 5.33906 3.30937C6.47813 3.30937 7.40156 4.23281 7.40156 5.37187C7.40156 6.50625 6.47813 7.43438 5.33906 7.43438ZM20.4516 20.4516H16.8937V14.8828C16.8937 13.5562 16.8703 11.8453 15.0422 11.8453C13.1906 11.8453 12.9094 13.2937 12.9094 14.7891V20.4516H9.35625V8.99531H12.7687V10.5609H12.8156C13.2891 9.66094 14.4516 8.70938 16.1813 8.70938C19.7859 8.70938 20.4516 11.0813 20.4516 14.1656V20.4516Z" fill="#DDDDDD"/>
                      </svg>

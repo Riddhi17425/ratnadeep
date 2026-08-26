@@ -230,12 +230,13 @@
                             showAppToast('success', 'This Category is Now Inactive.');
                         }
                     } else {
-                        showAppToast('error', 'Something went wrong.');
+                        showAppToast('error', response.message || 'Something went wrong.');
                         checkbox.prop('checked', !isChecked);
                     }
                 },
-                error: function () {
-                    showAppToast('error', 'Something went wrong.');
+                error: function (xhr) {
+                    var errorMsg = (xhr.responseJSON && xhr.responseJSON.message) ? xhr.responseJSON.message : 'Something went wrong.';
+                    showAppToast('error', errorMsg);
                     checkbox.prop('checked', !isChecked);
                 }
             });

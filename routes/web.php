@@ -11,11 +11,20 @@ use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\CertificateController;
 use App\Http\Controllers\Admin\ManufactureStageController;
+use App\Http\Controllers\Front\HomeController;
+use App\Http\Controllers\Front\CertificationController as FrontCertificationController;
+use App\Http\Controllers\Front\BlogController as FrontBlogController;
+use App\Http\Controllers\FrontController;
 
-
-Route::get('/', function () {
-    return view('front/index');
-})->name('home');
+// Frontend Routes
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/about-us', [FrontController::class, 'about'])->name('about');
+Route::get('/blogs', [FrontBlogController::class, 'index'])->name('blogs');
+Route::get('/blog-detail/{slug}', [FrontBlogController::class, 'detail'])->name('blog.detail');
+Route::get('/certifications', [FrontCertificationController::class, 'index'])->name('certifications');
+Route::get('/clients', [FrontController::class, 'clients'])->name('clients');
+Route::get('/contact-us', [FrontController::class, 'contact'])->name('contact');
+Route::get('/events', [FrontController::class, 'events'])->name('events');
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [LoginController::class, 'register_page'])->name('register');

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo !empty($page_title) ? htmlspecialchars($page_title) . ' | Ratnadeep' : 'Ratnadeep'; ?></title>
+    <title>@yield('title', !empty($page_title) ? $page_title . ' | Ratnadeep' : 'Ratnadeep Metal & Tubes Ltd.')</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- Favicon -->
@@ -16,9 +16,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/responsive.css') }}">
-    <?php if (!empty($page_css)): ?>
-    <link rel="stylesheet" href="<?php echo htmlspecialchars($page_css); ?>">
-    <?php endif; ?>
+    @yield('page_css')
+    @stack('styles')
     <style>
         .goog-te-banner-frame { display: none !important; }
         body { top: 0px !important; position: static !important; }
@@ -42,10 +41,7 @@
         .lenis.lenis-scrolling iframe {
             pointer-events: none;
         }
-    </style>
-    <script>
-    </script>
-    <style>
+
         .loader-skipped #gsap-loader {
             display: none !important;
             opacity: 0 !important;
@@ -53,6 +49,11 @@
             visibility: hidden !important;
         }
     </style>
+    <script>
+        if (sessionStorage.getItem('loaderShown')) {
+            document.documentElement.classList.add('loader-skipped');
+        }
+    </script>
 </head>
 <body>
 <!-- PREMIUM GLASSMORPHISM SVG DRAW LOADER -->
@@ -103,18 +104,18 @@
             </a>
             <nav class="main-nav">
                 <ul class="nav-links">
-                    <li><a href="#">About us </a></li>
+                    <li><a href="{{ route('about') }}">About us </a></li>
                     <li class="nav-item-has-mega">
                         <a href="#" class="nav-mega-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="productsMegaMenu">
                             Industries <span class="dot"></span>
                         </a>
                         @include('front.layouts.partials.products-mega-menu')
                     </li>
-                    <li><a href="#">Applications</a></li>
-                    <li><a href="#">Packaging & Shipping</a></li>
-                    <li><a href="#">Blogs</a></li>
-                    <li><a href="#">Events</a></li>
-                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="{{ route('home') }}#applications">Applications</a></li>
+                    <li><a href="{{ route('home') }}#capabilities">Packaging & Shipping</a></li>
+                    <li><a href="{{ route('blogs') }}">Blogs</a></li>
+                    <li><a href="{{ route('events') }}">Events</a></li>
+                    <li><a href="{{ route('contact') }}">Contact Us</a></li>
                 </ul>
             </nav>
             <div class="header-actions">
@@ -135,7 +136,7 @@
                         <option value="it" data-flag="it">Italian</option>
                     </select>
                 </div>
-                <a href="#enquire" class="com_btn_red">Enquire Now</a>
+                <a href="{{ route('contact') }}#write-to-us" class="com_btn_red">Enquire Now</a>
             </div>
             
             <!-- Mobile Menu Toggle -->

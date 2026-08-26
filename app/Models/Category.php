@@ -29,4 +29,9 @@ class Category extends Model
             }
         });
     }
+
+    public function banners()
+    {
+        return $this->hasMany(Banner::class, 'category_id')->where('status', 1);
+    }
 }

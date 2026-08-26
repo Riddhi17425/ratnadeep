@@ -1,106 +1,90 @@
-@include('front.layouts.partials.header')
+@extends('front.layouts.main')
+
+@section('title', 'Ratnadeep Metal & Tubes Ltd. | High Precision Tubes & Pipes')
+
+@section('content')
 <main>
     <section class="hero-section container-fluid position-relative p-0">
+        @php
+            $slideCounter = 0;
+            $categoryFirstSlide = [];
+            use Illuminate\Support\Str;
+        @endphp
         <!-- Slick Slider -->
         <div class="hero-slick-slider h-100 w-100 z-1">
-            <!-- Slide 1 -->
-            <div class="slick-slide-item h-100 position-relative" style="background-image:var(--hero-gradient), url('frontend/assets/images/Stainless Steel-slider.webp'); background-position: center; background-size: cover; background-repeat: no-repeat;">
-                <div class="container hero-content-wrapper h-100">
-                    <div class="hero-content">
-                        <div class="hero-badge">
-                            <span class="badge-dot"></span>
-                            <span>PRECISION STAINLESS STEEL</span>
-                        </div>
-                        <h1 class="hero-title">Stainless Steel Tubes & Pipes for Vital Execution</h1>
-                        <p class="hero-subtitle">Manufactured for superior corrosion resistance, dimensional accuracy, and long service life in demanding industrial environments.</p>
-                        <div class="hero-buttons">
-                            <a href="#quote" class="com_btn_red">Request Technical Quote <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span> </a>
-                            <a href="#products" class="com_btn_outline_white">Explore Products</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Slide 2 -->
-            <div class="slick-slide-item h-100 position-relative" style="background-image:var(--hero-gradient), url('assets/images/Nickel Alloy slider.webp'); background-position: center; background-size: cover; background-repeat: no-repeat;">
-                <div class="container hero-content-wrapper h-100">
-                    <div class="hero-content">
-                        <div class="hero-badge">
-                            <span class="badge-dot"></span>
-                            <span>HIGH-PERFORMANCE ALLOYS</span>
-                        </div>
-                        <h1 class="hero-title">Nickel Alloy Tubes for Extreme Service Conditions</h1>
-                        <p class="hero-subtitle">Engineered to withstand high temperatures, aggressive chemicals, and severe pressure where conventional materials cannot perform.</p>
-                        <div class="hero-buttons">
-                            <a href="#quote" class="com_btn_red">Request Technical Quote <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span> </a>
-                            <a href="#products" class="com_btn_outline_white">Explore Products</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Slide 3 -->
-            <div class="slick-slide-item h-100 position-relative" style="background-image:var(--hero-gradient), url('assets/images/Carbon Steel-slider.webp'); background-position: center; background-size: cover; background-repeat: no-repeat;">
-                <div class="container hero-content-wrapper h-100">
-                    <div class="hero-content">
-                        <div class="hero-badge">
-                            <span class="badge-dot"></span>
-                            <span>INDUSTRIAL STRENGTH</span>
-                        </div>
-                        <h1 class="hero-title">Carbon Steel Tubes for Heavy-Duty Applications</h1>
-                        <p class="hero-subtitle">Designed for dependable strength, pressure handling, and long-term performance across power, refinery, and process industries.</p>
-                        <div class="hero-buttons">
-                            <a href="#quote" class="com_btn_red">Request Technical Quote <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span> </a>
-                            <a href="#products" class="com_btn_outline_white">Explore Products</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @foreach($categories as $category)
+                @php
+                    $categoryFirstSlide[$category->id] = $slideCounter;
+                    $catBanners = $category->banners;
+                @endphp
 
-            <!-- Slide 4 -->
-            <div class="slick-slide-item h-100 position-relative" style="background-image: var(--hero-gradient), url('assets/images/Low Alloy Steel-slider.webp'); background-position: center; background-size: cover; background-repeat: no-repeat;">
-                <div class="container hero-content-wrapper h-100">
-                    <div class="hero-content">
-                        <div class="hero-badge">
-                            <span class="badge-dot"></span>
-                            <span>HIGH-STRENGTH ENGINEERING</span>
+                @if($catBanners && $catBanners->count() > 0)
+                    @foreach($catBanners as $banner)
+                        @php
+                            $bgImage = $banner->image ? asset($banner->image) : asset($category->image);
+                            $badgeTitle = $category->title;
+                            $rawTitle = $banner->title ?: ($category->shortdescription ?: $category->title);
+                            $heroTitle = Str::title(
+                                Str::words(strip_tags($rawTitle), 12, '')
+                            );
+                            $rawSubtitle = $banner->description ?: $category->description;
+                            $heroSubtitle = ucfirst(Str::words(strip_tags($rawSubtitle), 25, '...'));
+                        @endphp
+                        <div class="slick-slide-item h-100 position-relative" data-category-id="{{ $category->id }}" style="background-image:var(--hero-gradient), url('{{ $bgImage }}'); background-position: center; background-size: cover; background-repeat: no-repeat;">
+                            <div class="container hero-content-wrapper h-100">
+                                <div class="hero-content">
+                                    <div class="hero-badge">
+                                        <span class="badge-dot"></span>
+                                        <span>{{ $badgeTitle }}</span>
+                                    </div>
+                                    <h1 class="hero-title">{{ $heroTitle }}</h1>
+                                    <p class="hero-subtitle">{{ $heroSubtitle }}</p>
+                                    <div class="hero-buttons">
+                                        <a href="{{ route('contact') }}#write-to-us" class="com_btn_red">Request Technical Quote <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span> </a>
+                                        <a href="#products" class="com_btn_outline_white">Explore Products</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <h1 class="hero-title">Low Alloy Steel Tubes for Elevated Performance</h1>
-                        <p class="hero-subtitle">Manufactured for enhanced mechanical strength, heat resistance, and durability in boilers, heat exchangers, and pressure systems.</p>
-                        <div class="hero-buttons">
-                            <a href="#quote" class="com_btn_red">Request Technical Quote <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span> </a>
-                            <a href="#products" class="com_btn_outline_white">Explore Products</a>
+                        @php $slideCounter++; @endphp
+                    @endforeach
+                @else
+                    @php
+                        $bgImage = $category->image ? asset($category->image) : asset('frontend/assets/images/Stainless Steel-slider.webp');
+                        $badgeTitle = $category->title;
+                        $rawTitle = $category->shortdescription ?: $category->title;
+                        $heroTitle = Str::title(Str::words(strip_tags($rawTitle), 12, ''));
+                        $rawSubtitle = $category->description;
+                        $heroSubtitle = ucfirst(Str::words(strip_tags($rawSubtitle), 25, '...'));
+                    @endphp
+                    <div class="slick-slide-item h-100 position-relative" data-category-id="{{ $category->id }}" style="background-image:var(--hero-gradient), url('{{ $bgImage }}'); background-position: center; background-size: cover; background-repeat: no-repeat;">
+                        <div class="container hero-content-wrapper h-100">
+                            <div class="hero-content">
+                                <div class="hero-badge">
+                                    <span class="badge-dot"></span>
+                                    <span>{{ $badgeTitle }}</span>
+                                </div>
+                                <h1 class="hero-title">{{ $heroTitle }}</h1>
+                                <p class="hero-subtitle">{{ $heroSubtitle }}</p>
+                                <div class="hero-buttons">
+                                    <a href="{{ route('contact') }}#write-to-us" class="com_btn_red">Request Technical Quote <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span> </a>
+                                    <a href="#products" class="com_btn_outline_white">Explore Products</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Slide 5 -->
-            <div class="slick-slide-item h-100 position-relative" style="background-image: var(--hero-gradient), url('assets/images/Low Fin Tubes-slider.webp'); background-position: center; background-size: cover; background-repeat: no-repeat;">
-                <div class="container hero-content-wrapper h-100">
-                    <div class="hero-content">
-                        <div class="hero-badge">
-                            <span class="badge-dot"></span>
-                            <span>THERMAL EFFICIENCY</span>
-                        </div>
-                        <h1 class="hero-title">Low Fin Tubes for Efficient Heat Transfer</h1>
-                        <p class="hero-subtitle">Manufactured to improve heat transfer efficiency, helping industries maximize thermal performance while reducing equipment size and energy consumption.</p>
-                        <div class="hero-buttons">
-                            <a href="#quote" class="com_btn_red">Request Technical Quote <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span> </a>
-                            <a href="#products" class="com_btn_outline_white">Explore Products</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    @php $slideCounter++; @endphp
+                @endif
+            @endforeach
         </div>
 
         <div class="container position-absolute bottom-0 start-50 translate-middle-x z-3 w-100 pb-4 pb-lg-5" style="pointer-events: none;">
             <div class="hero-product-tabs" style="pointer-events: auto;">
-                <button type="button" class="tab-item active" data-slide="0">Stainless Steel</button>
-                <button type="button" class="tab-item" data-slide="1">Nickel Alloy</button>
-                <button type="button" class="tab-item" data-slide="2">Carbon Steel</button>
-                <button type="button" class="tab-item" data-slide="3">Low Alloy Steel</button>
-                <button type="button" class="tab-item" data-slide="4">Low Fin Tubes</button>
+                @foreach($categories as $category)
+                    <button type="button" class="tab-item {{ $loop->first ? 'active' : '' }}" data-category-id="{{ $category->id }}" data-slide="{{ $categoryFirstSlide[$category->id] ?? 0 }}">
+                        {{ Str::title($category->title) }}
+                    </button>
+                @endforeach
             </div>
         </div>
     </section>
@@ -132,75 +116,20 @@
             </div>
             
             <div class="products-grid mobile-slider">
-                <!-- Card 1 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="{{ asset('frontend/assets/images/Stainless Steel.webp') }}" alt="Stainless Steel">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-header">
-                            <h3 class="product-title">STAINLESS STEEL</h3>
-                            <a href="#" class="product-arrow"><span class="arrow-icon"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                @foreach($categories as $category)
+                    <div class="product-card {{ $loop->iteration == 5 ? 'span-2' : '' }}">
+                        <div class="product-image">
+                            <img src="{{ $category->image ? asset($category->image) : asset('frontend/assets/images/Stainless Steel.webp') }}" alt="{{ $category->alt_image_text ?: $category->title }}">
                         </div>
-                        <p class="product-desc">Manufactured for applications requiring superior corrosion resistance, hygiene, and long-term durability, our <b>stainless steel tubes and pipes</b> deliver dependable performance across demanding industrial environments.</p>
-                    </div>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="{{ asset('frontend/assets/images/Nickel Alloy.webp') }}" alt="Nickel Alloy">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-header">
-                            <h3 class="product-title">NICKEL ALLOY</h3>
-                            <a href="#" class="product-arrow"><span class="arrow-icon"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                        <div class="product-info">
+                            <div class="product-header">
+                                <h3 class="product-title">{{ strtoupper($category->title) }}</h3>
+                                <a href="{{ route('home') }}#products" class="product-arrow"><span class="arrow-icon"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                            </div>
+                            <p class="product-desc">{{ ucfirst(Str::words(strip_tags($category->description), 35, '...')) }}</p>
                         </div>
-                        <p class="product-desc">Designed to perform under extreme temperatures, high pressure, and corrosive process conditions, our <b>nickel alloy tubes and pipes</b> offer exceptional strength and long-term reliability.</p>
                     </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="{{ asset('frontend/assets/images/Carbon Steel.webp') }}" alt="Carbon Steel">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-header">
-                            <h3 class="product-title">CARBON STEEL</h3>
-                            <a href="#" class="product-arrow"><span class="arrow-icon"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-                        </div>
-                        <p class="product-desc">Built for structural strength and mechanical performance, our <b>carbon steel tubes and pipes</b> are widely used across energy, process, infrastructure, and industrial applications.</p>
-                    </div>
-                </div>
-
-                <!-- Card 4 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="{{ asset('frontend/assets/images/Low Alloy Steel.webp') }}" alt="Low Alloy Steel">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-header">
-                            <h3 class="product-title">LOW ALLOY STEEL</h3>
-                            <a href="#" class="product-arrow"><span class="arrow-icon"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-                        </div>
-                        <p class="product-desc">Manufactured for high-temperature and high-pressure service, our <b>low alloy steel tubes and pipes</b> provide excellent strength, durability, and reliable performance across power, process, and heavy industrial applications.</p>
-                    </div>
-                </div>
-
-                <!-- Card 5 (Spans 2 columns) -->
-                <div class="product-card span-2">
-                    <div class="product-image">
-                        <img src="{{ asset('frontend/assets/images/Low Fin Seamless Straight & _U_ Tubes.webp') }}" alt="Low Fin Seamless Straight & 'U' Tubes">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-header">
-                            <h3 class="product-title">LOW FIN SEAMLESS STRAIGHT & "U" TUBES</h3>
-                            <a href="#" class="product-arrow"><span class="arrow-icon"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-                        </div>
-                        <p class="product-desc">Engineered for efficient heat transfer, our <b>low fin seamless straight and U tubes</b> are widely used in condensers, feedwater heaters, and heat exchangers where thermal performance and reliability are essential.</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -296,30 +225,14 @@
             </div>
             
             <div class="industries-grid mobile-slider">
-                <div class="industry-card">
-                    <img src="{{ asset('frontend/assets/images/Oil & Gas.webp') }}" alt="Oil & Gas">
-                    <div class="industry-overlay">
-                        <h3 class="industry-title">Oil & Gas</h3>
+                @foreach($industries as $industry)
+                    <div class="industry-card">
+                        <img src="{{ $industry->image ? asset($industry->image) : asset('frontend/assets/images/Oil & Gas.webp') }}" alt="{{ $industry->alt_image_text ?: $industry->title }}">
+                        <div class="industry-overlay">
+                            <h3 class="industry-title">{{ Str::title($industry->title) }}</h3>
+                        </div>
                     </div>
-                </div>
-                <div class="industry-card">
-                    <img src="{{ asset('frontend/assets/images/Petrochemicals & Refineries.webp') }}" alt="Petrochemicals & Refineries">
-                    <div class="industry-overlay">
-                        <h3 class="industry-title">Petrochemicals & Refineries</h3>
-                    </div>
-                </div>
-                <div class="industry-card">
-                    <img src="{{ asset('frontend/assets/images/Power Plants.webp') }}" alt="Power Plants">
-                    <div class="industry-overlay">
-                        <h3 class="industry-title">Power Plants</h3>
-                    </div>
-                </div>
-                <div class="industry-card">
-                    <img src="{{ asset('frontend/assets/images/Automotive.webp') }}" alt="Automotive">
-                    <div class="industry-overlay">
-                        <h3 class="industry-title">Automotive</h3>
-                    </div>
-                </div>
+                @endforeach
             </div>
             
             <div class="text-center action-btn-wrapper pt-4 pt-lg-0">
@@ -478,44 +391,23 @@
             </div>
             
             <div class="blogs-grid">
-                <!-- Blog 1 -->
-                <a href="blog-detail.php" class="blog-card text-decoration-none">
-                    <div class="blog-image">
-                        <img src="{{ asset('frontend/assets/images/Homepage/From Our Desk/Blog-1.webp') }}" alt="Seamless vs Welded Tubes">
-                    </div>
-                    <div class="blog-content">
-                        <h3 class="blog-title">Seamless vs Welded Tubes: Choosing the Right Solution</h3>
-                        <p class="blog-desc">Understand the key differences between seamless and welded tubes and how to select the right option for critical applications.</p>
-                    </div>
-                </a>
-
-                <!-- Blog 2 -->
-                <a href="blog-detail.php" class="blog-card text-decoration-none">
-                    <div class="blog-image">
-                        <img src="{{ asset('frontend/assets/images/Homepage/From Our Desk/Blog-2.webp') }}" alt="Understanding ASTM Standards">
-                    </div>
-                    <div class="blog-content">
-                        <h3 class="blog-title">Understanding ASTM, ASME & EN Standards in Tubing</h3>
-                        <p class="blog-desc">A simplified guide to international tubing standards and why compliance matters in global engineering projects.</p>
-                    </div>
-                </a>
-
-                <!-- Blog 3 -->
-                <a href="blog-detail.php" class="blog-card text-decoration-none">
-                    <div class="blog-image">
-                        <img src="{{ asset('frontend/assets/images/Homepage/From Our Desk/Blog-3.webp') }}" alt="Heat Treatment">
-                    </div>
-                    <div class="blog-content">
-                        <h3 class="blog-title">How Heat Treatment Improves Tube Performance</h3>
-                        <p class="blog-desc">Explore how bright annealing and solution annealing enhance strength, corrosion resistance, and dimensional stability.</p>
-                    </div>
-                </a>
+                @foreach($blogs as $blog)
+                    <a href="{{ route('blog.detail', $blog->url) }}" class="blog-card text-decoration-none">
+                        <div class="blog-image">
+                            <img src="{{ $blog->front_image ? asset($blog->front_image) : asset('frontend/assets/images/Homepage/From Our Desk/Blog-1.webp') }}" alt="{{ $blog->front_image_alt ?: $blog->title }}">
+                        </div>
+                        <div class="blog-content">
+                            <h3 class="blog-title">{{ Str::title($blog->title) }}</h3>
+                            <p class="blog-desc">{{ ucfirst(Str::words(strip_tags($blog->short_description), 30, '...')) }}</p>
+                        </div>
+                    </a>
+                @endforeach
             </div>
             
             <div class="text-center action-btn-wrapper">
-                <a href="blogs.php" class="com_btn_outline_red">View All Blogs <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                <a href="{{ route('blogs') }}" class="com_btn_outline_red">View All Blogs <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
             </div>
         </div>
     </section>
 </main>
-@include('front.layouts.partials.footer')
+@endsection

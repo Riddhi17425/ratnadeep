@@ -1,18 +1,18 @@
-<?php
-$page_title = 'Contact Us';
-$page_css = 'assets/css/contact.css';
-include 'includes/header.php';
+@extends('front.layouts.main')
 
-$arrow_icon = '<svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-$select_arrow = '<svg class="contact-select-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-?>
+@section('title', 'Contact Us | Ratnadeep Metal & Tubes Ltd.')
 
+@section('page_css')
+<link rel="stylesheet" href="{{ asset('frontend/assets/css/contact.css') }}">
+@endsection
+
+@section('content')
 <main class="page-contact">
     <!-- Hero -->
     <section class="inner-hero-section inner-hero-section--contact container-fluid position-relative p-0">
         <div class="inner-hero-bg h-100 position-relative">
             <div class="inner-hero-media" aria-hidden="true">
-                <img src="assets/images/Contact/contact-hero.png" alt="" class="inner-hero-image">
+                <img src="{{ asset('frontend/assets/images/Contact/contact-hero.png') }}" alt="" class="inner-hero-image">
                 <div class="inner-hero-overlay"></div>
             </div>
             <div class="container hero-content-wrapper h-100 position-relative">
@@ -24,8 +24,8 @@ $select_arrow = '<svg class="contact-select-arrow" width="10" height="6" viewBox
                     <h1 class="hero-title">Your Manufacturing Requirement.<br>Our Commitment.</h1>
                     <p class="hero-subtitle">Reach out to Ratnadeep Metal And Tubes Limited for pipe and tube manufacturing solutions, technical support, or project enquiries. From product selection to timely delivery, our team is here to help.</p>
                     <div class="hero-buttons">
-                        <a href="#write-to-us" class="com_btn_red">Request a Technical Quote <span class="ms-2"><?php echo $arrow_icon; ?></span></a>
-                        <a href="index.php#products" class="com_btn_outline_white">Explore Products</a>
+                        <a href="#write-to-us" class="com_btn_red">Request a Technical Quote <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                        <a href="{{ route('home') }}#products" class="com_btn_outline_white">Explore Products</a>
                     </div>
                 </div>
             </div>
@@ -45,6 +45,7 @@ $select_arrow = '<svg class="contact-select-arrow" width="10" height="6" viewBox
                         <h2 class="section-title text-start contact-form-title">Let's Discuss Your Requirements</h2>
                     </div>
                     <form class="contact-form" action="#" method="post">
+                        @csrf
                         <div class="contact-form-row">
                             <div class="contact-field">
                                 <input type="text" name="full_name" id="full_name" placeholder="Full Name*:" required>
@@ -70,7 +71,7 @@ $select_arrow = '<svg class="contact-select-arrow" width="10" height="6" viewBox
                                     <option value="mehsana">Mehsana</option>
                                     <option value="other">Other</option>
                                 </select>
-                                <?php echo $select_arrow; ?>
+                                <svg class="contact-select-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             </div>
                             <div class="contact-field contact-field--select">
                                 <select name="state" id="state" required>
@@ -79,7 +80,7 @@ $select_arrow = '<svg class="contact-select-arrow" width="10" height="6" viewBox
                                     <option value="gujarat">Gujarat</option>
                                     <option value="other">Other</option>
                                 </select>
-                                <?php echo $select_arrow; ?>
+                                <svg class="contact-select-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             </div>
                         </div>
                         <div class="contact-form-row">
@@ -88,7 +89,7 @@ $select_arrow = '<svg class="contact-select-arrow" width="10" height="6" viewBox
                             </div>
                         </div>
                         <div class="contact-form-actions">
-                            <button type="submit" class="com_btn_red contact-submit-btn">Submit <span class="ms-2"><?php echo $arrow_icon; ?></span></button>
+                            <button type="submit" class="com_btn_red contact-submit-btn">Submit <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
                         </div>
                     </form>
                 </div>
@@ -181,22 +182,21 @@ $select_arrow = '<svg class="contact-select-arrow" width="10" height="6" viewBox
                 </div>
                 <h2 class="section-title">Careers at Ratnadeep</h2>
                 <p class="contact-careers-lead">Bring your expertise to a team driven by engineering precision, manufacturing discipline, and continuous improvement.</p>
-                <a href="#write-to-us" class="com_btn_red">Join Our Team <span class="ms-2"><?php echo $arrow_icon; ?></span></a>
+                <a href="#write-to-us" class="com_btn_red">Join Our Team <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
             </div>
             <div class="contact-careers-gallery">
                 <div class="contact-career-card contact-career-card--left">
-                    <img src="assets/images/About/career-1.png" alt="Ratnadeep team meeting" class="img-fluid w-100">
+                    <img src="{{ asset('frontend/assets/images/About/career-1.png') }}" alt="Ratnadeep team meeting" class="img-fluid w-100">
                 </div>
                 <div class="contact-career-card contact-career-card--center">
-                    <img src="assets/images/About/career-2.png" alt="" class="contact-career-layer contact-career-layer--bg" aria-hidden="true">
-                    <img src="assets/images/About/career-2-overlay.png" alt="Ratnadeep workforce at manufacturing facility" class="contact-career-layer contact-career-layer--fg">
+                    <img src="{{ asset('frontend/assets/images/About/career-2.png') }}" alt="" class="contact-career-layer contact-career-layer--bg" aria-hidden="true">
+                    <img src="{{ asset('frontend/assets/images/About/career-2-overlay.png') }}" alt="Ratnadeep workforce at manufacturing facility" class="contact-career-layer contact-career-layer--fg">
                 </div>
                 <div class="contact-career-card contact-career-card--right">
-                    <img src="assets/images/About/career-3.png" alt="Ratnadeep team collaboration" class="img-fluid w-100">
+                    <img src="{{ asset('frontend/assets/images/About/career-3.png') }}" alt="Ratnadeep team collaboration" class="img-fluid w-100">
                 </div>
             </div>
         </div>
     </section>
 </main>
-
-<?php include 'includes/footer.php'; ?>
+@endsection

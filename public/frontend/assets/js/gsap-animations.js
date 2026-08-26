@@ -10,12 +10,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     lenis.on('scroll', ScrollTrigger.update);
+    ScrollTrigger.addEventListener('refresh', () => lenis.resize());
 
     gsap.ticker.add((time) => {
         lenis.raf(time * 1000);
     });
 
     gsap.ticker.lagSmoothing(0);
+
+    // Keep Lenis scroll limit accurate when images, fonts, sliders, or DOM height changes
+    if (window.ResizeObserver) {
+        new ResizeObserver(() => {
+            lenis.resize();
+        }).observe(document.body);
+    }
+
+    window.addEventListener('load', () => {
+        ScrollTrigger.refresh();
+        lenis.resize();
+    });
     // --- END LENIS SETUP ---
 
     const loader = document.getElementById("gsap-loader");
@@ -124,9 +137,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    const isLoaderSkipped = document.documentElement.classList.contains('loader-skipped');
+    const isLoaderSkipped = document.documentElement.classList.contains('loader-skipped') || sessionStorage.getItem('loaderShown');
 
     if (!isLoaderSkipped) {
+        sessionStorage.setItem('loaderShown', 'true');
         // --- SETUP SVG DRAWING EFFECT ---
         paths.forEach(path => {
             const fill = path.getAttribute("fill");
@@ -218,30 +232,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 7. Awwwards Premium Cinematic Reveal — Homepage
     if (heroBgs.length) {
-        tl.to(heroBgs, { scale: 1, duration: 3, ease: "power2.out" }, "-=1.0");
+        tl.to(heroBgs, { scale: 1, duration: isLoaderSkipped ? 1.5 : 3, ease: "power2.out" }, isLoaderSkipped ? "-=0.4" : "-=1.0");
     }
     if (heroBadges.length) {
-        tl.to(heroBadges, { x: 0, opacity: 1, duration: 1, ease: "power3.out" }, heroBgs.length ? "-=2.5" : "-=1.0");
+        tl.to(heroBadges, { x: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, isLoaderSkipped ? "-=1.2" : (heroBgs.length ? "-=2.5" : "-=1.0"));
     }
     if (titleWords.length) {
         tl.to(titleWords, {
-            y: "0%", rotationZ: 0, opacity: 1, duration: 1.2, stagger: 0.04, ease: "power4.out"
-        }, heroBgs.length ? "-=2.3" : "-=1.0");
+            y: "0%", rotationZ: 0, opacity: 1, duration: 0.9, stagger: 0.03, ease: "power4.out"
+        }, isLoaderSkipped ? "-=1.0" : (heroBgs.length ? "-=2.3" : "-=1.0"));
     }
     if (subtitleWords.length) {
         tl.to(subtitleWords, {
-            y: "0%", rotationZ: 0, opacity: 1, duration: 1, stagger: 0.02, ease: "power3.out"
-        }, heroBgs.length ? "-=1.8" : "-=0.8");
+            y: "0%", rotationZ: 0, opacity: 1, duration: 0.8, stagger: 0.015, ease: "power3.out"
+        }, isLoaderSkipped ? "-=0.8" : (heroBgs.length ? "-=1.8" : "-=0.8"));
     }
     if (heroButtons.length) {
         tl.to(heroButtons, {
-            y: 0, opacity: 1, scale: 1, duration: 1, stagger: 0.15, ease: "elastic.out(1, 0.7)"
-        }, heroBgs.length ? "-=1.5" : "-=0.6");
+            y: 0, opacity: 1, scale: 1, duration: 0.7, stagger: 0.1, ease: "power3.out"
+        }, isLoaderSkipped ? "-=0.7" : (heroBgs.length ? "-=1.5" : "-=0.6"));
     }
     if (productTabs.length) {
         tl.to(productTabs, {
-            y: 0, opacity: 1, duration: 1, stagger: 0.08, ease: "power3.out"
-        }, heroBgs.length ? "-=1.4" : "-=0.5");
+            y: 0, opacity: 1, duration: 0.7, stagger: 0.05, ease: "power3.out"
+        }, isLoaderSkipped ? "-=0.7" : (heroBgs.length ? "-=1.4" : "-=0.5"));
     }
 
     if (innerHeroSections.length) {
@@ -323,10 +337,10 @@ document.addEventListener("DOMContentLoaded", () => {
             gsap.fromTo(nextSlideEl, activeEffect.start, activeEffect.end);
 
             // Animate the text in slightly after the image wipe starts
-            const slideTl = gsap.timeline({ delay: 0.5 });
-            if (nextTitles.length) slideTl.to(nextTitles, { y: "0%", rotationZ: 0, opacity: 1, duration: 1, stagger: 0.04, ease: "power4.out" }, 0);
-            if (nextSubtitles.length) slideTl.to(nextSubtitles, { y: "0%", rotationZ: 0, opacity: 1, duration: 1, stagger: 0.02, ease: "power3.out" }, 0.2);
-            if (nextButtons.length) slideTl.to(nextButtons, { y: 0, opacity: 1, scale: 1, duration: 1, stagger: 0.15, ease: "elastic.out(1, 0.7)" }, 0.4);
+            const slideTl = gsap.timeline({ delay: 0.2 });
+            if (nextTitles.length) slideTl.to(nextTitles, { y: "0%", rotationZ: 0, opacity: 1, duration: 0.8, stagger: 0.03, ease: "power4.out" }, 0);
+            if (nextSubtitles.length) slideTl.to(nextSubtitles, { y: "0%", rotationZ: 0, opacity: 1, duration: 0.7, stagger: 0.015, ease: "power3.out" }, 0.08);
+            if (nextButtons.length) slideTl.to(nextButtons, { y: 0, opacity: 1, scale: 1, duration: 0.6, stagger: 0.08, ease: "power3.out" }, 0.15);
         });
     }
 
