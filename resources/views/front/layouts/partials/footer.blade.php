@@ -36,7 +36,7 @@
                             <h4 class="footer-heading">Company</h4>
                             <ul class="footer-links">
                                 <li><a href="{{ route('about') }}">Overview</a></li>
-                                <li><a href="{{ route('about') }}#manufacturing">Inspection & Quality Testing</a></li>
+                                <li><a href="{{ route('inspection') }}">Inspection & Quality Testing</a></li>
                                 <li><a href="{{ route('certifications') }}">Certifications</a></li>
                                 <li><a href="{{ route('clients') }}">Clients</a></li>
                                 <li><a href="{{ route('contact') }}">Download Corporate Brochure</a></li>
@@ -45,8 +45,8 @@
                         <div class="quick-links-col">
                             <h4 class="footer-heading">Quick Links</h4>
                             <ul class="footer-links">
-                                <li><a href="{{ route('home') }}#applications">Applications</a></li>
-                                <li><a href="{{ route('home') }}#capabilities">Packaging & Shipping</a></li>
+                                <li><a href="{{ route('applications') }}">Applications</a></li>
+                                <li><a href="{{ route('packaging') }}">Packaging & Shipping</a></li>
                                 <li><a href="{{ route('blogs') }}">Blogs</a></li>
                                 <li><a href="{{ route('events') }}">Events</a></li>
                                 <li><a href="{{ route('contact') }}">Contact Us</a></li>
@@ -99,7 +99,7 @@
                             <div class="products-col-1">
                                 <ul class="footer-links">
                                     <li><a href="{{ route('home') }}#products">Stainless Steel Seamless Straight & "U" Tubes</a></li>
-                                    <li><a href="{{ route('home') }}#products">Stainless Steel Seamless Pipes</a></li>
+                                    <li><a href="{{ route('product.detail', 'stainless-steel-seamless-pipes') }}">Stainless Steel Seamless Pipes</a></li>
                                     <li><a href="{{ route('home') }}#products">Stainless Steel Welded Straight & "U" Tubes</a></li>
                                     <li><a href="{{ route('home') }}#products">Stainless Steel Welded Pipes</a></li>
                                     <li><a href="{{ route('home') }}#products">Stainless Steel Instrumentation & Hydraulic Tubes</a></li>
@@ -275,5 +275,6 @@
             });
         });
     </script>
+    @stack('scripts')
 </body>
 </html>

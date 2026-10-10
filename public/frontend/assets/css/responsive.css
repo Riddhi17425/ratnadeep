@@ -1138,9 +1138,9 @@
     }
 
     .section-title {
-        font-size: 1.5rem;
+        /* font-size: 1.5rem;
         line-height: 1.2;
-        margin-bottom: 10px;
+        margin-bottom: 10px; */
     }
 
     .footer-divider1,

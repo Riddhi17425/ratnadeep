@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ManufactureStageController;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\CertificationController as FrontCertificationController;
 use App\Http\Controllers\Front\BlogController as FrontBlogController;
+use App\Http\Controllers\Front\ProductController as FrontProductController;
 use App\Http\Controllers\FrontController;
 
 // Frontend Routes
@@ -25,6 +26,12 @@ Route::get('/certifications', [FrontCertificationController::class, 'index'])->n
 Route::get('/clients', [FrontController::class, 'clients'])->name('clients');
 Route::get('/contact-us', [FrontController::class, 'contact'])->name('contact');
 Route::get('/events', [FrontController::class, 'events'])->name('events');
+Route::get('/careers', [FrontController::class, 'careers'])->name('careers');
+Route::get('/packaging-shipping', [FrontController::class, 'packagingShipping'])->name('packaging');
+Route::get('/inspection-quality-testing', [FrontController::class, 'inspectionQualityTesting'])->name('inspection');
+Route::get('/applications', [FrontController::class, 'applications'])->name('applications');
+Route::get('/products', [FrontProductController::class, 'index'])->name('products');
+Route::get('/products/{slug}', [FrontProductController::class, 'show'])->name('product.detail');
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [LoginController::class, 'register_page'])->name('register');

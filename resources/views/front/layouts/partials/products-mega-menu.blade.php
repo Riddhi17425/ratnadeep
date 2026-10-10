@@ -42,7 +42,7 @@ $product_mega_industries = [
                         <p class="products-mega-overview-text">ASTM / ASME certified tubes and pipes engineered for critical industrial applications worldwide.</p>
                     </div>
                 </div>
-                <a href="{{ route('home') }}#products" class="com_btn_red">Explore All Products <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                <a href="{{ route('products') }}" class="com_btn_red">Explore All Products <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
             </div>
         </div>
 

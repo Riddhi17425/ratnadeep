@@ -111,8 +111,8 @@
                         </a>
                         @include('front.layouts.partials.products-mega-menu')
                     </li>
-                    <li><a href="{{ route('home') }}#applications">Applications</a></li>
-                    <li><a href="{{ route('home') }}#capabilities">Packaging & Shipping</a></li>
+                    <li><a href="{{ route('applications') }}">Applications</a></li>
+                    <li><a href="{{ route('packaging') }}">Packaging & Shipping</a></li>
                     <li><a href="{{ route('blogs') }}">Blogs</a></li>
                     <li><a href="{{ route('events') }}">Events</a></li>
                     <li><a href="{{ route('contact') }}">Contact Us</a></li>
