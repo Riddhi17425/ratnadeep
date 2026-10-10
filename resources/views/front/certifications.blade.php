@@ -8,7 +8,7 @@
 
 @section('content')
 <main class="page-certifications">
-    <!-- Hero --> 
+    <!-- Hero -->
     <section class="inner-hero-section inner-hero-section--split inner-hero-section--certifications container-fluid position-relative p-0">
         <div class="inner-hero-bg h-100 position-relative">
             <div class="inner-hero-media" aria-hidden="true">
