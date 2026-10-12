@@ -1,23 +1,26 @@
 <?php
 
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Admin\{
+    DashboardController,
+    LoginController,
+    CategoryController,
+    BannerController,
+    AboutLogoController,
+    IndustryController,
+    UpcomingEventController,
+    BlogController,
+    SettingController,
+    CertificateController,
+    ManufactureStageController,
+    ProductController,
+    ApplicationPageController,
+    JobOpeningController,
+    JobApplicationController,
+    PageItemController,
+    FaqController,
+    PageTextController
+};
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\BannerController;
-use App\Http\Controllers\Admin\IndustryController;
-use App\Http\Controllers\Admin\UpcomingEventController;
-use App\Http\Controllers\Admin\BlogController;
-use App\Http\Controllers\Admin\SettingController;
-use App\Http\Controllers\Admin\CertificateController;
-use App\Http\Controllers\Admin\ManufactureStageController;
-use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\ApplicationPageController;
-use App\Http\Controllers\Admin\JobOpeningController;
-use App\Http\Controllers\Admin\JobApplicationController;
-use App\Http\Controllers\Admin\PageItemController;
-use App\Http\Controllers\Admin\FaqController;
-use App\Http\Controllers\Admin\PageTextController;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\CertificationController as FrontCertificationController;
 use App\Http\Controllers\Front\BlogController as FrontBlogController;
@@ -28,7 +31,8 @@ use App\Http\Controllers\FrontController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about-us', [FrontController::class, 'about'])->name('about');
 Route::get('/blogs', [FrontBlogController::class, 'index'])->name('blogs');
-Route::get('/blog-detail/{slug}', [FrontBlogController::class, 'detail'])->name('blog.detail');
+Route::get('/blog/{slug}', [FrontBlogController::class, 'detail'])->name('blog.detail');
+Route::get('/blog-detail/{slug}', fn ($slug) => redirect()->route('blog.detail', $slug, 301));
 Route::get('/certifications', [FrontCertificationController::class, 'index'])->name('certifications');
 Route::get('/clients', [FrontController::class, 'clients'])->name('clients');
 Route::get('/contact-us', [FrontController::class, 'contact'])->name('contact');
@@ -58,6 +62,10 @@ Route::middleware(['auth', 'role:admin,super_admin'])->prefix('admin')->group(fu
     Route::resource('banners', BannerController::class);
     Route::put('banners/{id}/restore', [BannerController::class, 'restore'])->name('banners.restore');
     Route::delete('banners/{id}/force-delete', [BannerController::class, 'forceDelete'])->name('banners.force-delete');
+    Route::resource('about-logos', AboutLogoController::class)->except('show')
+        ->parameters(['about-logos' => 'aboutLogo']);
+    Route::put('about-logos/{id}/restore', [AboutLogoController::class, 'restore'])->name('about-logos.restore');
+    Route::delete('about-logos/{id}/force-delete', [AboutLogoController::class, 'forceDelete'])->name('about-logos.force-delete');
     Route::resource('industries', IndustryController::class);
     Route::post('industries/{industry}/status', [IndustryController::class, 'updateStatus'])->name('industries.status');
     Route::put('industries/{id}/restore', [IndustryController::class, 'restore'])->name('industries.restore');
@@ -118,4 +126,3 @@ Route::middleware(['auth', 'role:admin,super_admin'])->prefix('admin')->group(fu
     Route::get('page-texts/{page}', [PageTextController::class, 'edit'])->name('page-texts.edit');
     Route::post('page-texts/{page}', [PageTextController::class, 'update'])->name('page-texts.update');    
 });
-

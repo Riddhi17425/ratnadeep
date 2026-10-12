@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -18,19 +19,21 @@ class BlogController extends Controller
     // Ab active + trashed dono ek sath layenge
     public function index()
     {
-        $blogs = Blog::withTrashed()->with('category')->latest()->get();
+        $blogs = Blog::withTrashed()->with('categoryModel')->latest()->get();
         return view('admin.blogs.index', compact('blogs'));
     }
 
     public function create()
     {
-        return view('admin.blogs.create');
+        $categories = Category::where('status', 1)->orderBy('title')->get();
+
+        return view('admin.blogs.create', compact('categories'));
     }
 
     private function rules($blogId = null)
     {
         return [
-            'category'             => 'required|string|max:255',
+            'category_id'          => 'nullable|exists:categories,id',
             'title'                => 'required|string|max:255',
             'url'                  => 'required|string|max:255|unique:blogs,url,' . $blogId,
             'date'                 => 'required|date',
@@ -83,6 +86,7 @@ class BlogController extends Controller
 
         $data = $validator->validated();
 
+        $data['category'] = Category::find($data['category_id'] ?? null)?->title;
         $data['url'] = Str::slug($data['url']);
         $data['faqs'] = $this->prepareFaqs($request);
 
@@ -108,7 +112,9 @@ class BlogController extends Controller
 
     public function edit(Blog $blog)
     {
-        return view('admin.blogs.edit', compact('blog'));
+        $categories = Category::where('status', 1)->orderBy('title')->get();
+
+        return view('admin.blogs.edit', compact('blog', 'categories'));
     }
 
     public function update(Request $request, Blog $blog)
@@ -121,6 +127,7 @@ class BlogController extends Controller
 
         $data = $validator->validated();
 
+        $data['category'] = Category::find($data['category_id'] ?? null)?->title;
         $data['url'] = Str::slug($data['url']);
         $data['faqs'] = $this->prepareFaqs($request);
 

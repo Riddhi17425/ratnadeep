@@ -8,6 +8,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class BannerController extends Controller
 {
@@ -22,21 +23,13 @@ class BannerController extends Controller
 
     public function create()
     {
-        $categories = Category::where('status', 1)->get();
+        $categories = $this->availableCategories();
         return view('admin.banners.create', compact('categories'));
     }
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'category_id'     => 'required|exists:categories,id',
-            'title'           => 'required|string|max:255',
-            'shortnote'       => 'nullable|string|max:255',
-            'description'     => 'nullable|string',
-            'image'           => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'alt_image_text'  => 'nullable|string|max:255',
-            'status'          => 'required|in:0,1',
-        ]);
+        $validator = Validator::make($request->all(), $this->validationRules());
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -56,21 +49,13 @@ class BannerController extends Controller
 
     public function edit(Banner $banner)
     {
-        $categories = Category::where('status', 1)->get();
+        $categories = $this->availableCategories($banner);
         return view('admin.banners.edit', compact('banner', 'categories'));
     }
 
     public function update(Request $request, Banner $banner)
     {
-        $validator = Validator::make($request->all(), [
-            'category_id'     => 'required|exists:categories,id',
-            'title'           => 'required|string|max:255',
-            'shortnote'       => 'nullable|string|max:255',
-            'description'     => 'nullable|string',
-            'image'           => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'alt_image_text'  => 'nullable|string|max:255',
-            'status'          => 'required|in:0,1',
-        ]);
+        $validator = Validator::make($request->all(), $this->validationRules($banner));
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -151,5 +136,48 @@ class BannerController extends Controller
         if ($imagePath && File::exists(public_path($imagePath))) {
             File::delete(public_path($imagePath));
         }
+    }
+
+    private function availableCategories(?Banner $banner = null)
+    {
+        $usedCategoryIds = Banner::withTrashed()
+            ->when($banner, function ($query) use ($banner) {
+                $query->where('id', '!=', $banner->id);
+            })
+            ->whereNotNull('category_id')
+            ->select('category_id');
+
+        return Category::where(function ($query) use ($banner) {
+            $query->where('status', 1);
+
+            if ($banner) {
+                $query->orWhere('id', $banner->category_id);
+            }
+        })->where(function ($query) use ($usedCategoryIds, $banner) {
+            $query->whereNotIn('id', $usedCategoryIds);
+
+            if ($banner) {
+                $query->orWhere('id', $banner->category_id);
+            }
+        })->get();
+    }
+
+    private function validationRules(?Banner $banner = null): array
+    {
+        $categoryRule = Rule::unique('banners', 'category_id');
+
+        if ($banner) {
+            $categoryRule->ignore($banner->id);
+        }
+
+        return [
+            'category_id'     => ['nullable', 'exists:categories,id', $categoryRule],
+            'title'           => 'required|string|max:255',
+            'shortnote'       => 'nullable|string|max:255',
+            'description'     => 'nullable|string',
+            'image'           => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'alt_image_text'  => 'nullable|string|max:255',
+            'status'          => 'required|in:0,1',
+        ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AboutLogo;
 use App\Models\JobApplication;
 use App\Models\JobOpening;
 use Illuminate\Http\Request;
@@ -10,7 +11,9 @@ class FrontController extends Controller
 {
     public function about()
     {
-        return view('front.about');
+        $aboutLogos = AboutLogo::where('status', 1)->whereNull('deleted_at')->orderBy('id')->get();
+
+        return view('front.about', compact('aboutLogos'));
     }
 
     public function clients()

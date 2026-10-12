@@ -10,9 +10,16 @@
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                            <label class="form-label">Category <span class="text-danger">*</span></label>
-                            <input type="text" name="category" class="form-control" value="{{ old('category') }}" placeholder="e.g. Technology, Health, Finance">
-                            @error('category') <small class="text-danger">{{ $message }}</small> @enderror
+                            <label class="form-label">Category</label>
+                            <select name="category_id" class="form-select">
+                                <option value="">-- No Category --</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->title }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('category_id') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Date <span class="text-danger">*</span></label>

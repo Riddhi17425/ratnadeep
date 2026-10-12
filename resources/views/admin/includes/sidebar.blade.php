@@ -53,6 +53,13 @@
         </li>
 
         <li>
+            <a class="m-link {{ request()->routeIs('about-logos.*') ? 'active' : '' }}" href="{{ route('about-logos.index') }}">
+                <i class="icofont-image fs-5"></i>
+                <span>About Page Logos</span>
+            </a>
+        </li>
+
+        <li>
             <a class="m-link {{ request()->routeIs('certificates.*') ? 'active' : '' }}" href="{{ route('certificates.index') }}">
                 <i class="icofont-certificate-alt-1 fs-5"></i>
                 <span>Certificates</span>

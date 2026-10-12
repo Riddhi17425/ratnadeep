@@ -47,23 +47,23 @@
             </div>
             <div class="about-company-stats stats-grid">
                 <div class="stat-item">
-                    <h3 class="stat-number"><span class="counter-value" data-target="500">0</span>+</h3>
+                    <h3 class="stat-number"><span class="counter-value" data-target="500">500</span>+</h3>
                     <p class="stat-label">Workforce Strength</p>
                 </div>
                 <div class="stat-item">
-                    <h3 class="stat-number"><span class="counter-value" data-target="30">0</span>+</h3>
+                    <h3 class="stat-number"><span class="counter-value" data-target="30">30</span>+</h3>
                     <p class="stat-label">Countries Served</p>
                 </div>
                 <div class="stat-item">
-                    <h3 class="stat-number"><span class="counter-value" data-target="33">0</span>+ Million $</h3>
+                    <h3 class="stat-number"><span class="counter-value" data-target="33">33</span>+ Million $</h3>
                     <p class="stat-label">Annual Revenue</p>
                 </div>
                 <div class="stat-item">
-                    <h3 class="stat-number"><span class="counter-value" data-target="10000">0</span>+</h3>
+                    <h3 class="stat-number"><span class="counter-value" data-target="10000">10000</span>+</h3>
                     <p class="stat-label">Annual Production <br> (Metric Tons)</p>
                 </div>
                 <div class="stat-item">
-                    <h3 class="stat-number"><span class="counter-value" data-target="65000">0</span>+</h3>
+                    <h3 class="stat-number"><span class="counter-value" data-target="65000">65000</span>+</h3>
                     <p class="stat-label">Total Facility Area <br> (Sq. Meters)</p>
                 </div>
             </div>
@@ -350,34 +350,14 @@
                 <h2 class="section-title">Certified for Global Standards</h2>
             </div>
             <div class="about-cert-grid">
-                <div class="about-cert-card">
-                    <img src="{{ asset('frontend/assets/images/About/cert-iso9001.png') }}" alt="ISO 9001:2015 certification">
-                    <p>ISO 9001: 2015</p>
-                </div>
-                <div class="about-cert-card">
-                    <img src="{{ asset('frontend/assets/images/About/cert-iso45001.png') }}" alt="ISO 45001:2018 certification">
-                    <p>ISO 45001: 2018</p>
-                </div>
-                <div class="about-cert-card">
-                    <img src="{{ asset('frontend/assets/images/About/cert-ped-adwo.png') }}" alt="PED and ADWO certification">
-                    <p>PED &amp; ADWO</p>
-                </div>
-                <div class="about-cert-card">
-                    <img src="{{ asset('frontend/assets/images/About/cert-iso14001.png') }}" alt="ISO 14001:2015 certification">
-                    <p>ISO 14001: 2015</p>
-                </div>
-                <div class="about-cert-card about-cert-card--wide-sm">
-                    <img src="{{ asset('frontend/assets/images/About/cert-norsok.png') }}" alt="NORSOK certification">
-                    <p>NORSOK</p>
-                </div>
-                <div class="about-cert-card about-cert-card--wide-sm">
-                    <img src="{{ asset('frontend/assets/images/About/cert-marine.png') }}" alt="Marine certification">
-                    <p>Marine</p>
-                </div>
-                <div class="about-cert-card about-cert-card--wide-lg">
-                    <img src="{{ asset('frontend/assets/images/About/cert-cbb.png') }}" alt="Central Boilers Board certification">
-                    <p>"Well Known Pipe/Tube Maker" by Central Boilers Board, India</p>
-                </div>
+                @foreach($aboutLogos as $aboutLogo)
+                    <div class="about-cert-card {{ strlen($aboutLogo->title) > 40 ? 'about-cert-card--wide-lg' : '' }}">
+                        @if($aboutLogo->image)
+                            <img src="{{ asset($aboutLogo->image) }}" alt="{{ $aboutLogo->alt_image_text ?: $aboutLogo->title }}">
+                        @endif
+                        <p>{{ $aboutLogo->title }}</p>
+                    </div>
+                @endforeach
             </div>
         </div>
     </section>

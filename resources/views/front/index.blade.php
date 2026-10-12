@@ -12,77 +12,46 @@
         @endphp
         <!-- Slick Slider -->
         <div class="hero-slick-slider h-100 w-100 z-1">
-            @foreach($categories as $category)
+            @foreach($banners as $banner)
                 @php
-                    $categoryFirstSlide[$category->id] = $slideCounter;
-                    $catBanners = $category->banners;
+                    $category = $banner->category;
+                    if ($banner->category_id) {
+                        $categoryFirstSlide[$banner->category_id] = $categoryFirstSlide[$banner->category_id] ?? $slideCounter;
+                    }
+                    $bgImage = $banner->image
+                        ? asset($banner->image)
+                        : asset(($category && $category->image) ? $category->image : 'frontend/assets/images/Stainless Steel-slider.webp');
+                    $badgeTitle = $category ? $category->title : $banner->title;
+                    $rawTitle = $banner->title ?: ($category ? ($category->shortdescription ?: $category->title) : '');
+                    $heroTitle = Str::title(Str::words(strip_tags($rawTitle), 12, ''));
+                    $rawSubtitle = $banner->description ?: ($category ? $category->description : '');
+                    $heroSubtitle = ucfirst(Str::words(strip_tags($rawSubtitle), 25, '...'));
                 @endphp
-
-                @if($catBanners && $catBanners->count() > 0)
-                    @foreach($catBanners as $banner)
-                        @php
-                            $bgImage = $banner->image ? asset($banner->image) : asset($category->image);
-                            $badgeTitle = $category->title;
-                            $rawTitle = $banner->title ?: ($category->shortdescription ?: $category->title);
-                            $heroTitle = Str::title(
-                                Str::words(strip_tags($rawTitle), 12, '')
-                            );
-                            $rawSubtitle = $banner->description ?: $category->description;
-                            $heroSubtitle = ucfirst(Str::words(strip_tags($rawSubtitle), 25, '...'));
-                        @endphp
-                        <div class="slick-slide-item h-100 position-relative" data-category-id="{{ $category->id }}" style="background-image:var(--hero-gradient), url('{{ $bgImage }}'); background-position: center; background-size: cover; background-repeat: no-repeat;">
-                            <div class="container hero-content-wrapper h-100">
-                                <div class="hero-content">
-                                    <div class="hero-badge">
-                                        <span class="badge-dot"></span>
-                                        <span>{{ $badgeTitle }}</span>
-                                    </div>
-                                    <h1 class="hero-title">{{ $heroTitle }}</h1>
-                                    <p class="hero-subtitle">{{ $heroSubtitle }}</p>
-                                    <div class="hero-buttons">
-                                        <a href="{{ route('contact') }}#write-to-us" class="com_btn_red">Request Technical Quote <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span> </a>
-                                        <a href="#products" class="com_btn_outline_white">Explore Products</a>
-                                    </div>
-                                </div>
+                <div class="slick-slide-item h-100 position-relative" data-category-id="{{ $banner->category_id }}" style="background-image:var(--hero-gradient), url('{{ $bgImage }}'); background-position: center; background-size: cover; background-repeat: no-repeat;">
+                    <div class="container hero-content-wrapper h-100">
+                        <div class="hero-content">
+                            <div class="hero-badge">
+                                <span class="badge-dot"></span>
+                                <span>{{ $badgeTitle }}</span>
                             </div>
-                        </div>
-                        @php $slideCounter++; @endphp
-                    @endforeach
-                @else
-                    @php
-                        $bgImage = $category->image ? asset($category->image) : asset('frontend/assets/images/Stainless Steel-slider.webp');
-                        $badgeTitle = $category->title;
-                        $rawTitle = $category->shortdescription ?: $category->title;
-                        $heroTitle = Str::title(Str::words(strip_tags($rawTitle), 12, ''));
-                        $rawSubtitle = $category->description;
-                        $heroSubtitle = ucfirst(Str::words(strip_tags($rawSubtitle), 25, '...'));
-                    @endphp
-                    <div class="slick-slide-item h-100 position-relative" data-category-id="{{ $category->id }}" style="background-image:var(--hero-gradient), url('{{ $bgImage }}'); background-position: center; background-size: cover; background-repeat: no-repeat;">
-                        <div class="container hero-content-wrapper h-100">
-                            <div class="hero-content">
-                                <div class="hero-badge">
-                                    <span class="badge-dot"></span>
-                                    <span>{{ $badgeTitle }}</span>
-                                </div>
-                                <h1 class="hero-title">{{ $heroTitle }}</h1>
-                                <p class="hero-subtitle">{{ $heroSubtitle }}</p>
-                                <div class="hero-buttons">
-                                    <a href="{{ route('contact') }}#write-to-us" class="com_btn_red">Request Technical Quote <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span> </a>
-                                    <a href="#products" class="com_btn_outline_white">Explore Products</a>
-                                </div>
+                            <h1 class="hero-title">{{ $heroTitle }}</h1>
+                            <p class="hero-subtitle">{{ $heroSubtitle }}</p>
+                            <div class="hero-buttons">
+                                <a href="{{ route('contact') }}#write-to-us" class="com_btn_red">Request Technical Quote <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span> </a>
+                                <a href="#products" class="com_btn_outline_white">Explore Products</a>
                             </div>
                         </div>
                     </div>
-                    @php $slideCounter++; @endphp
-                @endif
+                </div>
+                @php $slideCounter++; @endphp
             @endforeach
         </div>
 
         <div class="container position-absolute bottom-0 start-50 translate-middle-x z-3 w-100 pb-4 pb-lg-5" style="pointer-events: none;">
             <div class="hero-product-tabs" style="pointer-events: auto;">
-                @foreach($categories as $category)
-                    <button type="button" class="tab-item {{ $loop->first ? 'active' : '' }}" data-category-id="{{ $category->id }}" data-slide="{{ $categoryFirstSlide[$category->id] ?? 0 }}">
-                        {{ Str::title($category->title) }}
+                @foreach($banners->whereNotNull('category_id')->unique('category_id') as $banner)
+                    <button type="button" class="tab-item {{ $loop->first ? 'active' : '' }}" data-category-id="{{ $banner->category_id }}" data-slide="{{ $categoryFirstSlide[$banner->category_id] ?? 0 }}">
+                        {{ Str::title($banner->category ? $banner->category->title : $banner->title) }}
                     </button>
                 @endforeach
             </div>
@@ -190,23 +159,23 @@
         <div class="container-fluid">
             <div class="stats-grid">
                 <div class="stat-item">
-                    <h3 class="stat-number"><span class="counter-value" data-target="500">0</span>+</h3>
+                    <h3 class="stat-number"><span class="counter-value" data-target="500">500</span>+</h3>
                     <p class="stat-label">Employees</p>
                 </div>
                 <div class="stat-item">
-                    <h3 class="stat-number"><span class="counter-value" data-target="30">0</span>+</h3>
+                    <h3 class="stat-number"><span class="counter-value" data-target="30">30</span>+</h3>
                     <p class="stat-label">Global Reach</p>
                 </div>
                 <div class="stat-item">
-                    <h3 class="stat-number"><span class="counter-value" data-target="33">0</span>+ Million $</h3>
+                    <h3 class="stat-number"><span class="counter-value" data-target="33">33</span>+ Million $</h3>
                     <p class="stat-label">Revenue / Annum</p>
                 </div>
                 <div class="stat-item">
-                    <h3 class="stat-number"><span class="counter-value" data-target="10000">0</span>+</h3>
+                    <h3 class="stat-number"><span class="counter-value" data-target="10000">10000</span>+</h3>
                     <p class="stat-label">Metric Tons / Annum</p>
                 </div>
                 <div class="stat-item">
-                    <h3 class="stat-number"><span class="counter-value" data-target="65000">0</span>+</h3>
+                    <h3 class="stat-number"><span class="counter-value" data-target="65000">65000</span>+</h3>
                     <p class="stat-label">Square Meter Total area</p>
                 </div>
             </div>

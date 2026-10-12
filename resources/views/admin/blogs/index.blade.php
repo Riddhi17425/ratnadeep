@@ -34,7 +34,7 @@
                             @endif
                         </td>
                         <td>{{ $blog->title }}</td>
-                        <td>{{ $blog->category }}</td>
+                        <td>{{ $blog->categoryModel?->title ?? $blog->getRawOriginal('category') ?? 'N/A' }}</td>
                         <td>{{ $blog->date?->format('d M Y') }}</td>
                         <td>
                             @if($blog->trashed())

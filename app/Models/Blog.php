@@ -12,6 +12,7 @@ class Blog extends Model
 
     protected $fillable = [
         'category',
+        'category_id',
         'title',
         'url',
         'date',
@@ -37,8 +38,8 @@ class Blog extends Model
         'faqs' => 'array',
     ];
 
-    public function category()
+    public function categoryModel()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'category_id');
     }
 }

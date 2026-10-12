@@ -11,16 +11,18 @@
 
     <div class="card mb-3">
         <div class="card-body">
-            <label class="form-label">Block</label>
-            <select class="form-select" id="sectionSwitch">
-                @foreach(collect($sections)->groupBy('page') as $pageName => $group)
-                    <optgroup label="{{ $pageName }}">
-                        @foreach($group as $key => $sectionConfig)
-                            <option value="{{ route('page-items.index', ['section' => $key]) }}" {{ $key === $section ? 'selected' : '' }}>{{ $sectionConfig['label'] }}</option>
-                        @endforeach
-                    </optgroup>
-                @endforeach
-            </select>
+            <form action="{{ route('page-items.index') }}" method="GET">
+                <label class="form-label" for="sectionSwitch">Block</label>
+                <select class="form-select" id="sectionSwitch" name="section" onchange="this.form.submit()">
+                    @foreach(collect($sections)->groupBy('page', true) as $pageName => $group)
+                        <optgroup label="{{ $pageName }}">
+                            @foreach($group as $key => $sectionConfig)
+                                <option value="{{ $key }}" {{ $key === $section ? 'selected' : '' }}>{{ $sectionConfig['label'] }}</option>
+                            @endforeach
+                        </optgroup>
+                    @endforeach
+                </select>
+            </form>
             <small class="text-muted">Items appear on the {{ $config['page'] }} page in the order given by "Order".</small>
         </div>
     </div>
@@ -70,9 +72,4 @@
 
 @push('scripts')
     @include('admin.partials.crud-scripts', ['tableId' => 'pageItemTable', 'label' => 'item', 'base' => 'page-items'])
-    <script>
-        document.getElementById('sectionSwitch').addEventListener('change', function () {
-            window.location.href = this.value;
-        });
-    </script>
 @endpush

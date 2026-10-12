@@ -26,8 +26,7 @@ if (!function_exists('getActiveCategories')) {
 if (!function_exists('getActiveIndustries')) {
     function getActiveIndustries($limit = null)
     {
-        $query = Industry::where('status', 1)->latest();
-
+        $query = Industry::where('status', 1)->whereNull('deleted_at')->latest();
         if ($limit !== null) {
             $query->take($limit);
         }
@@ -57,7 +56,7 @@ if (!function_exists('getSetting')) {
 if (!function_exists('getActiveBlogs')) {
     function getActiveBlogs($limit = null)
     {
-        $query = Blog::where('status', 'published')->orderBy('date', 'desc');
+        $query = Blog::where('status', 'published')->whereNull('deleted_at')->orderBy('date', 'desc');
 
         if ($limit !== null) {
             $query->take($limit);

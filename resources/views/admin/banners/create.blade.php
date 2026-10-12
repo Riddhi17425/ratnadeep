@@ -9,15 +9,18 @@
                 @csrf
 
                 <div class="mb-3">
-                    <label class="form-label">Category <span class="text-danger">*</span></label>
+                    <label class="form-label">Category</label>
                     <select name="category_id" class="form-select">
-                        <option value="">-- Select Category --</option>
+                        <option value="">-- No Category --</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
                                 {{ $category->title }}
                             </option>
                         @endforeach
                     </select>
+                    @if($categories->isEmpty())
+                        <small class="text-muted">No categories are available for a new banner.</small>
+                    @endif
                     @error('category_id') <small class="text-danger">{{ $message }}</small> @enderror
                 </div>
 
