@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
-            $table->string('category');   // simple text input, Category module se koi relation nahi
+            $table->string('category');
             $table->string('title');
             $table->string('url')->unique();
             $table->date('date');

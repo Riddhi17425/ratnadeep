@@ -197,42 +197,23 @@
     }
 }
 @media (max-width: 1024px) {
-    .page-about .about-strengths-grid:not(:has(.about-strength-card:hover)) .about-strength-card--lg .about-strength-desc {
+    .page-about .about-strength-card {
+        cursor: default;
+    }
+    .page-about .about-strength-card:hover img {
+        transform: none;
+    }
+    .page-about .about-strength-card .about-strength-desc {
         opacity: 1;
-        max-height: 100px;
+        max-height: none;
+        overflow: visible;
         transform: translateY(0);
     }
-    .page-about .about-strengths-grid:not(:has(.about-strength-card:hover)) .about-strength-card--lg .about-strength-overlay {
-        background: linear-gradient(180deg, rgba(28, 23, 49, 0) 50%, #1c1731 81.83%);
+    .page-about .about-strength-card .about-strength-overlay {
+        background: linear-gradient(180deg, rgba(28, 23, 49, 0.08) 0%, rgba(28, 23, 49, 0.68) 45%, #1c1731 92%);
     }
-    .page-about .about-strengths-grid:not(:has(.about-strength-card:hover)) .about-strength-card--lg .about-strength-title {
-        margin-bottom: 16px;
-    }
-    .page-about .about-strength-card:hover .about-strength-desc {
-        opacity: 1;
-        max-height: 100px;
-        transform: translateY(0);
-    }
-    .page-about .about-strength-card:hover .about-strength-overlay {
-        background: linear-gradient(180deg, rgba(28, 23, 49, 0) 50%, #1c1731 81.83%);
-    }
-    .page-about .about-strength-card:hover .about-strength-title {
-        margin-bottom: 16px;
-    }
-    .page-about .about-strengths-grid:has(.about-strength-card:hover) .about-strength-card--lg:not(:hover) .about-strength-desc {
-        opacity: 0;
-        max-height: 0;
-        transform: translateY(10px);
-        transition-delay: 0s;
-    }
-    .page-about .about-strengths-grid:has(.about-strength-card:hover) .about-strength-card--lg:not(:hover) .about-strength-overlay {
-        background: rgba(28, 23, 49, 0.6);
-    }
-    .page-about .about-strengths-grid:has(.about-strength-card:hover) .about-strength-card--lg:not(:hover) .about-strength-title {
-        margin-bottom: 0;
-    }
-    .page-about .about-strength-card:not(:hover):not(.about-strength-card--lg) .about-strength-title {
-        margin-bottom: 0;
+    .page-about .about-strength-card .about-strength-title {
+        margin-bottom: 12px;
     }
 }
 .page-about .about-leadership-grid {
@@ -806,17 +787,32 @@
         grid-column: auto;
     }
     .page-about .about-strength-card {
-        height: 260px;
+        height: 280px;
     }
-    .page-about .about-strength-title {
-        font-size: 18px;
+    .page-about .about-strength-content {
+        left: 18px;
+        right: 18px;
+        bottom: 18px;
     }
+    .page-about .about-strength-title,
     .page-about .about-strength-content .about-strength-title {
         font-size: 18px;
+        margin-bottom: 8px;
     }
     .page-about .about-strength-desc {
         font-size: 13px;
-        line-height: 20px;
+        line-height: 19px;
+        opacity: 1;
+        max-height: none;
+        transform: translateY(0);
+        overflow: visible;
+    }
+    .page-about .about-strength-overlay {
+        background: linear-gradient(180deg, rgba(28, 23, 49, 0.05) 0%, rgba(28, 23, 49, 0.75) 40%, #1c1731 95%);
+    }
+    .page-about .about-company-stats .stat-label {
+        font-size: 13px;
+        line-height: 1.35;
     }
     .page-about .about-leader-image-wrap {
         aspect-ratio: 16 / 9;
@@ -903,6 +899,27 @@
     }
     .page-about .about-strength-card {
         height: 280px;
+    }
+    .page-about .about-strength-content {
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+    }
+    .page-about .about-strength-title,
+    .page-about .about-strength-content .about-strength-title {
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+    .page-about .about-strength-desc {
+        font-size: 14px;
+        line-height: 21px;
+        opacity: 1;
+        max-height: none;
+        transform: translateY(0);
+        overflow: visible;
+    }
+    .page-about .about-strength-overlay {
+        background: linear-gradient(180deg, rgba(28, 23, 49, 0.05) 0%, rgba(28, 23, 49, 0.75) 40%, #1c1731 95%);
     }
     .page-about .about-cert-grid {
         grid-template-columns: 1fr;

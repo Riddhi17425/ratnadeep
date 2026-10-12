@@ -197,6 +197,15 @@
         font-size: 54px;
         line-height: 1.2;
     }
+
+    .page-contact .contact-form-row {
+        gap: 25px;
+    }
+
+    .page-contact .contact-form {
+        gap: 30px;
+}
+
 }
 @media (max-width: 1199px) {
     .page-contact .contact-form-grid {

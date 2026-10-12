@@ -1,0 +1,31 @@
+/* Applications - shared blocks live in inner-common.css */
+.page-applications .inner-hero-section .hero-content {
+    max-width: 1076px;
+}
+.page-applications .inner-hero-section .hero-subtitle {
+    max-width: 1015px;
+}
+.page-applications .apps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 45px 30px;
+    margin-top: 40px;
+}
+
+@media (max-width: 1281px) {
+    .page-applications .apps-grid {
+        gap: 36px 24px;
+    }
+}
+@media (max-width: 1024px) {
+    .page-applications .apps-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+@media (max-width: 767px) {
+    .page-applications .apps-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+}
+.page-applications .inner-hero-headline .hero-title { max-width: 1109px; }

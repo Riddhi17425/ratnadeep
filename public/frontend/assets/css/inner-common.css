@@ -1,0 +1,706 @@
+/*
+ * Shared styles for the newer inner pages
+ * (careers, products, product detail, applications, packaging & shipping, inspection & testing).
+ * Follows the same conventions as clients.css / contact.css / events.css:
+ *  - Arimo for headings, Inter Tight for body (set globally in style.css)
+ *  - .container (1600) / .container-fluid (1800) widths are scaled globally in responsive.css
+ *  - same breakpoint ladder: 1776 > 1661 > 1537 > 1441 > 1281 > 1024 > 767
+ */
+
+/* ---------- Hero banners ----------
+   Image position, crop and gradients are taken from the Figma hero frame (1800 x 520),
+   same approach as .inner-hero-section--clients / --certifications in style.css.
+   The media box is the Figma image rectangle (in % of the frame); the frame clips it. */
+.page-inner .inner-hero-section--careers .inner-hero-media,
+.page-inner .inner-hero-section--inspection .inner-hero-media,
+.page-inner .inner-hero-section--applications .inner-hero-media,
+.page-inner .inner-hero-section--products .inner-hero-media {
+    inset: auto;
+    left: -1.8333%;
+    top: -16.9231%;
+    width: 104.8889%;
+    height: 125%;
+}
+.page-inner .inner-hero-section--packaging .inner-hero-media {
+    inset: auto;
+    left: -1.8333%;
+    top: -4.6154%;
+    width: 103.4444%;
+    height: 108.6538%;
+}
+.page-inner .inner-hero-section--product-detail .inner-hero-media {
+    inset: auto;
+    left: 37.8333%;
+    top: -3.8462%;
+    width: 62.1667%;
+    height: 135%;
+    border-radius: 0;
+}
+.page-inner .inner-hero-section--product-detail .inner-hero-bg {
+    border-radius: 5px 5px 0 0;
+}
+.page-inner .inner-hero-section--careers .inner-hero-overlay,
+.page-inner .inner-hero-section--inspection .inner-hero-overlay,
+.page-inner .inner-hero-section--products .inner-hero-overlay {
+    background:
+        linear-gradient(180deg, rgba(28, 23, 49, 0) 61%, rgba(28, 23, 49, 0.8) 89%),
+        linear-gradient(270deg, rgba(70, 65, 91, 0) 29%, rgba(28, 23, 49, 0.87) 70%);
+}
+.page-inner .inner-hero-section--applications .inner-hero-overlay {
+    background:
+        linear-gradient(180deg, rgba(28, 23, 49, 0) 61%, rgba(28, 23, 49, 0.8) 89%),
+        linear-gradient(270deg, rgba(70, 65, 91, 0) 23%, rgba(28, 23, 49, 0.87) 70%);
+}
+.page-inner .inner-hero-section--packaging .inner-hero-overlay {
+    background:
+        linear-gradient(180deg, rgba(28, 23, 49, 0) 61%, rgba(28, 23, 49, 0.8) 89%),
+        linear-gradient(270deg, rgba(70, 65, 91, 0) 46%, rgba(28, 23, 49, 0.9) 70%);
+}
+.page-inner .inner-hero-section--product-detail .inner-hero-overlay {
+    background:
+        linear-gradient(180deg, rgba(27, 17, 69, 0) 67%, rgba(27, 17, 69, 0.3) 72%, rgba(27, 17, 69, 0.8) 77%),
+        linear-gradient(270deg, rgba(67, 61, 89, 0.2) 66%, rgba(51, 44, 81, 0.6) 73%, rgba(38, 29, 75, 0.8) 83%, #1b1145 99%);
+}
+.page-inner .hero-title,
+.page-inner .hero-subtitle,
+.page-inner .inner-title,
+.page-inner .inner-lead,
+.page-inner .page-cta-title {
+    text-wrap: balance;
+    overflow-wrap: break-word;
+}
+.page-inner .hero-subtitle,
+.page-inner .inner-lead,
+.page-inner .inner-split-text p {
+    text-wrap: pretty;
+}
+.page-inner .inner-hero-image {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* ---------- Section spacing ---------- */
+.page-inner .inner-section {
+    margin-top: 100px;
+}
+.page-inner .inner-section--last {
+    padding-bottom: 80px;
+}
+
+/* ---------- Badge + title block ---------- */
+.page-inner .inner-badge-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    text-align: center;
+}
+.page-inner .inner-badge-wrap .section-badge {
+    margin-bottom: 0;
+    align-self: center;
+}
+.page-inner .inner-badge-wrap--left {
+    align-items: flex-start;
+    text-align: left;
+}
+.page-inner .inner-badge-wrap--left .section-badge {
+    align-self: flex-start;
+}
+.page-inner .inner-title {
+    margin: 0;
+    color: var(--black);
+}
+.page-inner .inner-title--md {
+    font-size: 54px;
+    line-height: 66px;
+    margin: 0;
+}
+.page-inner .inner-lead {
+    font-size: 24px;
+    line-height: 34px;
+    color: var(--text-muted);
+    margin: 0;
+}
+/* Heading block -> content gap (badge 18 > title 24 > lead; block to content 60) */
+.page-inner .inner-head {
+    margin-bottom: 60px;
+}
+.page-inner .inner-head .inner-lead {
+    margin: 6px auto 0;
+}
+.page-inner .inner-lead--center {
+    max-width: 1400px;
+    margin: 28px auto 0;
+    text-align: center;
+}
+.page-inner .inner-lead--sm {
+    font-size: 18px;
+    line-height: 28px;
+}
+
+/* ---------- Two column intro (badge + title | text) ---------- */
+.page-inner .inner-split {
+    display: grid;
+    grid-template-columns: 613px minmax(0, 1fr);
+    gap: 67px;
+    align-items: start;
+}
+.page-inner .inner-split-text {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 920px;
+    font-size: 24px;
+    line-height: 34px;
+    color: var(--text-muted);
+}
+.page-inner .inner-split-text p {
+    margin: 0;
+}
+
+/* ---------- Filter tabs (careers roles / product families) ---------- */
+.page-inner .inner-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+}
+.page-inner .inner-filter {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 28px;
+    padding: 12px 34px;
+    border-radius: 100px;
+    border: 1px solid var(--text-muted);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.page-inner .inner-filter:hover {
+    border-color: var(--primary-red);
+    color: var(--primary-red);
+}
+.page-inner .inner-filter.is-active {
+    background: var(--primary-red);
+    border-color: var(--primary-red);
+    color: var(--white);
+}
+
+/* ---------- Image cards (packaging options / applications / products) ---------- */
+.page-inner .inner-card-media {
+    aspect-ratio: 570 / 480;
+    border-radius: 5px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.2);
+}
+.page-inner .inner-card-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+.page-inner .inner-card:hover .inner-card-media img {
+    transform: scale(1.04);
+}
+.page-inner .inner-card-title {
+    font-size: 34px;
+    font-weight: 500;
+    line-height: 40px;
+    text-transform: uppercase;
+    color: var(--icon-purple);
+    margin: 30px 0 20px;
+}
+.page-inner .inner-card-text {
+    font-size: 18px;
+    line-height: 26px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* ---------- Image + copy rows (export options / testing) ---------- */
+.page-inner .inner-feature {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 900px);
+    align-items: center;
+    gap: 60px;
+}
+.page-inner .inner-feature--reverse {
+    grid-template-columns: minmax(0, 900px) minmax(0, 1fr);
+}
+.page-inner .inner-feature-media {
+    border-radius: 10px;
+    overflow: hidden;
+}
+.page-inner .inner-feature-media img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+.page-inner .inner-feature-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+.page-inner .inner-feature-head {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.page-inner .inner-feature-head .section-badge {
+    margin-bottom: 0;
+}
+
+/* ---------- Numbered cards (01 / 02 ...) ---------- */
+.page-inner .num-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px;
+}
+.page-inner .num-card {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    padding: 30px;
+    border: 1px solid #939de2;
+    border-radius: 10px;
+}
+.page-inner .num-card-num {
+    flex-shrink: 0;
+    font-size: 64px;
+    font-weight: 500;
+    line-height: 79px;
+    color: #d8d5e5;
+}
+.page-inner .num-card-title {
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--icon-purple);
+    margin: 0 0 14px;
+}
+.page-inner .num-card-text {
+    font-size: 18px;
+    line-height: 28px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* ---------- FAQ accordion ---------- */
+.page-inner .faq-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 700px) minmax(0, 1fr);
+    gap: 80px;
+    align-items: start;
+}
+.page-inner .faq-item {
+    border-bottom: 1px solid #e0e0e0;
+    padding: 32px 0;
+}
+.page-inner .faq-item:first-child {
+    padding-top: 0;
+}
+.page-inner .faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+    background: none;
+    border: 0;
+    padding: 0;
+    text-align: left;
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 32px;
+    color: var(--black);
+    cursor: pointer;
+}
+.page-inner .faq-icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--primary-red);
+    border-radius: 50%;
+    color: var(--primary-red);
+    transition: transform 0.25s ease;
+}
+.page-inner .faq-item.is-open .faq-icon {
+    transform: rotate(180deg);
+}
+.page-inner .faq-answer {
+    display: none;
+    padding-top: 12px;
+    font-size: 18px;
+    line-height: 28px;
+    color: var(--text-muted);
+}
+.page-inner .faq-item.is-open .faq-answer {
+    display: block;
+}
+
+/* ---------- CTA banner ---------- */
+.page-inner .page-cta {
+    position: relative;
+    min-height: 350px;
+    border-radius: 5px;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(29, 29, 32, 0.9) 0%, rgba(102, 102, 102, 0.9) 100%);
+}
+.page-inner .page-cta--dark {
+    background: #111111;
+}
+.page-inner .page-cta-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.08;
+    pointer-events: none;
+}
+.page-inner .page-cta-inner {
+    position: relative;
+    z-index: 2;
+    min-height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+    padding: 0 80px;
+}
+.page-inner .page-cta-copy {
+    max-width: 900px;
+}
+.page-inner .page-cta-title {
+    font-family: 'Arimo', sans-serif;
+    font-size: 52px;
+    font-weight: 400;
+    line-height: 62px;
+    color: var(--white);
+    margin: 0 0 16px;
+}
+.page-inner .page-cta-text {
+    font-size: 20px;
+    line-height: 30px;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+}
+.page-inner .page-cta-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 320px;
+}
+.page-inner .page-cta-actions a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+}
+
+/* =====================================================
+   Responsive ladder (same breakpoints as existing pages)
+   ===================================================== */
+@media (max-width: 1776px) {
+    .page-inner .inner-lead,
+    .page-inner .inner-split-text {
+        font-size: 22px;
+        line-height: 32px;
+    }
+    .page-inner .inner-card-title {
+        font-size: 32px;
+        line-height: 1.2;
+    }
+    .page-inner .num-card-num {
+        font-size: 54px;
+        line-height: 1.2;
+    }
+    .page-inner .num-card-title {
+        font-size: 28px;
+    }
+    .page-inner .page-cta-title {
+        font-size: 46px;
+        line-height: 1.2;
+    }
+    .page-inner .faq-question {
+        font-size: 22px;
+        line-height: 30px;
+    }
+}
+@media (max-width: 1537px) {
+    .page-inner .inner-card-title {
+        font-size: 28px;
+    }
+    .page-inner .inner-section {
+        margin-top: 90px;
+    }
+}
+@media (max-width: 1441px) {
+    .page-inner .inner-section {
+        margin-top: 80px;
+    }
+    .page-inner .inner-filter {
+        font-size: 18px;
+        padding: 10px 28px;
+    }
+    .page-inner .inner-card-title {
+        font-size: 26px;
+    }
+    .page-inner .page-cta-inner {
+        padding: 0 50px;
+    }
+}
+@media (max-width: 1281px) {
+    .page-inner .inner-lead,
+    .page-inner .inner-split-text {
+        font-size: 20px;
+        line-height: 1.6;
+    }
+    .page-inner .inner-split {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 40px;
+    }
+    .page-inner .inner-feature,
+    .page-inner .inner-feature--reverse {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 40px;
+    }
+    .page-inner .faq-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 40px;
+    }
+    .page-inner .inner-card-title {
+        font-size: 24px;
+    }
+    .page-inner .num-grid {
+        gap: 30px;
+    }
+    .page-inner .num-card {
+        gap: 24px;
+    }
+    .page-inner .num-card-num {
+        font-size: 44px;
+    }
+    .page-inner .num-card-title {
+        font-size: 24px;
+    }
+    .page-inner .num-card-text {
+        font-size: 16px;
+        line-height: 26px;
+    }
+    .page-inner .page-cta-title {
+        font-size: 38px;
+    }
+    .page-inner .page-cta-text {
+        font-size: 18px;
+    }
+    .page-inner .page-cta-actions {
+        min-width: 260px;
+    }
+}
+@media (max-width: 1024px) {
+    .page-inner .inner-split,
+    .page-inner .inner-feature,
+    .page-inner .inner-feature--reverse,
+    .page-inner .faq-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+    .page-inner .inner-feature-media {
+        order: -1;
+    }
+    .page-inner .num-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    .page-inner .inner-hero-section .inner-hero-overlay {
+        background:
+            linear-gradient(180deg, rgba(28, 23, 49, 0.35) 0%, rgba(28, 23, 49, 0.55) 45%, rgba(28, 23, 49, 0.9) 100%),
+            linear-gradient(270deg, rgba(70, 65, 91, 0) 20%, rgba(28, 23, 49, 0.75) 80%);
+    }
+    .page-inner .page-cta-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 50px 40px;
+        gap: 30px;
+    }
+    .page-inner .page-cta-actions {
+        min-width: 0;
+        width: 100%;
+        max-width: 400px;
+    }
+}
+@media (max-width: 767px) {
+    .page-inner .num-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .page-inner .inner-section {
+        margin-top: 60px;
+    }
+    .page-inner .inner-section--last {
+        padding-bottom: 60px;
+    }
+    .page-inner .inner-hero-section .inner-hero-overlay {
+        background:
+            linear-gradient(180deg, rgba(28, 23, 49, 0.55) 0%, rgba(28, 23, 49, 0.7) 50%, rgba(28, 23, 49, 0.95) 100%);
+    }
+    .page-inner .inner-lead,
+    .page-inner .inner-split-text {
+        font-size: 18px;
+        line-height: 28px;
+    }
+    .page-inner .inner-lead--center {
+        margin-top: 20px;
+    }
+    .page-inner .inner-filters {
+        gap: 10px;
+    }
+    .page-inner .inner-filter {
+        font-size: 16px;
+        padding: 8px 18px;
+    }
+    .page-inner .inner-card-title {
+        font-size: 20px;
+        line-height: 1.4;
+        margin: 20px 0 12px;
+    }
+    .page-inner .inner-card-text,
+    .page-inner .faq-answer {
+        font-size: 16px;
+        line-height: 26px;
+    }
+    .page-inner .num-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 24px 20px;
+    }
+    .page-inner .num-card-num {
+        font-size: 36px;
+        line-height: 1;
+    }
+    .page-inner .num-card-title {
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
+    .page-inner .faq-item {
+        padding: 22px 0;
+    }
+    .page-inner .faq-question {
+        font-size: 18px;
+        line-height: 26px;
+    }
+    .page-inner .page-cta-inner {
+        padding: 40px 24px;
+    }
+    .page-inner .page-cta-title {
+        font-size: 28px;
+    }
+    .page-inner .page-cta-text {
+        font-size: 16px;
+        line-height: 26px;
+    }
+    .page-inner .page-cta-actions {
+        max-width: none;
+    }
+}
+
+@media (max-width: 425px) {
+    .page-inner .inner-lead,
+    .page-inner .inner-split-text {
+        font-size: 16px;
+        line-height: 26px;
+    }
+    .page-inner .inner-filter {
+        font-size: 14px;
+        padding: 7px 14px;
+    }
+    .page-inner .page-cta-title {
+        font-size: 24px;
+    }
+    .page-inner .page-cta-inner {
+        padding: 32px 18px;
+    }
+}
+
+@media (max-width: 1441px) {
+    .page-inner .inner-head {
+        margin-bottom: 50px;
+    }
+}
+@media (max-width: 1281px) {
+    .page-inner .inner-head {
+        margin-bottom: 40px;
+    }
+}
+@media (max-width: 767px) {
+    .page-inner .inner-head {
+        margin-bottom: 30px;
+    }
+    .page-inner .inner-head .inner-lead {
+        margin-top: 0;
+    }
+}
+
+/* Medium heading (left aligned intros) - same ladder as .page-about .about-company-title */
+@media (max-width: 1776px) { .page-inner .inner-title--md { font-size: 48px; line-height: 1.2; } }
+@media (max-width: 1661px) { .page-inner .inner-title--md { font-size: 44px; } }
+@media (max-width: 1537px) { .page-inner .inner-title--md { font-size: 40px; } }
+@media (max-width: 1441px) { .page-inner .inner-title--md { font-size: 36px; } }
+@media (max-width: 1281px) { .page-inner .inner-title--md { font-size: 32px; } }
+@media (max-width: 1025px) { .page-inner .inner-title--md { font-size: 28px; } }
+@media (max-width: 769px)  { .page-inner .inner-title--md { font-size: 26px; } }
+@media (max-width: 431px)  { .page-inner .inner-title--md { font-size: 24px; } }
+@media (max-width: 361px)  { .page-inner .inner-title--md { font-size: 1.2rem; } }
+
+/* Product detail: image sits on the right on desktop; on small screens it fills the banner */
+@media (max-width: 767px) {
+    .page-inner .inner-hero-section--product-detail .inner-hero-media {
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+/* =====================================================
+   Sticky sections - same convention as .page-about .about-company-intro
+   (desktop only, 1025px and up; header is 100px / 120px tall)
+   - the heading column stays in view while the longer column beside it scrolls
+   - filter bars stay under the header while the list / grid scrolls
+   ===================================================== */
+@media (min-width: 1025px) {
+    .page-inner .inner-split > .inner-badge-wrap,
+    .page-inner .faq-grid > .inner-badge-wrap {
+        position: sticky;
+        top: 130px;
+        align-self: start;
+    }
+    .page-inner .inner-filters {
+        position: sticky;
+        top: 100px;
+        z-index: 20;
+        background: var(--white);
+        /* white strip above/below the chips without changing the layout */
+        box-shadow: 0 -14px 0 var(--white), 0 14px 0 var(--white);
+    }
+}
+@media (min-width: 1442px) {
+    .page-inner .inner-filters {
+        top: 120px;
+    }
+}
