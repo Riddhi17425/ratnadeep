@@ -225,8 +225,15 @@ $(document).ready(function () {
 
         // Update active tab on slide change
         $heroSlider.on('beforeChange', function (event, slick, currentSlide, nextSlide) {
+            var $nextSlideEl = $(slick.$slides.get(nextSlide));
+            var categoryId = $nextSlideEl.data('category-id');
+
             $('.hero-product-tabs .tab-item').removeClass('active');
-            $('.hero-product-tabs .tab-item[data-slide="' + nextSlide + '"]').addClass('active');
+            if (categoryId) {
+                $('.hero-product-tabs .tab-item[data-category-id="' + categoryId + '"]').addClass('active');
+            } else {
+                $('.hero-product-tabs .tab-item[data-slide="' + nextSlide + '"]').addClass('active');
+            }
         });
 
         // Click on tabs to go to slide
