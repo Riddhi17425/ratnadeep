@@ -17,7 +17,7 @@
         <div class="inner-hero-bg h-100 position-relative">
             <div class="inner-hero-media" aria-hidden="true">
                 <div class="inner-hero-media-inner">
-                    <img src="{{ asset('frontend/assets/images/Careers/careers-hero.jpg') }}" alt="" class="inner-hero-image">
+                    <img src="{{ pt_image('careers.hero_image') }}" alt="" class="inner-hero-image">
                 </div>
                 <div class="inner-hero-overlay"></div>
             </div>
@@ -26,14 +26,14 @@
                     <div class="inner-hero-headline">
                         <div class="hero-badge">
                             <span class="badge-dot"></span>
-                            <span>CAREERS</span>
+                            <span>{{ pt('careers.hero_badge') }}</span>
                         </div>
-                        <h1 class="hero-title">Careers at Ratnadeep</h1>
+                        <h1 class="hero-title">{{ pt('careers.hero_title') }}</h1>
                     </div>
                     <div class="inner-hero-copy">
-                        <p class="hero-subtitle">Bring your expertise to a workplace shaped by engineering precision, manufacturing discipline and continuous improvement.</p>
+                        <p class="hero-subtitle">{{ pt('careers.hero_subtitle') }}</p>
                         <div class="hero-buttons">
-                            <a href="#open-roles" class="com_btn_red">View Open Roles <span class="ms-2">{!! $arrow !!}</span></a>
+                            <a href="#open-roles" class="com_btn_red">{{ pt('careers.hero_button') }} <span class="ms-2">{!! $arrow !!}</span></a>
                         </div>
                     </div>
                 </div>
@@ -48,13 +48,13 @@
                 <div class="inner-badge-wrap inner-badge-wrap--left">
                     <div class="section-badge">
                         <span class="badge-dot purple-dot"></span>
-                        OUR WORKPLACE
+                        {{ pt('careers.intro_badge') }}
                     </div>
-                    <h2 class="section-title inner-title inner-title--md text-start">Careers Grounded<br>in Manufacturing</h2>
+                    <h2 class="section-title inner-title inner-title--md text-start">{{ ptl('careers.intro_title') }}</h2>
                 </div>
                 <div class="inner-split-text">
-                    <p>At Ratnadeep Metal &amp; Tubes Ltd., we manufacture high-precision seamless stainless steel, titanium, and nickel alloy tubes and pipes for critical global applications across nuclear energy, aerospace, offshore oil &amp; gas, cryogenic systems, and chemical processing plants.</p>
-                    <p>We operate an integrated manufacturing mill incorporating cold pilgering, draw benches, vacuum bright annealing, and full-spectrum non-destructive testing lines. We seek dedicated technical professionals who value mechanical precision, uncompromising metallurgical rigor, and heavy-industry craftsmanship.</p>
+                    <p>{{ pt('careers.intro_text_1') }}</p>
+                    <p>{{ pt('careers.intro_text_2') }}</p>
                 </div>
             </div>
         </div>
@@ -66,72 +66,80 @@
             <div class="inner-badge-wrap inner-head">
                 <div class="section-badge">
                     <span class="badge-dot purple-dot"></span>
-                    OPEN OPPORTUNITIES
+                    {{ pt('careers.roles_badge') }}
                 </div>
-                <h2 class="section-title inner-title">Active Technical &amp; Operational Roles</h2>
-                <p class="inner-lead inner-lead--center">The roles below are neutral sample content for layout preview and do not represent confirmed vacancies.</p>
+                <h2 class="section-title inner-title">{{ pt('careers.roles_title') }}</h2>
+                @if(pt('careers.roles_note') !== '')
+                    <p class="inner-lead inner-lead--center">{{ pt('careers.roles_note') }}</p>
+                @endif
             </div>
 
-            <div class="inner-filters inner-head careers-filters" role="tablist" aria-label="Filter roles by area">
-                <button type="button" class="inner-filter is-active" data-filter="all">All areas</button>
-                @foreach($areas as $area)
-                    <button type="button" class="inner-filter" data-filter="{{ \Illuminate\Support\Str::slug($area) }}">{{ $area }}</button>
-                @endforeach
-            </div>
+            @if($roles->isNotEmpty())
+                <div class="inner-filters inner-head careers-filters" role="tablist" aria-label="Filter roles by area">
+                    <button type="button" class="inner-filter is-active" data-filter="all">All areas</button>
+                    @foreach($areas as $area)
+                        <button type="button" class="inner-filter" data-filter="{{ \Illuminate\Support\Str::slug($area) }}">{{ $area }}</button>
+                    @endforeach
+                </div>
 
-            <div class="careers-roles-list">
-                @foreach($roles as $role)
-                    <article class="careers-role" data-area="{{ \Illuminate\Support\Str::slug($role['area']) }}">
-                        <div class="careers-role-copy">
-                            <div>
-                                <h3 class="careers-role-title">{{ $role['title'] }}</h3>
-                                <p class="careers-role-dept">{{ $role['department'] }}</p>
+                <div class="careers-roles-list">
+                    @foreach($roles as $role)
+                        <article class="careers-role" data-area="{{ \Illuminate\Support\Str::slug($role->area) }}">
+                            <div class="careers-role-copy">
+                                <div>
+                                    <h3 class="careers-role-title">{{ $role->title }}</h3>
+                                    @if($role->department)<p class="careers-role-dept">{{ $role->department }}</p>@endif
+                                </div>
+                                <div class="careers-role-meta">
+                                    <div>
+                                        <span class="careers-role-label">Location</span>
+                                        <p class="careers-role-value">{{ $role->location }}</p>
+                                    </div>
+                                    <div>
+                                        <span class="careers-role-label">Experience Required</span>
+                                        <p class="careers-role-value">{{ $role->experience }}</p>
+                                    </div>
+                                    <div>
+                                        <span class="careers-role-label">Qualifications</span>
+                                        <p class="careers-role-value">{{ $role->qualification }}</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="careers-role-meta">
-                                <div>
-                                    <span class="careers-role-label">Location</span>
-                                    <p class="careers-role-value">{{ $role['location'] }}</p>
-                                </div>
-                                <div>
-                                    <span class="careers-role-label">Experience Required</span>
-                                    <p class="careers-role-value">{{ $role['experience'] }}</p>
-                                </div>
-                                <div>
-                                    <span class="careers-role-label">Qualifications</span>
-                                    <p class="careers-role-value">{{ $role['qualification'] }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#apply" class="com_btn_red js-apply-role" data-role="{{ $role['title'] }}">Apply Now <span class="ms-2">{!! $arrow !!}</span></a>
-                    </article>
-                @endforeach
-            </div>
+                            <a href="#apply" class="com_btn_red js-apply-role" data-role="{{ $role->title }}">Apply Now <span class="ms-2">{!! $arrow !!}</span></a>
+                        </article>
+                    @endforeach
+                </div>
+            @else
+                <p class="inner-lead inner-lead--center careers-empty">{{ pt('careers.roles_empty') }}</p>
+            @endif
         </div>
     </section>
 
     <!-- Why Join -->
+    @if($reasons->isNotEmpty())
     <section class="inner-section careers-why">
         <div class="container">
             <div class="inner-badge-wrap inner-head">
                 <div class="section-badge">
                     <span class="badge-dot purple-dot"></span>
-                    WHY JOIN RATNADEEP
+                    {{ pt('careers.why_badge') }}
                 </div>
-                <h2 class="section-title inner-title">A Place to Learn the Work, Then Improve It</h2>
+                <h2 class="section-title inner-title">{{ pt('careers.why_title') }}</h2>
             </div>
             <div class="num-grid">
                 @foreach($reasons as $reason)
                     <div class="num-card">
                         <span class="num-card-num">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                         <div>
-                            <h3 class="num-card-title">{{ $reason['title'] }}</h3>
-                            <p class="num-card-text">{{ $reason['text'] }}</p>
+                            <h3 class="num-card-title">{{ $reason->title }}</h3>
+                            <p class="num-card-text">{{ $reason->description }}</p>
                         </div>
                     </div>
                 @endforeach
             </div>
         </div>
     </section>
+    @endif
 
     <!-- Application Form -->
     <section class="inner-section careers-apply" id="apply">
@@ -140,51 +148,66 @@
                 <div class="inner-badge-wrap">
                     <div class="section-badge">
                         <span class="badge-dot purple-dot"></span>
-                        OUR WORKPLACE
+                        {{ pt('careers.apply_badge') }}
                     </div>
-                    <h2 class="section-title inner-title inner-title--md text-start">Submit Your Application</h2>
+                    <h2 class="section-title inner-title inner-title--md text-start">{{ pt('careers.apply_title') }}</h2>
                 </div>
-                <p class="inner-lead inner-lead--center">Your Next Opportunity Could Start Here.<br>We are always interested in connecting with qualified engineers, technicians and operations professionals who want to build their careers in precision manufacturing. Share your profile with our HR team for consideration across current and upcoming opportunities at Ratnadeep.</p>
+                <p class="inner-lead inner-lead--center">{{ ptl('careers.apply_text') }}</p>
             </div>
 
-            <form class="careers-form" action="#" method="post" enctype="multipart/form-data">
+            @if(session('careers_success'))
+                <div class="careers-alert careers-alert--success" role="status">{{ session('careers_success') }}</div>
+            @endif
+            @if($errors->any())
+                <div class="careers-alert careers-alert--error" role="alert">
+                    <strong>Please fix the following:</strong>
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form class="careers-form" action="{{ route('careers.apply') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="careers-form-grid">
                     <div class="careers-field">
                         <label for="career_full_name">Full Name *:</label>
-                        <input type="text" name="full_name" id="career_full_name" placeholder="Enter your Full Name" required>
+                        <input type="text" name="full_name" id="career_full_name" placeholder="Enter your Full Name" value="{{ old('full_name') }}" required maxlength="255">
                     </div>
                     <div class="careers-field">
                         <label for="career_email">Email ID *:</label>
-                        <input type="email" name="email" id="career_email" placeholder="Enter your Email Id" required>
+                        <input type="email" name="email" id="career_email" placeholder="Enter your Email Id" value="{{ old('email') }}" required maxlength="255">
                     </div>
                     <div class="careers-field">
                         <label for="career_phone">Phone Number *:</label>
-                        <input type="tel" name="phone" id="career_phone" placeholder="Enter your Phone Number" required>
+                        <input type="tel" name="phone" id="career_phone" placeholder="Enter your Phone Number" value="{{ old('phone') }}" required maxlength="50">
                     </div>
                     <div class="careers-field">
                         <label for="career_position">Position Applied For *:</label>
                         <select name="position" id="career_position" required>
-                            <option value="" selected disabled>Select Specific Mill / Office Role</option>
+                            <option value="" {{ old('position') ? '' : 'selected' }} disabled>Select Specific Mill / Office Role</option>
                             @foreach($roles as $role)
-                                <option value="{{ $role['title'] }}">{{ $role['title'] }}</option>
+                                <option value="{{ $role->title }}" {{ old('position') === $role->title ? 'selected' : '' }}>{{ $role->title }}</option>
                             @endforeach
+                            <option value="General application" {{ old('position') === 'General application' ? 'selected' : '' }}>General application</option>
                         </select>
                         <svg class="careers-select-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </div>
                     <div class="careers-field">
                         <label for="career_experience">Total Relevant Experience *:</label>
-                        <input type="text" name="experience" id="career_experience" placeholder="Enter your Experience" required>
+                        <input type="text" name="experience" id="career_experience" placeholder="Enter your Experience" value="{{ old('experience') }}" required maxlength="255">
                     </div>
                     <div class="careers-field">
                         <label for="career_linkedin">LinkedIn Profile :</label>
-                        <input type="text" name="linkedin" id="career_linkedin" placeholder="LinkedIn Profile:">
+                        <input type="text" name="linkedin" id="career_linkedin" placeholder="LinkedIn Profile:" value="{{ old('linkedin') }}" maxlength="255">
                     </div>
                     <div class="careers-field">
                         <label for="career_resume">Upload Resume * :</label>
                         <label for="career_resume" class="careers-upload">
                             <svg width="28" height="35" viewBox="0 0 28 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.5 1H4a3 3 0 0 0-3 3v27a3 3 0 0 0 3 3h20a3 3 0 0 0 3-3V11.5L16.5 1Z" stroke="#413185" stroke-width="2" stroke-linejoin="round"/><path d="M16 1v11h11M14 28V16m0 0-4.5 4.5M14 16l4.5 4.5" stroke="#413185" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            <span>Attach Your Resume In PDF, Word Format</span>
+                            <span id="career_resume_label">Attach Your Resume In PDF, Word Format</span>
                             <strong>Max Size: 5 Mb</strong>
                             <input type="file" name="resume" id="career_resume" accept=".pdf,.doc,.docx" required>
                         </label>
@@ -198,33 +221,39 @@
     </section>
 
     <!-- Locations -->
+    @if($locations->isNotEmpty())
     <section class="inner-section careers-locations">
         <div class="container">
             <div class="inner-badge-wrap inner-head">
                 <div class="section-badge">
                     <span class="badge-dot purple-dot"></span>
-                    REACH US
+                    {{ pt('careers.locations_badge') }}
                 </div>
-                <h2 class="section-title inner-title">Our Locations &amp; Contacts</h2>
+                <h2 class="section-title inner-title">{{ pt('careers.locations_title') }}</h2>
             </div>
             <div class="careers-locations-grid">
                 @foreach($locations as $location)
                     <div class="careers-location-card">
-                        <h3 class="careers-location-title">{{ $location['title'] }}</h3>
-                        <p class="careers-location-address">{{ $location['address'] }}</p>
-                        <div class="careers-location-meta">
-                            <span class="careers-location-label">Contact us:</span>
-                            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $location['phone']) }}">{{ $location['phone'] }}</a>
-                        </div>
-                        <div class="careers-location-meta">
-                            <span class="careers-location-label">Email us:</span>
-                            <a href="mailto:{{ $location['email'] }}">{{ $location['email'] }}</a>
-                        </div>
+                        <h3 class="careers-location-title">{{ $location->title }}</h3>
+                        <p class="careers-location-address">{{ $location->description }}</p>
+                        @if($location->phone)
+                            <div class="careers-location-meta">
+                                <span class="careers-location-label">Contact us:</span>
+                                <a href="tel:{{ preg_replace('/[^0-9+]/', '', $location->phone) }}">{{ $location->phone }}</a>
+                            </div>
+                        @endif
+                        @if($location->email)
+                            <div class="careers-location-meta">
+                                <span class="careers-location-label">Email us:</span>
+                                <a href="mailto:{{ $location->email }}">{{ $location->email }}</a>
+                            </div>
+                        @endif
                     </div>
                 @endforeach
             </div>
         </div>
     </section>
+    @endif
 
     <!-- CTA -->
     <section class="inner-section inner-section--last">
@@ -233,12 +262,12 @@
                 <img src="{{ asset('frontend/assets/images/Common/cta-bg.png') }}" alt="" class="page-cta-image" aria-hidden="true">
                 <div class="page-cta-inner">
                     <div class="page-cta-copy">
-                        <h2 class="page-cta-title">Ready to Bring Your Work to Ratnadeep?</h2>
-                        <p class="page-cta-text">Talk to our technical team about your product requirements and project specifications.</p>
+                        <h2 class="page-cta-title">{{ pt('careers.cta_title') }}</h2>
+                        <p class="page-cta-text">{{ pt('careers.cta_text') }}</p>
                     </div>
                     <div class="page-cta-actions">
-                        <a href="#open-roles" class="com_btn_red">View Open Roles</a>
-                        <a href="#apply" class="com_btn_outline_white">Share Your Profile</a>
+                        <a href="#open-roles" class="com_btn_red">{{ pt('careers.cta_button_1') }}</a>
+                        <a href="#apply" class="com_btn_outline_white">{{ pt('careers.cta_button_2') }}</a>
                     </div>
                 </div>
             </div>
@@ -269,6 +298,21 @@ document.addEventListener('DOMContentLoaded', function () {
             if (select) { select.value = link.getAttribute('data-role'); }
         });
     });
+
+    // show the chosen resume file name
+    var fileInput = document.getElementById('career_resume');
+    var fileLabel = document.getElementById('career_resume_label');
+    if (fileInput && fileLabel) {
+        fileInput.addEventListener('change', function () {
+            fileLabel.textContent = fileInput.files.length ? fileInput.files[0].name : 'Attach Your Resume In PDF, Word Format';
+        });
+    }
+
+    // after a submit (success or errors) land on the form
+    @if(session('careers_success') || $errors->any())
+        var apply = document.getElementById('apply');
+        if (apply) { apply.scrollIntoView(); }
+    @endif
 });
 </script>
 @endpush

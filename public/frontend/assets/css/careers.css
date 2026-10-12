@@ -307,3 +307,36 @@
         padding: 12px;
     }
 }
+
+/* Form feedback */
+.page-careers .careers-alert {
+    margin-bottom: 30px;
+    padding: 18px 24px;
+    border-radius: 5px;
+    font-size: 18px;
+    line-height: 28px;
+}
+.page-careers .careers-alert--success {
+    background: #eaf7ee;
+    border: 1px solid #28a745;
+    color: #1e7e34;
+}
+.page-careers .careers-alert--error {
+    background: #fdecea;
+    border: 1px solid #e13324;
+    color: #b02a1f;
+}
+.page-careers .careers-alert ul {
+    margin: 6px 0 0;
+    padding-left: 20px;
+}
+.page-careers .careers-empty {
+    padding: 20px 0;
+}
+@media (max-width: 767px) {
+    .page-careers .careers-alert {
+        font-size: 16px;
+        line-height: 26px;
+        padding: 14px 16px;
+    }
+}

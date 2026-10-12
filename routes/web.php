@@ -11,6 +11,13 @@ use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\CertificateController;
 use App\Http\Controllers\Admin\ManufactureStageController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ApplicationPageController;
+use App\Http\Controllers\Admin\JobOpeningController;
+use App\Http\Controllers\Admin\JobApplicationController;
+use App\Http\Controllers\Admin\PageItemController;
+use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\PageTextController;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\CertificationController as FrontCertificationController;
 use App\Http\Controllers\Front\BlogController as FrontBlogController;
@@ -27,6 +34,7 @@ Route::get('/clients', [FrontController::class, 'clients'])->name('clients');
 Route::get('/contact-us', [FrontController::class, 'contact'])->name('contact');
 Route::get('/events', [FrontController::class, 'events'])->name('events');
 Route::get('/careers', [FrontController::class, 'careers'])->name('careers');
+Route::post('/careers/apply', [FrontController::class, 'applyForJob'])->middleware('throttle:6,1')->name('careers.apply');
 Route::get('/packaging-shipping', [FrontController::class, 'packagingShipping'])->name('packaging');
 Route::get('/inspection-quality-testing', [FrontController::class, 'inspectionQualityTesting'])->name('inspection');
 Route::get('/applications', [FrontController::class, 'applications'])->name('applications');
@@ -73,6 +81,41 @@ Route::middleware(['auth', 'role:admin,super_admin'])->prefix('admin')->group(fu
     ->parameters(['manufacture-stages' => 'manufacture_stage']);
     Route::post('manufacture-stages/{manufacture_stage}/status', [ManufactureStageController::class, 'updateStatus'])->name('manufacture-stages.status');
     Route::put('manufacture-stages/{id}/restore', [ManufactureStageController::class, 'restore'])->name('manufacture-stages.restore');
-    Route::delete('manufacture-stages/{id}/force-delete', [ManufactureStageController::class, 'forceDelete'])->name('manufacture-stages.force-delete');    
+    Route::delete('manufacture-stages/{id}/force-delete', [ManufactureStageController::class, 'forceDelete'])->name('manufacture-stages.force-delete');
+
+    // Products (listing + detail pages)
+    Route::resource('products', ProductController::class)->except('show');
+    Route::post('products/{product}/status', [ProductController::class, 'updateStatus'])->name('products.status');
+    Route::put('products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');
+    Route::delete('products/{id}/force-delete', [ProductController::class, 'forceDelete'])->name('products.force-delete');
+
+    // Applications page hub (shortcuts to its cards, FAQs and texts)
+    Route::get('applications-page', [ApplicationPageController::class, 'index'])->name('applications-page.index');
+
+    // Careers: job openings + submitted applications
+    Route::resource('job-openings', JobOpeningController::class)->except('show')
+        ->parameters(['job-openings' => 'job_opening']);
+    Route::post('job-openings/{job_opening}/status', [JobOpeningController::class, 'updateStatus'])->name('job-openings.status');
+    Route::put('job-openings/{id}/restore', [JobOpeningController::class, 'restore'])->name('job-openings.restore');
+    Route::delete('job-openings/{id}/force-delete', [JobOpeningController::class, 'forceDelete'])->name('job-openings.force-delete');
+    Route::resource('job-applications', JobApplicationController::class)->only(['index', 'show', 'destroy'])
+        ->parameters(['job-applications' => 'job_application']);
+    Route::get('job-applications/{job_application}/resume', [JobApplicationController::class, 'download'])->name('job-applications.download');
+    Route::put('job-applications/{id}/restore', [JobApplicationController::class, 'restore'])->name('job-applications.restore');
+    Route::delete('job-applications/{id}/force-delete', [JobApplicationController::class, 'forceDelete'])->name('job-applications.force-delete');
+
+    // Inner pages: repeating blocks, FAQs and editable page texts
+    Route::resource('page-items', PageItemController::class)->except('show')
+        ->parameters(['page-items' => 'page_item']);
+    Route::post('page-items/{page_item}/status', [PageItemController::class, 'updateStatus'])->name('page-items.status');
+    Route::put('page-items/{id}/restore', [PageItemController::class, 'restore'])->name('page-items.restore');
+    Route::delete('page-items/{id}/force-delete', [PageItemController::class, 'forceDelete'])->name('page-items.force-delete');
+    Route::resource('faqs', FaqController::class)->except('show');
+    Route::post('faqs/{faq}/status', [FaqController::class, 'updateStatus'])->name('faqs.status');
+    Route::put('faqs/{id}/restore', [FaqController::class, 'restore'])->name('faqs.restore');
+    Route::delete('faqs/{id}/force-delete', [FaqController::class, 'forceDelete'])->name('faqs.force-delete');
+    Route::get('page-texts', [PageTextController::class, 'index'])->name('page-texts.index');
+    Route::get('page-texts/{page}', [PageTextController::class, 'edit'])->name('page-texts.edit');
+    Route::post('page-texts/{page}', [PageTextController::class, 'update'])->name('page-texts.update');    
 });
 

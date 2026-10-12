@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e ' *)",
+      "Bash(php -l app/Helpers/common.php)",
+      "Bash(php -l routes/web.php)",
+      "Bash(php -m)",
+      "Bash(tasklist)",
+      "Bash([ -s \"$f\" ])",
+      "Bash(timeout 100 php vendor/bin/phpunit --filter test_front_pages_render_from_the_database --testdox)",
+      "Bash(timeout 120 php vendor/bin/phpunit --filter test_page_texts)",
+      "Bash(timeout 250 php vendor/bin/phpunit --filter InnerPagesSmokeTest --testdox)",
+      "Bash(timeout 120 php vendor/bin/phpunit --filter test_product_crud)",
+      "Bash(php -l app/Http/Controllers/Admin/ApplicationPageController.php)",
+      "Bash(timeout 200 php vendor/bin/phpunit --filter ApplicationsTmpTest)"
+    ],
+    "additionalDirectories": [
+      "C:\\xampp\\htdocs\\ratnadeep\\app\\Http\\Middleware"
+    ]
+  }
+}

@@ -441,3 +441,8 @@
         margin-left: -18px;
     }
 }
+
+/* industry names come from the Industries admin (often lower case) */
+.page-product-detail .pd-industry span {
+    text-transform: capitalize;
+}

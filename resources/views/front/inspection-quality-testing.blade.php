@@ -17,7 +17,7 @@
         <div class="inner-hero-bg h-100 position-relative">
             <div class="inner-hero-media" aria-hidden="true">
                 <div class="inner-hero-media-inner">
-                    <img src="{{ asset('frontend/assets/images/Inspection/inspection-hero.jpg') }}" alt="" class="inner-hero-image">
+                    <img src="{{ pt_image('inspection.hero_image') }}" alt="" class="inner-hero-image">
                 </div>
                 <div class="inner-hero-overlay"></div>
             </div>
@@ -26,15 +26,15 @@
                     <div class="inner-hero-headline">
                         <div class="hero-badge">
                             <span class="badge-dot"></span>
-                            <span>QUALITY ASSURANCE</span>
+                            <span>{{ pt('inspection.hero_badge') }}</span>
                         </div>
-                        <h1 class="hero-title">Inspection &amp; Quality Testing You Can Depend On</h1>
+                        <h1 class="hero-title">{{ pt('inspection.hero_title') }}</h1>
                     </div>
                     <div class="inner-hero-copy">
-                        <p class="hero-subtitle">Every Ratnadeep tube and pipe is manufactured under a disciplined quality management system where every stage is verified before moving to the next. From incoming raw materials to final dispatch, comprehensive inspection and testing ensure every product consistently meets international standards and customer specifications.</p>
+                        <p class="hero-subtitle">{{ pt('inspection.hero_subtitle') }}</p>
                         <div class="hero-buttons">
-                            <a href="{{ route('contact') }}#write-to-us" class="com_btn_red">Request Technical Quote <span class="ms-2">{!! $arrow !!}</span></a>
-                            <a href="{{ route('home') }}#products" class="com_btn_outline_white">Explore Products</a>
+                            <a href="{{ route('contact') }}#write-to-us" class="com_btn_red">{{ pt('inspection.hero_button_1') }} <span class="ms-2">{!! $arrow !!}</span></a>
+                            <a href="{{ route('products') }}" class="com_btn_outline_white">{{ pt('inspection.hero_button_2') }}</a>
                         </div>
                     </div>
                 </div>
@@ -49,41 +49,43 @@
                 <div class="inner-badge-wrap inner-badge-wrap--left">
                     <div class="section-badge">
                         <span class="badge-dot purple-dot"></span>
-                        ENGINEERED FOR CONSISTENT PERFORMANCE
+                        {{ pt('inspection.intro_badge') }}
                     </div>
-                    <h2 class="section-title inner-title inner-title--md text-start">Quality Built Into Every Manufacturing Stage</h2>
+                    <h2 class="section-title inner-title inner-title--md text-start">{{ pt('inspection.intro_title') }}</h2>
                 </div>
                 <div class="inner-split-text">
-                    <p>Quality at Ratnadeep is not limited to the final inspection. It begins with carefully sourced raw materials, continues through every manufacturing process, and concludes with comprehensive testing before dispatch.</p>
-                    <p>Supported by advanced testing facilities and experienced quality professionals, every product is validated for dimensional accuracy, mechanical strength, material integrity, and long-term performance.</p>
+                    <p>{{ pt('inspection.intro_text_1') }}</p>
+                    <p>{{ pt('inspection.intro_text_2') }}</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Quality approach -->
+    @if($approach->isNotEmpty())
     <section class="inner-section">
         <div class="container-fluid">
             <div class="inner-badge-wrap">
                 <div class="section-badge">
                     <span class="badge-dot purple-dot"></span>
-                    OUR QUALITY APPROACH
+                    {{ pt('inspection.approach_badge') }}
                 </div>
-                <h2 class="section-title inner-title">Every Product Undergoes A Structured Inspection Process</h2>
+                <h2 class="section-title inner-title">{{ pt('inspection.approach_title') }}</h2>
             </div>
             <div class="approach-grid">
                 @foreach($approach as $step)
                     <div class="approach-card">
                         <span class="approach-card-num">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                         <div>
-                            <h3 class="approach-card-title">{{ $step['title'] }}</h3>
-                            <p class="approach-card-text">{{ $step['text'] }}</p>
+                            <h3 class="approach-card-title">{{ $step->title }}</h3>
+                            <p class="approach-card-text">{{ $step->description }}</p>
                         </div>
                     </div>
                 @endforeach
             </div>
         </div>
     </section>
+    @endif
 
     <!-- Destructive testing -->
     <section class="inner-section">
@@ -93,13 +95,14 @@
                     <div class="inner-feature-head">
                         <div class="section-badge">
                             <span class="badge-dot purple-dot"></span>
-                            DESTRUCTIVE TESTING
+                            {{ pt('inspection.destructive_badge') }}
                         </div>
-                        <h2 class="section-title inner-title">Mechanical &amp; Metallurgical Performance Validation</h2>
-                        <p class="testing-desc">Products are subjected to destructive testing to evaluate strength, ductility, weld integrity, and material behaviour under demanding operating conditions.</p>
+                        <h2 class="section-title inner-title">{{ pt('inspection.destructive_title') }}</h2>
+                        <p class="testing-desc">{{ pt('inspection.destructive_text') }}</p>
                     </div>
+                    @if($destructive->isNotEmpty())
                     <div class="testing-lists">
-                        @foreach(array_chunk($destructive, (int) ceil(count($destructive) / 2)) as $column)
+                        @foreach($destructive->pluck('title')->chunk((int) ceil($destructive->count() / 2)) as $column)
                             <ul class="testing-list">
                                 @foreach($column as $test)
                                     <li>{{ $test }}</li>
@@ -107,9 +110,10 @@
                             </ul>
                         @endforeach
                     </div>
+                    @endif
                 </div>
                 <div class="inner-feature-media">
-                    <img src="{{ asset('frontend/assets/images/Inspection/destructive-testing.jpg') }}" alt="Destructive testing at the Ratnadeep laboratory">
+                    <img src="{{ pt_image('inspection.destructive_image') }}" alt="{{ pt('inspection.destructive_title') }}">
                 </div>
             </div>
         </div>
@@ -120,19 +124,20 @@
         <div class="container-fluid">
             <div class="inner-feature inner-feature--reverse">
                 <div class="inner-feature-media">
-                    <img src="{{ asset('frontend/assets/images/Inspection/non-destructive-testing.jpg') }}" alt="Non-destructive testing at the Ratnadeep facility">
+                    <img src="{{ pt_image('inspection.non_destructive_image') }}" alt="{{ pt('inspection.non_destructive_title') }}">
                 </div>
                 <div class="inner-feature-copy">
                     <div class="inner-feature-head">
                         <div class="section-badge">
                             <span class="badge-dot purple-dot"></span>
-                            NON-DESTRUCTIVE TESTING
+                            {{ pt('inspection.non_destructive_badge') }}
                         </div>
-                        <h2 class="section-title inner-title">Advanced Inspection Without Material Damage</h2>
-                        <p class="testing-desc">Advanced non-destructive testing techniques verify internal soundness, dimensional accuracy, and product integrity while preserving the finished component.</p>
+                        <h2 class="section-title inner-title">{{ pt('inspection.non_destructive_title') }}</h2>
+                        <p class="testing-desc">{{ pt('inspection.non_destructive_text') }}</p>
                     </div>
+                    @if($nonDestructive->isNotEmpty())
                     <div class="testing-lists">
-                        @foreach(array_chunk($nonDestructive, (int) ceil(count($nonDestructive) / 2)) as $column)
+                        @foreach($nonDestructive->pluck('title')->chunk((int) ceil($nonDestructive->count() / 2)) as $column)
                             <ul class="testing-list">
                                 @foreach($column as $test)
                                     <li>{{ $test }}</li>
@@ -140,6 +145,7 @@
                             </ul>
                         @endforeach
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -151,79 +157,47 @@
             <div class="inner-badge-wrap">
                 <div class="section-badge">
                     <span class="badge-dot purple-dot"></span>
-                    TESTING CAPABILITIES
+                    {{ pt('inspection.capabilities_badge') }}
                 </div>
-                <h2 class="section-title inner-title">Precision Verified Through Advanced Inspection</h2>
+                <h2 class="section-title inner-title">{{ pt('inspection.capabilities_title') }}</h2>
             </div>
-            <p class="inner-lead inner-lead--center capabilities-text" style="max-width:1536px;">Every testing procedure at Ratnadeep is carried out using <strong>calibrated equipment, advanced testing technologies, and standardized inspection methods to ensure</strong> consistent and dependable performance. Our comprehensive testing program covers critical quality parameters at every stage, helping identify and eliminate potential defects before the products reach our customers. With a strong focus on <strong>accuracy, safety, reliability, and consistency,</strong> Ratnadeep maintains stringent quality controls to meet demanding industrial requirements. These robust testing practices enable us to consistently deliver products that comply with <strong>global quality standards and customer specifications</strong>, ensuring long-term performance and reliability across diverse industrial applications.</p>
+            <p class="inner-lead inner-lead--center capabilities-text" style="max-width:1536px;">{{ ptb('inspection.capabilities_text') }}</p>
         </div>
     </section>
 
     <!-- Why Ratnadeep quality -->
+    @if($reasons->isNotEmpty())
     <section class="inner-section">
         <div class="container">
             <div class="inner-badge-wrap">
                 <div class="section-badge">
                     <span class="badge-dot purple-dot"></span>
-                    WHY RATNADEEP QUALITY
+                    {{ pt('inspection.why_badge') }}
                 </div>
-                <h2 class="section-title inner-title">Confidence Backed By Process, Precision &amp; Proof</h2>
+                <h2 class="section-title inner-title">{{ pt('inspection.why_title') }}</h2>
             </div>
             <div class="num-grid" style="margin-top:40px;">
                 @foreach($reasons as $reason)
                     <div class="num-card">
                         <span class="num-card-num">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                         <div>
-                            <h3 class="num-card-title">{{ $reason['title'] }}</h3>
-                            <p class="num-card-text">{!! nl2br(e($reason['text'])) !!}</p>
+                            <h3 class="num-card-title">{{ $reason->title }}</h3>
+                            <p class="num-card-text">{!! nl2br(e($reason->description)) !!}</p>
                         </div>
                     </div>
                 @endforeach
             </div>
         </div>
     </section>
+    @endif
 
     <!-- FAQs -->
-    <section class="inner-section inner-section--last">
-        <div class="container">
-            <div class="faq-grid">
-                <div class="inner-badge-wrap inner-badge-wrap--left">
-                    <div class="section-badge">
-                        <span class="badge-dot purple-dot"></span>
-                        SHIPPING &amp; LOGISTICS FAQs
-                    </div>
-                    <h2 class="section-title inner-title">Frequently Asked Questions</h2>
-                    <p class="inner-lead inner-lead--sm">Find answers to common questions about our export packaging, shipping methods, documentation, and logistics support for domestic and international deliveries.</p>
-                </div>
-                <div class="faq-list">
-                    @foreach($faqs as $faq)
-                        <div class="faq-item {{ $loop->first ? 'is-open' : '' }}">
-                            <button type="button" class="faq-question" aria-expanded="{{ $loop->first ? 'true' : 'false' }}">
-                                <span>{{ $faq['q'] }}</span>
-                                <span class="faq-icon"><svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                            </button>
-                            <div class="faq-answer">{{ $faq['a'] }}</div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    </section>
+    @include('front.partials.inner-faq', ['faqs' => $faqs, 'page' => 'inspection'])
 </main>
 @endsection
 
 @push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.faq-question').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            var item = btn.closest('.faq-item');
-            var open = item.classList.toggle('is-open');
-            btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        });
-    });
-});
-</script>
+    @include('front.partials.inner-faq-script')
 @endpush
 
 @push('scripts')
