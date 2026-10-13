@@ -44,6 +44,7 @@
                         </div>
                         <h2 class="section-title text-start contact-form-title">Let's Discuss Your Requirements</h2>
                     </div>
+
                     <form class="contact-form" action="#" method="post">
                         @csrf
                         <div class="contact-form-row">
@@ -92,16 +93,12 @@
                             <button type="submit" class="com_btn_red contact-submit-btn">Submit <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
                         </div>
                     </form>
+                    
                 </div>
                 <div class="contact-map-col">
                     <div class="contact-map-wrap">
-                        <iframe
-                            class="contact-map-iframe"
-                            title="Ratnadeep Metal And Tubes manufacturing site location"
-                            src="https://maps.google.com/maps?q=Survey+No.+1015,+Village+Rajpur,+Taluka+Kadi,+District+Mehsana,+382715,+Gujarat,+India&amp;hl=en&amp;z=14&amp;output=embed"
-                            loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade"
-                            allowfullscreen>
+                        <iframe 
+                            class="contact-map-iframe" title="Ratnadeep Metal And Tubes Location - Mumbai" src="https://maps.google.com/maps?q=110%2C%20Gujrat%2C%20196%2F198%2C%20Khetwadi%20Back%20Road%2C%20Opp.%2013th%20Khetwadi%20Lane%2C%20Mumbai%20-%20400%20004%2C%20India&hl=en&z=16&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen>
                         </iframe>
                     </div>
                 </div>
