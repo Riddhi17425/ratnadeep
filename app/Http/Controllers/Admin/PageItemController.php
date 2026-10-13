@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Admin\Concerns\ManagesFiles;
 use App\Http\Controllers\Controller;
 use App\Models\PageItem;
+use App\Models\PageText;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -35,12 +36,41 @@ class PageItemController extends Controller
     public function index(Request $request)
     {
         $sections = $this->sections();
-        $section = $request->query('section');
-        $section = isset($sections[$section]) ? $section : array_key_first($sections);
+        $textPages = config('page_texts');
+        $contentGroups = [];
+        foreach ($sections as $key => $sectionConfig) {
+            $contentGroups[$sectionConfig['page']]['sections'][$key] = $sectionConfig;
+        }
+        foreach ($textPages as $key => $page) {
+            $contentGroups[$page['label']]['text_page'] = $key;
+        }
 
-        $items = PageItem::withTrashed()->where('section', $section)->orderBy('sort_order')->orderBy('id')->get();
+        $selected = $request->query('section');
+        $textPage = null;
+        $textValues = [];
 
-        return view('admin.page-items.index', compact('items', 'sections', 'section'));
+        if (is_string($selected) && str_starts_with($selected, 'text:')) {
+            $page = substr($selected, 5);
+            abort_unless(isset($textPages[$page]), 404);
+
+            $textPage = $page;
+            $section = $selected;
+            $items = collect();
+            $textValues = PageText::where('page', $page)->pluck('value', 'key')->all();
+        } else {
+            $section = isset($sections[$selected]) ? $selected : array_key_first($sections);
+            $items = PageItem::withTrashed()->where('section', $section)->orderBy('sort_order')->orderBy('id')->get();
+        }
+
+        return view('admin.page-items.index', compact(
+            'items',
+            'sections',
+            'section',
+            'textPages',
+            'contentGroups',
+            'textPage',
+            'textValues'
+        ));
     }
 
     public function create(Request $request)

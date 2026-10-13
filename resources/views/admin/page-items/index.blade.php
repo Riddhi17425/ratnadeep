@@ -1,32 +1,81 @@
 @extends('admin.layouts.master')
 @section('content')
-@php $config = $sections[$section]; @endphp
+@php
+    $isTextPage = $textPage !== null;
+    $config = $isTextPage
+        ? ['page' => $textPages[$textPage]['label'], 'label' => 'Page Details']
+        : $sections[$section];
+@endphp
 <div class="body-wrapper">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Page Content</h2>
+        @unless($isTextPage)
         <a href="{{ route('page-items.create', ['section' => $section]) }}" class="btn btn-primary">
             <i class="icofont-plus"></i> Add Item
         </a>
+        @endunless
     </div>
 
     <div class="card mb-3">
         <div class="card-body">
             <form action="{{ route('page-items.index') }}" method="GET">
-                <label class="form-label" for="sectionSwitch">Block</label>
+                <label class="form-label" for="sectionSwitch">Page content</label>
                 <select class="form-select" id="sectionSwitch" name="section" onchange="this.form.submit()">
-                    @foreach(collect($sections)->groupBy('page', true) as $pageName => $group)
+                    @foreach($contentGroups as $pageName => $group)
                         <optgroup label="{{ $pageName }}">
-                            @foreach($group as $key => $sectionConfig)
+                            @foreach($group['sections'] ?? [] as $key => $sectionConfig)
                                 <option value="{{ $key }}" {{ $key === $section ? 'selected' : '' }}>{{ $sectionConfig['label'] }}</option>
                             @endforeach
+                            @if(isset($group['text_page']))
+                                <option value="text:{{ $group['text_page'] }}" {{ $section === 'text:' . $group['text_page'] ? 'selected' : '' }}>Page Details</option>
+                            @endif
                         </optgroup>
                     @endforeach
                 </select>
             </form>
-            <small class="text-muted">Items appear on the {{ $config['page'] }} page in the order given by "Order".</small>
+            <small class="text-muted">
+                @if($isTextPage)
+                    Edit the page-wide text and imagery for {{ $config['page'] }}.
+                @else
+                    Items appear on the {{ $config['page'] }} page in the order given by "Order".
+                @endif
+            </small>
         </div>
     </div>
 
+    @if($isTextPage)
+    <div class="card">
+        <div class="card-body">
+            <form action="{{ route('page-content.texts.update', $textPage) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @foreach($textPages[$textPage]['fields'] as $key => [$label, $type, $default])
+                    @php $value = old($key, $textValues[$key] ?? $default); @endphp
+                    <div class="mb-3">
+                        <label class="form-label" for="page-text-{{ $key }}">{{ $label }}</label>
+                        @if($type === 'textarea')
+                            <textarea id="page-text-{{ $key }}" name="{{ $key }}" rows="{{ max(2, min(8, (int) ceil(strlen($default) / 110) + 1)) }}" class="form-control">{{ $value }}</textarea>
+                        @elseif($type === 'image')
+                            <input id="page-text-{{ $key }}" type="file" name="{{ $key }}" class="form-control">
+                            <div class="mt-2 d-flex align-items-center gap-3">
+                                <img src="{{ asset($textValues[$key] ?? $default) }}" alt="" height="70" class="rounded border">
+                                @if(isset($textValues[$key]))
+                                    <div class="form-check">
+                                        <input type="checkbox" name="reset_{{ $key }}" value="1" class="form-check-input" id="reset_{{ $key }}">
+                                        <label class="form-check-label" for="reset_{{ $key }}">Use the original image again</label>
+                                    </div>
+                                @endif
+                            </div>
+                        @else
+                            <input id="page-text-{{ $key }}" type="text" name="{{ $key }}" class="form-control" value="{{ $value }}">
+                        @endif
+                        @error($key) <small class="text-danger">{{ $message }}</small> @enderror
+                    </div>
+                @endforeach
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+    @else
     <div class="card">
         <div class="card-body">
             <table class="table table-bordered" id="pageItemTable">
@@ -67,9 +116,12 @@
             </table>
         </div>
     </div>
+    @endif
 </div>
 @endsection
 
 @push('scripts')
+    @unless($isTextPage)
     @include('admin.partials.crud-scripts', ['tableId' => 'pageItemTable', 'label' => 'item', 'base' => 'page-items'])
+    @endunless
 @endpush

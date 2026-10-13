@@ -22,22 +22,6 @@ class PageTextController extends Controller
         return config('page_texts');
     }
 
-    public function index()
-    {
-        return view('admin.page-texts.index', ['pages' => $this->pages()]);
-    }
-
-    public function edit(string $page)
-    {
-        abort_unless(isset($this->pages()[$page]), 404);
-
-        return view('admin.page-texts.edit', [
-            'page'   => $page,
-            'config' => $this->pages()[$page],
-            'values' => PageText::where('page', $page)->pluck('value', 'key')->all(),
-        ]);
-    }
-
     public function update(Request $request, string $page)
     {
         abort_unless(isset($this->pages()[$page]), 404);
@@ -80,6 +64,7 @@ class PageTextController extends Controller
             PageText::updateOrCreate(['page' => $page, 'key' => $key], ['value' => str_replace("\r\n", "\n", $value)]);
         }
 
-        return redirect()->route('page-texts.edit', $page)->with('toast_success', 'Page texts saved successfully.');
+        return redirect()->route('page-items.index', ['section' => 'text:' . $page])
+            ->with('toast_success', 'Page content saved successfully.');
     }
 }

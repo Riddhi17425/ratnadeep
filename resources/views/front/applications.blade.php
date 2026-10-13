@@ -26,7 +26,7 @@
                     <div class="inner-hero-headline">
                         <div class="hero-badge">
                             <span class="badge-dot"></span>
-                            <span>{{ pt('applications.hero_badge') }}</span>
+                            {{ pt('applications.hero_badge') }}
                         </div>
                         <h1 class="hero-title">{{ pt('applications.hero_title') }}</h1>
                     </div>

@@ -96,24 +96,22 @@
                     <div class="mt-lg-5 pt-lg-3 footer-products-block">
                         <h4 class="footer-heading">Products</h4>
                         <div class="products-list-grid">
+                            @php
+                                $footerProductsColumnOne = $productMegaMenuProducts->take((int) ceil($productMegaMenuProducts->count() / 2));
+                                $footerProductsColumnTwo = $productMegaMenuProducts->skip($footerProductsColumnOne->count());
+                            @endphp
                             <div class="products-col-1">
                                 <ul class="footer-links">
-                                    <li><a href="{{ route('home') }}#products">Stainless Steel Seamless Straight & "U" Tubes</a></li>
-                                    <li><a href="{{ route('product.detail', 'stainless-steel-seamless-pipes') }}">Stainless Steel Seamless Pipes</a></li>
-                                    <li><a href="{{ route('home') }}#products">Stainless Steel Welded Straight & "U" Tubes</a></li>
-                                    <li><a href="{{ route('home') }}#products">Stainless Steel Welded Pipes</a></li>
-                                    <li><a href="{{ route('home') }}#products">Stainless Steel Instrumentation & Hydraulic Tubes</a></li>
-                                    <li><a href="{{ route('home') }}#products">Nickel Alloy Seamless Straight & "U" Tubes</a></li>
-                                    <li><a href="{{ route('home') }}#products">Low Fin Seamless Straight & "U" Tubes</a></li>
+                                    @foreach ($footerProductsColumnOne as $product)
+                                        <li><a href="{{ route('product.detail', $product->slug) }}">{{ $product->title }}</a></li>
+                                    @endforeach
                                 </ul>
                             </div>
                             <div class="products-col-2">
                                 <ul class="footer-links">
-                                    <li><a href="{{ route('home') }}#products">Carbon Steel Seamless Straight & "U" Tubes</a></li>
-                                    <li><a href="{{ route('home') }}#products">Carbon Steel Seamless Pipes</a></li>
-                                    <li><a href="{{ route('home') }}#products">Carbon Steel Seamless Precision, Fuel Injection & Hydraulic Tubes & Pipes</a></li>
-                                    <li><a href="{{ route('home') }}#products">Low Alloy Steel Seamless Straight & "U" Tubes</a></li>
-                                    <li><a href="{{ route('home') }}#products">Low Alloy Carbon Steel Seamless Pipes</a></li>
+                                    @foreach ($footerProductsColumnTwo as $product)
+                                        <li><a href="{{ route('product.detail', $product->slug) }}">{{ $product->title }}</a></li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>

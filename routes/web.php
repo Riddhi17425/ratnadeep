@@ -13,7 +13,6 @@ use App\Http\Controllers\Admin\{
     CertificateController,
     ManufactureStageController,
     ProductController,
-    ApplicationPageController,
     JobOpeningController,
     JobApplicationController,
     PageItemController,
@@ -97,9 +96,6 @@ Route::middleware(['auth', 'role:admin,super_admin'])->prefix('admin')->group(fu
     Route::put('products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');
     Route::delete('products/{id}/force-delete', [ProductController::class, 'forceDelete'])->name('products.force-delete');
 
-    // Applications page hub (shortcuts to its cards, FAQs and texts)
-    Route::get('applications-page', [ApplicationPageController::class, 'index'])->name('applications-page.index');
-
     // Careers: job openings + submitted applications
     Route::resource('job-openings', JobOpeningController::class)->except('show')
         ->parameters(['job-openings' => 'job_opening']);
@@ -122,7 +118,5 @@ Route::middleware(['auth', 'role:admin,super_admin'])->prefix('admin')->group(fu
     Route::post('faqs/{faq}/status', [FaqController::class, 'updateStatus'])->name('faqs.status');
     Route::put('faqs/{id}/restore', [FaqController::class, 'restore'])->name('faqs.restore');
     Route::delete('faqs/{id}/force-delete', [FaqController::class, 'forceDelete'])->name('faqs.force-delete');
-    Route::get('page-texts', [PageTextController::class, 'index'])->name('page-texts.index');
-    Route::get('page-texts/{page}', [PageTextController::class, 'edit'])->name('page-texts.edit');
-    Route::post('page-texts/{page}', [PageTextController::class, 'update'])->name('page-texts.update');    
+    Route::post('page-content/texts/{page}', [PageTextController::class, 'update'])->name('page-content.texts.update');
 });

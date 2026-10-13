@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AboutLogo;
 use App\Models\JobApplication;
 use App\Models\JobOpening;
+use App\Models\UpcomingEvent;
 use Illuminate\Http\Request;
 
 class FrontController extends Controller
@@ -28,7 +29,12 @@ class FrontController extends Controller
 
     public function events()
     {
-        return view('front.events');
+        $events = UpcomingEvent::where('status', 1)
+            ->orderByDesc('date_from')
+            ->orderBy('id')
+            ->get();
+
+        return view('front.events', compact('events'));
     }
 
     public function careers()
