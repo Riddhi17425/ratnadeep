@@ -155,7 +155,7 @@ class FrontController extends Controller
                 ],
 
                 'company' => [
-                    'nullable',
+                    'required',
                     'string',
                     'max:255',
                 ],
@@ -203,6 +203,7 @@ class FrontController extends Controller
                 'phone.max' => 'Phone number must not exceed 50 characters.',
                 'phone.regex' => 'Please enter a valid phone number.',
 
+                'company.required' => 'Company name is required.',
                 'company.max' => 'Company name must not exceed 255 characters.',
 
                 'country.required' => 'Country is required.',
@@ -219,8 +220,10 @@ class FrontController extends Controller
             ]
         );
 
-        if ($validator->fails()) {
-            if ($request->ajax() || $request->expectsJson()) {
+        if ($validator->fails())
+        {
+            if ($request->ajax() || $request->expectsJson())
+            {
                 return response()->json([
                     'success' => false,
                     'message' => 'Please correct the errors and try again.',
@@ -253,7 +256,7 @@ class FrontController extends Controller
             ? trim($data['requirement_details'])
             : null;
 
-        $inquiryType = $data['inquiry_type'] ?? 'page';
+        $inquiryType = $data['inquiry_type'] ?? 'Contact form';
 
         // Preserve the original product value for Google Sheets.
         $productForSheet = $data['product'] ?? '';
@@ -264,7 +267,8 @@ class FrontController extends Controller
             : ($productForSheet !== '' ? $productForSheet : null);
 
         // 3. Save the enquiry in your database
-        try {
+        try
+        {
             $inquiry = ContactInquiry::create([
                 'name' => $data['name'],
                 'company' => $data['company'] ?: null,
@@ -277,12 +281,15 @@ class FrontController extends Controller
                     $data['requirement_details'] ?: null,
                 'inquiry_type' => $inquiryType,
             ]);
-        } catch (\Throwable $e) {
+        } 
+        catch (\Throwable $e)
+        {
             Log::error('Contact inquiry database save failed.', [
                 'error' => $e->getMessage(),
             ]);
 
-            if ($request->ajax() || $request->expectsJson()) {
+            if ($request->ajax() || $request->expectsJson())
+            {
                 return response()->json([
                     'success' => false,
                     'message' => 'Unable to submit your enquiry. Please try again.',
@@ -295,25 +302,25 @@ class FrontController extends Controller
         }
 
         // 4. Send the enquiry to Google Sheets
-        $timestamp = Carbon::now()->format('Y-m-d H:i:s');
-
         $sheetsData = [
             'inquiry_type' => $inquiryType,
-            'name' => $inquiry->name ?? '',
+            'name' => $inquiry->name,
             'company' => $inquiry->company ?? '',
-            'email' => $inquiry->email ?? '',
-            'phone' => $inquiry->phone ?? '',
-            'country' => $inquiry->country ?? '',
+            'email' => $inquiry->email,
+            'phone' => $inquiry->phone,
+            'country' => $inquiry->country,
             'city' => $inquiry->city ?? '',
             'product' => $productForSheet,
             'requirement_details' => $inquiry->requirement_details ?? '',
-            'date' => $timestamp,
         ];
 
-        try {
+        $sheetSaved = false;
+
+        try
+        {
             $response = Http::asJson()
                 ->acceptJson()
-                ->timeout(20)
+                ->timeout(30)
                 ->post(
                     'https://script.google.com/macros/s/AKfycbx38n4Q_0_jxRpnJg-P56WBuNP07s0dCUGD21KAbxnbB3i8dbk3GIwrwDAhdNljH8AJ1A/exec',
                     $sheetsData
@@ -322,25 +329,49 @@ class FrontController extends Controller
             $sheetResult = $response->json();
 
             if (
-                !$response->successful() ||
-                !is_array($sheetResult) ||
-                ($sheetResult['status'] ?? null) !== 'success'
-            ) {
-                Log::error('Google Sheets rejected or failed to confirm inquiry.', [
+                $response->successful() &&
+                is_array($sheetResult) &&
+                ($sheetResult['status'] ?? null) === 'success'
+            ) 
+            {
+                $sheetSaved = true;
+            }
+            else
+            {
+                Log::error('Google Sheets save was not confirmed.', [
+                    'inquiry_id' => $inquiry->id,
                     'http_status' => $response->status(),
                     'response' => $response->body(),
-                    'inquiry_id' => $inquiry->id,
                 ]);
             }
-        } catch (\Throwable $e) {
-            Log::error('Google Sheets request exception.', [
-                'error' => $e->getMessage(),
+        } 
+        catch (\Throwable $e)
+        {
+            Log::error('Google Sheets request failed.', [
                 'inquiry_id' => $inquiry->id,
+                'error' => $e->getMessage(),
             ]);
         }
 
-        // 5. Return the response
-        if ($request->ajax() || $request->expectsJson()) {
+        // 5. Return the response only after checking the Sheets result.
+
+        if (!$sheetSaved)
+        {
+            if ($request->ajax() || $request->expectsJson())
+            {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Your enquiry was received, but spreadsheet storage could not be confirmed. Please contact us if you need confirmation.',
+                ], 502);
+            }
+
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Your enquiry was received, but spreadsheet storage could not be confirmed. Please contact us if you need confirmation.');
+        }
+
+        if ($request->ajax() || $request->expectsJson())
+        {
             return response()->json([
                 'success' => true,
                 'message' => 'Your enquiry has been submitted successfully.',

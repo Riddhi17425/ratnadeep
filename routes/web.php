@@ -36,6 +36,7 @@ Route::get('/certifications', [FrontCertificationController::class, 'index'])->n
 Route::get('/clients', [FrontController::class, 'clients'])->name('clients');
 Route::get('/contact-us', [FrontController::class, 'contact'])->name('contact');
 Route::post('/contact/submit', [FrontController::class, 'submitContactInquiry'])->name('contact.submit');
+Route::get('/thank-you', function () {return view('front.thankyou');})->name('thankyou');
 Route::get('/events', [FrontController::class, 'events'])->name('events');
 Route::get('/careers', [FrontController::class, 'careers'])->name('careers');
 Route::post('/careers/apply', [FrontController::class, 'applyForJob'])->middleware('throttle:6,1')->name('careers.apply');

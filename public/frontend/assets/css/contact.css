@@ -29,6 +29,13 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 40px;
 }
+
+.contact-row-full{
+    grid-template-columns: repeat(1, minmax(0, 1fr))!important;
+}
+.contact-field textarea{
+    width:100%;
+}
 .page-contact .contact-field {
     position: relative;
 }
@@ -37,7 +44,9 @@
 }
 .page-contact .contact-field input,
 .page-contact .contact-field select {
-    width: 100%;
+    width: auto;
+    max-width: 100%;
+    height: auto;
     height: 52px;
     border: 1px solid #dddddd;
     border-radius: 5px;
@@ -48,9 +57,18 @@
     background: var(--white);
     appearance: none;
 }
-.page-contact .contact-field input::placeholder {
+.page-contact .contact-field select {
+    width:100%;
+}
+.page-contact .contact-field textarea {
+    padding: 14px 24px;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+}
+.page-contact .contact-field input::placeholder, .page-contact .contact-field textarea::placeholder {
     color: var(--text-muted);
 }
+
 .page-contact .contact-field select {
     color: var(--text-muted);
     padding-right: 48px;
