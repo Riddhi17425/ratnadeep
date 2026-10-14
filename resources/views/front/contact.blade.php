@@ -230,7 +230,7 @@
                 </div>
                 <div class="contact-location-card">
                     <h3 class="contact-location-title">Manufacturing site:</h3>
-                    <p class="contact-location-address">Survey No. 1015, Village Rajpur, Taluka Kadi, District Mehsana – 382 715, Gujarat, India.</p>
+                    <p class="contact-location-address">Survey No. 1015, Village Rajpur, Taluka Kadi, District Mehsana - 382 715, Gujarat, India.</p>
                     <div class="contact-location-meta">
                         <span class="contact-location-label">Contact us:</span>
                         <a href="tel:+919724303768">+91 97243 03768</a>

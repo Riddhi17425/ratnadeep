@@ -80,13 +80,6 @@
         </li>
 
         <li>
-            <a class="m-link {{ request()->routeIs('applications-page.*') ? 'active' : '' }}" href="{{ route('applications-page.index') }}">
-                <i class="icofont-gears fs-5"></i>
-                <span>Applications Page</span>
-            </a>
-        </li>
-
-        <li>
             <a class="m-link {{ request()->routeIs('job-openings.*') ? 'active' : '' }}" href="{{ route('job-openings.index') }}">
                 <i class="icofont-briefcase-1 fs-5"></i>
                 <span>Job Openings</span>
@@ -114,12 +107,6 @@
             </a>
         </li>
 
-        <li>
-            <a class="m-link {{ request()->routeIs('page-texts.*') ? 'active' : '' }}" href="{{ route('page-texts.index') }}">
-                <i class="icofont-edit-alt fs-5"></i>
-                <span>Page Texts</span>
-            </a>
-        </li>
             {{-- more modules get added here as we build them out --}}
         </ul>
         <button type="button" class="btn btn-link sidebar-mini-btn text-light">

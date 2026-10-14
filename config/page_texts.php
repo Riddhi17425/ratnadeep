@@ -2,7 +2,7 @@
 
 /*
  * Editable headings, paragraphs, button labels and hero images of the newer inner pages
- * (Admin > Page Texts). Each field: [label, type (text|textarea|image), default].
+ * (Admin > Page Content). Each field: [label, type (text|textarea|image), default].
  * The defaults reproduce the Figma content, so a page looks the same until it is edited.
  * Use in Blade:  pt('careers.hero_title')  /  ptl() for multi-line  /  pt_image() for images.
  */

@@ -1,21 +1,6 @@
 @php
-$product_mega_ranges = [
-    '1. Stainless Steel Seamless Straight & U Tubes',
-    '2. Stainless Steel Seamless Pipes',
-    '3. Stainless Steel Welded Straight & U Tubes',
-    '4. Stainless Steel Welded Pipes',
-    '5. Stainless Steel Instrumentation & Hydraulic Tubes',
-    '6. Nickel Alloy Seamless Straight & U Tubes',
-    '7. Low Fin Seamless Straight & U Tubes',
-    '8. Carbon Steel Seamless Straight & U Tubes',
-    '9. Carbon Steel Seamless Pipes',
-    '10. Carbon Steel Seamless Precision Fuel Injection & Hydraulic Tubes & Pipes',
-    '11. Low Alloy Steel Seamless Straight & U Tubes',
-    '12. Low Alloy Carbon Steel Seamless Pipes',
-];
-
-$product_mega_ranges_col_one = array_slice($product_mega_ranges, 0, 6);
-$product_mega_ranges_col_two = array_slice($product_mega_ranges, 6);
+$product_mega_ranges_col_one = $productMegaMenuProducts->take((int) ceil($productMegaMenuProducts->count() / 2));
+$product_mega_ranges_col_two = $productMegaMenuProducts->skip($product_mega_ranges_col_one->count());
 
 $product_mega_industries = [
     ['icon' => asset('frontend/assets/images/MegaMenu/icon-oil-gas.png'), 'label' => 'Oil & Gas'],
@@ -54,14 +39,14 @@ $product_mega_industries = [
                 </div>
                 <div class="products-mega-ranges-grid">
                     <ul class="products-mega-range-list">
-                        @foreach ($product_mega_ranges_col_one as $item)
-                            <li><a href="{{ route('home') }}#products">{{ $item }}</a></li>
+                        @foreach ($product_mega_ranges_col_one as $product)
+                            <li><a href="{{ route('product.detail', $product->slug) }}">{{ $product->title }}</a></li>
                         @endforeach
                     </ul>
                     <div class="products-mega-ranges-divider" aria-hidden="true"></div>
                     <ul class="products-mega-range-list">
-                        @foreach ($product_mega_ranges_col_two as $item)
-                            <li><a href="{{ route('home') }}#products">{{ $item }}</a></li>
+                        @foreach ($product_mega_ranges_col_two as $product)
+                            <li><a href="{{ route('product.detail', $product->slug) }}">{{ $product->title }}</a></li>
                         @endforeach
                     </ul>
                 </div>

@@ -42,61 +42,40 @@
     <section class="events-listing-section" id="events-listing">
         <div class="container">
             <div class="events-listing-grid">
-                <article class="events-listing-card">
-                    <div class="events-listing-image">
-                        <img src="{{ asset('frontend/assets/images/Events/event-card-1.png') }}" alt="Stainless Steel World Middle East" class="img-fluid w-100">
-                    </div>
-                    <div class="events-listing-body">
-                        <time class="events-listing-date" datetime="2020-03-09">March 09, 2020</time>
-                        <h2 class="events-listing-title">Stainless Steel World Middle East</h2>
-                        <p class="events-listing-desc">We are pleased to inform you all we are going to participate in most reputed expo of the domain “Stainless Steel” in Muscat – Oman. We welcome our clients and industry partners to meet and discuss opportunities in stainless steel and alloy tubes.</p>
-                        <p class="events-listing-contact">
-                            Contact Ref: <a href="mailto:work@ratnadeepmetal.com">work@ratnadeepmetal.com</a>
-                        </p>
-                    </div>
-                </article>
-
-                <article class="events-listing-card events-listing-card--wide-gap">
-                    <div class="events-listing-image">
-                        <img src="{{ asset('frontend/assets/images/Events/event-card-2.png') }}" alt="Duesseldorf Germany 2020" class="img-fluid w-100">
-                    </div>
-                    <div class="events-listing-body">
-                        <time class="events-listing-date" datetime="2020-03-30">March 30, 2020</time>
-                        <h2 class="events-listing-title">Duesseldorf Germany 2020</h2>
-                        <p class="events-listing-desc">We are pleased to inform you all we are going to participate in most reputed expo of the domain “TUBE DUESSELDORF” in Germany. We welcome our clients and global partners to meet and discuss customized tubing solutions.</p>
-                        <p class="events-listing-contact">
-                            Contact Ref: <a href="mailto:work@ratnadeepmetal.com">work@ratnadeepmetal.com</a>
-                        </p>
-                    </div>
-                </article>
-
-                <article class="events-listing-card events-listing-card--wide-gap">
-                    <div class="events-listing-image">
-                        <img src="{{ asset('frontend/assets/images/Events/event-card-3.png') }}" alt="Stainless Steel World 2019" class="img-fluid w-100">
-                    </div>
-                    <div class="events-listing-body">
-                        <time class="events-listing-date" datetime="2019-03-30">March 30, 2019</time>
-                        <h2 class="events-listing-title">Stainless Steel World 2019</h2>
-                        <p class="events-listing-desc">Ratnadeep participated in Stainless Steel World Expo, presenting our precision manufacturing lines, seamless nickel alloy tubes, and certified quality management practices.</p>
-                        <p class="events-listing-contact">
-                            Contact Ref: <a href="mailto:work@ratnadeepmetal.com">work@ratnadeepmetal.com</a>
-                        </p>
-                    </div>
-                </article>
-
-                <article class="events-listing-card">
-                    <div class="events-listing-image">
-                        <img src="{{ asset('frontend/assets/images/Events/event-card-4.png') }}" alt="Duesseldorf Germany 2018" class="img-fluid w-100">
-                    </div>
-                    <div class="events-listing-body">
-                        <time class="events-listing-date" datetime="2018-04-16">April 16, 2018</time>
-                        <h2 class="events-listing-title">Duesseldorf Germany 2018</h2>
-                        <p class="events-listing-desc">We participated in the TUBE DUESSELDORF trade fair in Germany, engaging with international EPC contractors and process engineering leaders.</p>
-                        <p class="events-listing-contact">
-                            Contact Ref: <a href="mailto:work@ratnadeepmetal.com">work@ratnadeepmetal.com</a>
-                        </p>
-                    </div>
-                </article>
+                @forelse($events as $event)
+                    <article class="events-listing-card">
+                        @if($event->icon)
+                            <div class="events-listing-image">
+                                <img src="{{ asset($event->icon) }}" alt="{{ $event->alt_icon_text ?: $event->title }}" class="img-fluid w-100">
+                            </div>
+                        @endif
+                        <div class="events-listing-body">
+                            @if($event->date_from)
+                                <time class="events-listing-date" datetime="{{ $event->date_from->format('Y-m-d') }}">
+                                    {{ $event->date_from->format('F d, Y') }}@if($event->date_to && !$event->date_to->equalTo($event->date_from)) - {{ $event->date_to->format('F d, Y') }}@endif
+                                </time>
+                            @endif
+                            <h2 class="events-listing-title">{{ $event->title }}</h2>
+                            @if($event->short_description)
+                                <div class="events-listing-desc">{!! $event->short_description !!}</div>
+                            @endif
+                            @if($event->reference)
+                                <p class="events-listing-contact">
+                                    Contact Ref:
+                                    @if(filter_var($event->reference, FILTER_VALIDATE_EMAIL))
+                                        <a href="mailto:{{ $event->reference }}">{{ $event->reference }}</a>
+                                    @elseif(filter_var($event->reference, FILTER_VALIDATE_URL) && in_array(parse_url($event->reference, PHP_URL_SCHEME), ['http', 'https'], true))
+                                        <a href="{{ $event->reference }}">{{ $event->reference }}</a>
+                                    @else
+                                        {{ $event->reference }}
+                                    @endif
+                                </p>
+                            @endif
+                        </div>
+                    </article>
+                @empty
+                    <p class="events-listing-empty">There are no events to display at the moment.</p>
+                @endforelse
             </div>
         </div>
     </section>

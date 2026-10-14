@@ -7,6 +7,7 @@ use App\Models\JobApplication;
 use App\Models\JobOpening;
 use App\Models\Country;
 use App\Models\Product;
+use App\Models\UpcomingEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
@@ -38,7 +39,12 @@ class FrontController extends Controller
 
     public function events()
     {
-        return view('front.events');
+        $events = UpcomingEvent::where('status', 1)
+            ->orderByDesc('date_from')
+            ->orderBy('id')
+            ->get();
+
+        return view('front.events', compact('events'));
     }
 
     public function careers()
