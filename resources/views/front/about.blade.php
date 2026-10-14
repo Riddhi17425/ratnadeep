@@ -10,18 +10,18 @@
 <main class="page-about">
     <!-- Hero -->
     <section class="inner-hero-section inner-hero-section--about container-fluid position-relative p-0">
-        <div class="inner-hero-bg inner-hero-bg--cover h-100 position-relative" style="background-image: var(--hero-gradient), url('{{ asset('frontend/assets/images/About/about-hero.png') }}');">
+        <div class="inner-hero-bg inner-hero-bg--cover h-100 position-relative" style="background-image: var(--hero-gradient), url('{{ pt_image('about.hero_image') }}');">
             <div class="container hero-content-wrapper h-100">
                 <div class="hero-content">
                     <div class="hero-badge">
                         <span class="badge-dot"></span>
-                        <span>MANUFACTURING EXCELLENCE SINCE 1981</span>
+                        <span>{{ pt('about.hero_badge') }}</span>
                     </div>
-                    <h1 class="hero-title">Manufacturing Excellence<br>Strengthened by Experience</h1>
-                    <p class="hero-subtitle">For over four decades, Ratnadeep Metal And Tubes Limited has been a trusted pipe and tube manufacturer, delivering seamless and welded pipes and tubes supported by advanced manufacturing infrastructure, in-house testing, and disciplined quality systems for industrial applications across domestic and international markets.</p>
+                    <h1 class="hero-title">{!! ptl('about.hero_title') !!}</h1>
+                    <p class="hero-subtitle">{{ pt('about.hero_subtitle') }}</p>
                     <div class="hero-buttons">
-                        <a href="#manufacturing" class="com_btn_red">Explore Our Manufacturing <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-                        <a href="{{ route('home') }}#products" class="com_btn_outline_white">View Product Portfolio</a>
+                        <a href="#manufacturing" class="com_btn_red">{{ pt('about.hero_button_1') }} <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                        <a href="{{ route('home') }}#products" class="com_btn_outline_white">{{ pt('about.hero_button_2') }}</a>
                     </div>
                 </div>
             </div>
@@ -35,36 +35,36 @@
                 <div class="about-company-intro">
                     <div class="section-badge align-left">
                         <span class="badge-dot purple-dot"></span>
-                        OUR COMPANY
+                    {{ pt('about.company_badge') }}
                     </div>
-                    <h2 class="section-title text-start about-company-title">Built on Manufacturing. Driven by Legacy.</h2>
+                    <h2 class="section-title text-start about-company-title">{{ pt('about.company_title') }}</h2>
                 </div>
                 <div class="about-company-copy">
-                    <p>Since 1981, <strong>Ratnadeep Metal And Tubes Limited</strong> has built its reputation through disciplined manufacturing, dependable quality, and a commitment to continuous progress. Founded by <strong>Bharat S Sanghavi</strong> and led today by <strong>Jaimik B Sanghavi</strong>, the company continues to combine decades of expertise with modern manufacturing capabilities to serve industrial requirements across global markets.</p>
-                    <p>Today, we manufacture <strong>seamless and welded pipes and tubes</strong> in stainless steel, carbon steel, alloy steel, nickel alloy, titanium, and low-fine tubes across a comprehensive range of sizes and specifications. Every product is supported by advanced manufacturing infrastructure, in-house inspection, and rigorous quality systems to ensure consistent performance and complete material traceability.</p>
-                    <p class="mb-0">With a presence in over <strong>30 countries, Ratnadeep Metal And Tubes Limited</strong> supports leading engineering and industrial sectors through reliable manufacturing, timely delivery, and a customer-focused approach. The trust we have earned over four decades continues to be built on consistency, accountability, and long-term partnerships.</p>
+                    <p>{{ pt('about.company_text_1') }}</p>
+                    <p>{{ pt('about.company_text_2') }}</p>
+                    <p class="mb-0">{{ pt('about.company_text_3') }}</p>
                 </div>
             </div>
             <div class="about-company-stats stats-grid">
                 <div class="stat-item">
-                    <h3 class="stat-number"><span class="counter-value" data-target="500">500</span>+</h3>
-                    <p class="stat-label">Workforce Strength</p>
+                    <h3 class="stat-number"><span class="counter-value" data-target="{{ pt('about.stat_workforce_value') }}">{{ pt('about.stat_workforce_value') }}</span>+</h3>
+                    <p class="stat-label">{{ pt('about.stat_workforce_label') }}</p>
                 </div>
                 <div class="stat-item">
-                    <h3 class="stat-number"><span class="counter-value" data-target="30">30</span>+</h3>
-                    <p class="stat-label">Countries Served</p>
+                    <h3 class="stat-number"><span class="counter-value" data-target="{{ pt('about.stat_countries_value') }}">{{ pt('about.stat_countries_value') }}</span>+</h3>
+                    <p class="stat-label">{{ pt('about.stat_countries_label') }}</p>
                 </div>
                 <div class="stat-item">
-                    <h3 class="stat-number"><span class="counter-value" data-target="33">33</span>+ Million $</h3>
-                    <p class="stat-label">Annual Revenue</p>
+                    <h3 class="stat-number"><span class="counter-value" data-target="{{ pt('about.stat_revenue_value') }}">{{ pt('about.stat_revenue_value') }}</span>+ Million $</h3>
+                    <p class="stat-label">{{ pt('about.stat_revenue_label') }}</p>
                 </div>
                 <div class="stat-item">
-                    <h3 class="stat-number"><span class="counter-value" data-target="10000">10000</span>+</h3>
-                    <p class="stat-label">Annual Production <br> (Metric Tons)</p>
+                    <h3 class="stat-number"><span class="counter-value" data-target="{{ pt('about.stat_production_value') }}">{{ pt('about.stat_production_value') }}</span>+</h3>
+                    <p class="stat-label">{{ pt('about.stat_production_label') }}</p>
                 </div>
                 <div class="stat-item">
-                    <h3 class="stat-number"><span class="counter-value" data-target="65000">65000</span>+</h3>
-                    <p class="stat-label">Total Facility Area <br> (Sq. Meters)</p>
+                    <h3 class="stat-number"><span class="counter-value" data-target="{{ pt('about.stat_area_value') }}">{{ pt('about.stat_area_value') }}</span>+</h3>
+                    <p class="stat-label">{{ pt('about.stat_area_label') }}</p>
                 </div>
             </div>
         </div>
@@ -76,33 +76,33 @@
             <div class="text-center section-header-gap">
                 <div class="section-badge">
                     <span class="badge-dot purple-dot"></span>
-                    PURPOSE &amp; DIRECTION
+                    {{ pt('about.purpose_badge') }}
                 </div>
-                <h2 class="section-title">Building the Future Through Responsible Manufacturing.</h2>
+                <h2 class="section-title">{{ pt('about.purpose_title') }}</h2>
             </div>
             <div class="about-mv-grid">
                 <div class="about-mv-card">
                     <div class="about-mv-card-top">
                         <img src="{{ asset('frontend/assets/images/About/mission-icon.svg') }}" alt="" class="about-mv-icon" width="80" height="80">
                         <div>
-                            <h3 class="about-mv-heading">OUR MISSION</h3>
-                            <p class="about-mv-text">To manufacture seamless and welded pipes and tubes through disciplined processes, advanced technology, and uncompromising quality standards, delivering reliable solutions that create lasting value for customers across global industries.</p>
+                            <h3 class="about-mv-heading">{{ pt('about.mission_title') }}</h3>
+                            <p class="about-mv-text">{{ pt('about.mission_text') }}</p>
                         </div>
                     </div>
                     <div class="about-mv-image">
-                        <img src="{{ asset('frontend/assets/images/About/mission-image.png') }}" alt="Ratnadeep manufacturing facility" class="img-fluid w-100">
+                        <img src="{{ pt_image('about.mission_image') }}" alt="Ratnadeep manufacturing facility" class="img-fluid w-100">
                     </div>
                 </div>
                 <div class="about-mv-card">
                     <div class="about-mv-card-top">
                         <img src="{{ asset('frontend/assets/images/About/vision-icon.png') }}" alt="" class="about-mv-icon" width="80" height="80">
                         <div>
-                            <h3 class="about-mv-heading">Our Vision</h3>
-                            <p class="about-mv-text">To be a globally trusted pipe and tube manufacturer, recognized for manufacturing excellence, continuous advancement, and a commitment to supporting industries with dependable products and responsible business practices.</p>
+                            <h3 class="about-mv-heading">{{ pt('about.vision_title') }}</h3>
+                            <p class="about-mv-text">{{ pt('about.vision_text') }}</p>
                         </div>
                     </div>
                     <div class="about-mv-image">
-                        <img src="{{ asset('frontend/assets/images/About/vision-image.png') }}" alt="Ratnadeep team at manufacturing site" class="img-fluid w-100">
+                        <img src="{{ pt_image('about.vision_image') }}" alt="Ratnadeep team at manufacturing site" class="img-fluid w-100">
                     </div>
                 </div>
             </div>
@@ -115,39 +115,20 @@
             <div class="text-center section-header-gap">
                 <div class="section-badge">
                     <span class="badge-dot purple-dot"></span>
-                    WHAT WE STAND FOR
+                    {{ pt('about.values_badge') }}
                 </div>
-                <h2 class="section-title">The Standards Behind Every Product</h2>
+                <h2 class="section-title">{{ pt('about.values_title') }}</h2>
             </div>
             <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-number">01</div>
-                    <div class="feature-content">
-                        <h3 class="feature-title">Manufacturing Excellence</h3>
-                        <p class="feature-desc">Every pipe and tube is manufactured through disciplined processes, advanced manufacturing infrastructure, and rigorous quality control to ensure consistent performance across industrial applications.</p>
+                @foreach($values as $value)
+                    <div class="feature-card">
+                        <div class="feature-number">{{ sprintf('%02d', $loop->iteration) }}</div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">{{ $value->title }}</h3>
+                            <p class="feature-desc">{{ $value->description }}</p>
+                        </div>
                     </div>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-number">02</div>
-                    <div class="feature-content">
-                        <h3 class="feature-title">Customer Commitment</h3>
-                        <p class="feature-desc">We support customers with reliable pipe and tube manufacturing solutions, responsive communication, dependable delivery, and a clear understanding of project requirements.</p>
-                    </div>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-number">03</div>
-                    <div class="feature-content">
-                        <h3 class="feature-title">Continuous Improvement</h3>
-                        <p class="feature-desc">We continuously strengthen our manufacturing capabilities, production technologies, and quality systems to meet evolving industry standards and customer expectations.</p>
-                    </div>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-number">04</div>
-                    <div class="feature-content">
-                        <h3 class="feature-title">Integrity in Operations</h3>
-                        <p class="feature-desc">From raw material inspection to final dispatch, every pipe and tube is backed by complete material traceability, documented quality assurance, and transparent manufacturing practices.</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -158,43 +139,21 @@
             <div class="text-center section-header-gap">
                 <div class="section-badge">
                     <span class="badge-dot purple-dot"></span>
-                    OUR STRENGTHS
+                    {{ pt('about.strengths_badge') }}
                 </div>
-                <h2 class="section-title">Built on Capability. Backed by Control.</h2>
+                <h2 class="section-title">{{ pt('about.strengths_title') }}</h2>
             </div>
             <div class="about-strengths-grid">
-                <div class="about-strength-card about-strength-card--sm">
-                    <img src="{{ asset('frontend/assets/images/About/strength-1.png') }}" alt="Complete Material Traceability">
-                    <div class="about-strength-overlay"></div>
-                    <div class="about-strength-content">
-                        <h3 class="about-strength-title">Complete Material Traceability</h3>
-                        <p class="about-strength-desc">Every batch of raw material is fully documented and traceable from mill origin through all stages of production.</p>
+                @foreach($strengths as $strength)
+                    <div class="about-strength-card {{ $loop->iteration === 2 ? 'about-strength-card--lg' : 'about-strength-card--sm' }}">
+                        @if($strength->image)<img src="{{ asset($strength->image) }}" alt="{{ $strength->alt_image_text ?: $strength->title }}">@endif
+                        <div class="about-strength-overlay {{ $loop->iteration === 2 ? 'about-strength-overlay--gradient' : '' }}"></div>
+                        <div class="about-strength-content">
+                            <h3 class="about-strength-title">{{ $strength->title }}</h3>
+                            <p class="about-strength-desc">{{ $strength->description }}</p>
+                        </div>
                     </div>
-                </div>
-                <div class="about-strength-card about-strength-card--lg">
-                    <img src="{{ asset('frontend/assets/images/About/strength-2.png') }}" alt="End-to-End In-House Manufacturing">
-                    <div class="about-strength-overlay about-strength-overlay--gradient"></div>
-                    <div class="about-strength-content">
-                        <h3 class="about-strength-title">End-to-End In-House Manufacturing</h3>
-                        <p class="about-strength-desc">Equipped with specialized cold drawing, pilgering, and finishing lines for total quality assurance.</p>
-                    </div>
-                </div>
-                <div class="about-strength-card about-strength-card--sm">
-                    <img src="{{ asset('frontend/assets/images/About/strength-3.png') }}" alt="Approved by Global Industries">
-                    <div class="about-strength-overlay"></div>
-                    <div class="about-strength-content">
-                        <h3 class="about-strength-title">Approved by Global Industries</h3>
-                        <p class="about-strength-desc">Recognized and certified by major international engineering consultants and certification bodies.</p>
-                    </div>
-                </div>
-                <div class="about-strength-card about-strength-card--sm">
-                    <img src="{{ asset('frontend/assets/images/About/strength-4.png') }}" alt="100% Inspection Before Dispatch">
-                    <div class="about-strength-overlay"></div>
-                    <div class="about-strength-content">
-                        <h3 class="about-strength-title">100% Inspection Before Dispatch</h3>
-                        <p class="about-strength-desc">Comprehensive hydro, eddy-current, and ultrasonic testing to verify defect-free tubing.</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -205,40 +164,40 @@
             <div class="text-center section-header-gap">
                 <div class="section-badge">
                     <span class="badge-dot purple-dot"></span>
-                    OUR LEADERSHIP
+                    {{ pt('about.leadership_badge') }}
                 </div>
-                <h2 class="section-title">Leading with Purpose. Building with Responsibility.</h2>
+                <h2 class="section-title">{{ pt('about.leadership_title') }}</h2>
             </div>
             <div class="about-leadership-grid">
                 <div class="about-leader-card">
-                    <div class="about-leader-image-wrap about-leader-image-wrap--bharat" role="img" aria-label="Bharat S Sanghavi, Founder">
+                    <div class="about-leader-image-wrap about-leader-image-wrap--bharat" role="img" aria-label="{{ pt('about.leader_1_name') }}, {{ pt('about.leader_1_role') }}">
                         <div class="about-leader-media" aria-hidden="true">
-                            <img src="{{ asset('frontend/assets/images/About/leader-bharat-bg.png') }}" alt="" class="about-leader-layer about-leader-layer--bg">
-                            <img src="{{ asset('frontend/assets/images/About/leader-bharat-fg.png') }}" alt="" class="about-leader-layer about-leader-layer--fg">
+                            <img src="{{ pt_image('about.leader_1_image_bg') }}" alt="" class="about-leader-layer about-leader-layer--bg">
+                            <img src="{{ pt_image('about.leader_1_image') }}" alt="" class="about-leader-layer about-leader-layer--fg">
                         </div>
                         <div class="about-leader-badge">
-                            <strong>Bharat S Sanghavi</strong>
-                            <span>Founder</span>
+                            <strong>{{ pt('about.leader_1_name') }}</strong>
+                            <span>{{ pt('about.leader_1_role') }}</span>
                         </div>
                     </div>
-                    <blockquote class="about-leader-quote">"Our focus has always been to build products that customers can rely on, every time."</blockquote>
-                    <p>Mr. Bharat S Sanghavi founded Ratnadeep Metal And Tubes Limited in 1981 with a clear vision to build a manufacturing company rooted in quality, discipline, and long-term trust. His commitment to precision, ethical business practices, and manufacturing excellence established the strong foundation on which the company continues to grow.</p>
-                    <p class="mb-0">Today, his values remain embedded in every stage of manufacturing—from process control and quality assurance to customer relationships and operational discipline. This enduring philosophy continues to shape the culture and standards of the organisation.</p>
+                    <blockquote class="about-leader-quote">"{{ pt('about.leader_1_quote') }}"</blockquote>
+                    <p>{{ pt('about.leader_1_text_1') }}</p>
+                    <p class="mb-0">{{ pt('about.leader_1_text_2') }}</p>
                 </div>
                 <div class="about-leader-card">
-                    <div class="about-leader-image-wrap about-leader-image-wrap--jaimik" role="img" aria-label="Jaimik B Sanghavi, Director">
+                    <div class="about-leader-image-wrap about-leader-image-wrap--jaimik" role="img" aria-label="{{ pt('about.leader_2_name') }}, {{ pt('about.leader_2_role') }}">
                         <div class="about-leader-media" aria-hidden="true">
-                            <img src="{{ asset('frontend/assets/images/About/leader-jaimik-bg.png') }}" alt="" class="about-leader-layer about-leader-layer--bg">
-                            <img src="{{ asset('frontend/assets/images/About/leader-jaimik-fg.png') }}" alt="" class="about-leader-layer about-leader-layer--fg">
+                            <img src="{{ pt_image('about.leader_2_image_bg') }}" alt="" class="about-leader-layer about-leader-layer--bg">
+                            <img src="{{ pt_image('about.leader_2_image') }}" alt="" class="about-leader-layer about-leader-layer--fg">
                         </div>
                         <div class="about-leader-badge">
-                            <strong>Jaimik B Sanghavi</strong>
-                            <span>Director</span>
+                            <strong>{{ pt('about.leader_2_name') }}</strong>
+                            <span>{{ pt('about.leader_2_role') }}</span>
                         </div>
                     </div>
-                    <blockquote class="about-leader-quote">"Growth is meaningful only when every product continues to reflect the same standards, quality and reliability."</blockquote>
-                    <p>Under the leadership of Jaimik B Sanghavi, Ratnadeep Metal And Tubes Limited continues to expand its manufacturing capabilities while staying true to the principles established over four decades ago. His focus is on strengthening infrastructure, adopting advanced manufacturing practices, and enhancing operational efficiency to support evolving industrial requirements.</p>
-                    <p class="mb-0">By combining experience with continuous improvement, he is guiding the company towards sustainable growth, global competitiveness, and long-term value creation for customers across diverse industries.</p>
+                    <blockquote class="about-leader-quote">"{{ pt('about.leader_2_quote') }}"</blockquote>
+                    <p>{{ pt('about.leader_2_text_1') }}</p>
+                    <p class="mb-0">{{ pt('about.leader_2_text_2') }}</p>
                 </div>
             </div>
         </div>
@@ -250,12 +209,12 @@
             <div class="section-header-gap">
                 <div class="section-badge">
                     <span class="badge-dot purple-dot"></span>
-                    A GLOBAL NETWORK OF EXCELLENCE.
+                    {{ pt('about.global_badge') }}
                 </div>
-                <h2 class="section-title">Engineered in India. Trusted Worldwide.</h2>
+                <h2 class="section-title">{{ pt('about.global_title') }}</h2>
             </div>
             <div class="map-container">
-                <img src="{{ asset('frontend/assets/images/Map.webp') }}" alt="Global Network Map" class="img-fluid map-image">
+                <img src="{{ pt_image('about.global_map_image') }}" alt="Global Network Map" class="img-fluid map-image">
             </div>
             <div class="map-legend">
                 <div class="legend-item">
@@ -281,36 +240,36 @@
     </section>
 
     <!-- Six Stages -->
+    @if($stages->isNotEmpty())
+    @php($firstStage = $stages->first())
     <section class="mt_80">
         <div class="container-fluid">
             <div class="about-stages-grid">
                 <div class="about-stages-media">
-                    <img src="{{ asset('frontend/assets/images/About/stages-manufacturing.png') }}" alt="Ratnadeep pipe and tube manufacturing" class="about-stages-image">
+                    <img src="{{ pt_image('about.stages_image') }}" alt="Ratnadeep pipe and tube manufacturing" class="about-stages-image">
                 </div>
                 <div class="about-stages-content">
                     <div class="about-stages-intro">
                         <div class="section-badge align-left">
                             <span class="badge-dot purple-dot"></span>
-                            HOW WE MANUFACTURE
+                            {{ pt('about.stages_badge') }}
                         </div>
-                        <h2 class="section-title text-start about-stages-title">Six Stages. One Standard.</h2>
+                        <h2 class="section-title text-start about-stages-title">{{ pt('about.stages_title') }}</h2>
                     </div>
                     <div class="about-stages-panel">
-                        <h3 class="about-stages-heading" id="aboutStageTitle">Raw Material Inspection</h3>
-                        <p class="about-stages-text" id="aboutStageText">Every raw material batch is carefully inspected for chemical composition, mechanical properties, and dimensional accuracy before entering production, ensuring every pipe and tube begins with verified quality.</p>
+                        <h3 class="about-stages-heading" id="aboutStageTitle">{{ $firstStage->title }}</h3>
+                        <p class="about-stages-text" id="aboutStageText">{{ $firstStage->description }}</p>
                     </div>
                     <div class="about-stages-indicators" id="aboutStagesIndicators" role="tablist" aria-label="Manufacturing stages">
-                        <button type="button" class="about-stages-indicator active" role="tab" aria-selected="true" aria-controls="aboutStageTitle" data-index="0" aria-label="Stage 1: Raw Material Inspection"></button>
-                        <button type="button" class="about-stages-indicator" role="tab" aria-selected="false" aria-controls="aboutStageTitle" data-index="1" aria-label="Stage 2: Pipe Forming &amp; Rolling"></button>
-                        <button type="button" class="about-stages-indicator" role="tab" aria-selected="false" aria-controls="aboutStageTitle" data-index="2" aria-label="Stage 3: Heat Treatment"></button>
-                        <button type="button" class="about-stages-indicator" role="tab" aria-selected="false" aria-controls="aboutStageTitle" data-index="3" aria-label="Stage 4: In-House Testing &amp; NDT"></button>
-                        <button type="button" class="about-stages-indicator" role="tab" aria-selected="false" aria-controls="aboutStageTitle" data-index="4" aria-label="Stage 5: Finishing &amp; Marking"></button>
-                        <button type="button" class="about-stages-indicator" role="tab" aria-selected="false" aria-controls="aboutStageTitle" data-index="5" aria-label="Stage 6: Final Inspection &amp; Dispatch"></button>
+                        @foreach($stages as $stage)
+                            <button type="button" class="about-stages-indicator {{ $loop->first ? 'active' : '' }}" role="tab" aria-selected="{{ $loop->first ? 'true' : 'false' }}" aria-controls="aboutStageTitle" data-index="{{ $loop->index }}" aria-label="Stage {{ $loop->iteration }}: {{ $stage->title }}"></button>
+                        @endforeach
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    @endif
 
     <!-- Careers -->
     <section class="mt_80 about-careers-section">
@@ -318,22 +277,22 @@
             <div class="text-center section-header-gap">
                 <div class="section-badge">
                     <span class="badge-dot purple-dot"></span>
-                    Careers at Ratnadeep
+                    {{ pt('about.careers_badge') }}
                 </div>
-                <h2 class="section-title">Careers at Ratnadeep</h2>
-                <p class="about-careers-lead">Bring your expertise to a team driven by engineering precision, manufacturing discipline, and continuous improvement.</p>
-                <a href="{{ route('contact') }}#write-to-us" class="com_btn_red">Join Our Team <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                <h2 class="section-title">{{ pt('about.careers_title') }}</h2>
+                <p class="about-careers-lead">{{ pt('about.careers_text') }}</p>
+                <a href="{{ route('contact') }}#write-to-us" class="com_btn_red">{{ pt('about.careers_button') }} <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
             </div>
             <div class="about-careers-gallery">
                 <div class="about-career-card about-career-card--left">
-                    <img src="{{ asset('frontend/assets/images/About/career-1.png') }}" alt="Ratnadeep team meeting" class="img-fluid w-100">
+                    <img src="{{ pt_image('about.career_image_1') }}" alt="Ratnadeep team meeting" class="img-fluid w-100">
                 </div>
                 <div class="about-career-card about-career-card--center">
-                    <img src="{{ asset('frontend/assets/images/About/career-2.png') }}" alt="" class="about-career-layer about-career-layer--bg" aria-hidden="true">
-                    <img src="{{ asset('frontend/assets/images/About/career-2-overlay.png') }}" alt="Ratnadeep workforce at manufacturing facility" class="about-career-layer about-career-layer--fg">
+                    <img src="{{ pt_image('about.career_image_2') }}" alt="" class="about-career-layer about-career-layer--bg" aria-hidden="true">
+                    <img src="{{ pt_image('about.career_image_2_overlay') }}" alt="Ratnadeep workforce at manufacturing facility" class="about-career-layer about-career-layer--fg">
                 </div>
                 <div class="about-career-card about-career-card--right">
-                    <img src="{{ asset('frontend/assets/images/About/career-3.png') }}" alt="Ratnadeep team collaboration" class="img-fluid w-100">
+                    <img src="{{ pt_image('about.career_image_3') }}" alt="Ratnadeep team collaboration" class="img-fluid w-100">
                 </div>
             </div>
         </div>
@@ -345,17 +304,17 @@
             <div class="text-center section-header-gap">
                 <div class="section-badge">
                     <span class="badge-dot purple-dot"></span>
-                    QUALITY SYSTEMS
+                    {{ pt('about.certifications_badge') }}
                 </div>
-                <h2 class="section-title">Certified for Global Standards</h2>
+                <h2 class="section-title">{{ pt('about.certifications_title') }}</h2>
             </div>
             <div class="about-cert-grid">
-                @foreach($aboutLogos as $aboutLogo)
-                    <div class="about-cert-card {{ strlen($aboutLogo->title) > 40 ? 'about-cert-card--wide-lg' : '' }}">
-                        @if($aboutLogo->image)
-                            <img src="{{ asset($aboutLogo->image) }}" alt="{{ $aboutLogo->alt_image_text ?: $aboutLogo->title }}">
+                @foreach($certifications as $certification)
+                    <div class="about-cert-card {{ strlen($certification->title) > 40 ? 'about-cert-card--wide-lg' : '' }}">
+                        @if($certification->image)
+                            <img src="{{ asset($certification->image) }}" alt="{{ $certification->alt_image_text ?: $certification->title }}">
                         @endif
-                        <p>{{ $aboutLogo->title }}</p>
+                        <p>{{ $certification->title }}</p>
                     </div>
                 @endforeach
             </div>
@@ -367,32 +326,7 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    var stages = [
-        {
-            title: 'Raw Material Inspection',
-            text: 'Every raw material batch is carefully inspected for chemical composition, mechanical properties, and dimensional accuracy before entering production, ensuring every pipe and tube begins with verified quality.'
-        },
-        {
-            title: 'Pipe Forming & Rolling',
-            text: 'Seamless and welded pipes and tubes are formed through controlled rolling, piercing, and welding processes managed in-house to maintain tighter tolerances, consistent dimensions, and reliable mechanical performance.'
-        },
-        {
-            title: 'Heat Treatment',
-            text: 'Heat treatment is carried out under controlled furnace conditions to achieve the required metallurgical structure, strength, and durability needed for demanding industrial and high-pressure applications.'
-        },
-        {
-            title: 'In-House Testing & NDT',
-            text: 'Every product undergoes rigorous in-house inspection and non-destructive testing, including dimensional verification and material validation, to confirm compliance with applicable standards before moving to finishing.'
-        },
-        {
-            title: 'Finishing & Marking',
-            text: 'Pipes and tubes are finished, marked, and documented with complete material traceability so every product can be identified, tracked, and supplied with the quality records required by global customers.'
-        },
-        {
-            title: 'Final Inspection & Dispatch',
-            text: 'Before dispatch, every order passes through final inspection and packing checks to ensure products leave our facility ready for dependable performance in domestic and international project environments.'
-        }
-    ];
+    var stages = @json($stageData);
 
     var titleEl = document.getElementById('aboutStageTitle');
     var textEl = document.getElementById('aboutStageText');

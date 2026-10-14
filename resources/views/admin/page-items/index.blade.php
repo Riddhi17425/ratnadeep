@@ -3,15 +3,23 @@
 @php
     $isTextPage = $textPage !== null;
     $config = $isTextPage
-        ? ['page' => $textPages[$textPage]['label'], 'label' => 'Page Details']
-        : $sections[$section];
+        ? [
+            'page' => data_get($textPages, (string) $textPage . '.label', 'Page'),
+            'label' => 'Page Details',
+            'image' => false,
+            'description' => false,
+            'contact' => false,
+        ]
+        : data_get($sections, (string) $section, []);
+    $pageContentTitle = $config['page'] . ' Content';
+    $columnCount = 5 + (int) (bool) $config['image'] + (int) $config['description'] + (int) !empty($config['contact']);
 @endphp
 <div class="body-wrapper">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Page Content</h2>
+        <h2>{{ $pageContentTitle }}</h2>
         @unless($isTextPage)
         <a href="{{ route('page-items.create', ['section' => $section]) }}" class="btn btn-primary">
-            <i class="icofont-plus"></i> Add Item
+            <i class="icofont-plus"></i> Add Content Item
         </a>
         @endunless
     </div>
@@ -19,7 +27,7 @@
     <div class="card mb-3">
         <div class="card-body">
             <form action="{{ route('page-items.index') }}" method="GET">
-                <label class="form-label" for="sectionSwitch">Page content</label>
+                <label class="form-label" for="sectionSwitch">Choose page content</label>
                 <select class="form-select" id="sectionSwitch" name="section" onchange="this.form.submit()">
                     @foreach($contentGroups as $pageName => $group)
                         <optgroup label="{{ $pageName }}">
@@ -35,9 +43,9 @@
             </form>
             <small class="text-muted">
                 @if($isTextPage)
-                    Edit the page-wide text and imagery for {{ $config['page'] }}.
+                    Edit the page-wide text and images for {{ $config['page'] }}.
                 @else
-                    Items appear on the {{ $config['page'] }} page in the order given by "Order".
+                    Manage {{ strtolower($config['label']) }} on the {{ $config['page'] }} page. Use display order to control their sequence.
                 @endif
             </small>
         </div>
@@ -48,7 +56,7 @@
         <div class="card-body">
             <form action="{{ route('page-content.texts.update', $textPage) }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                @foreach($textPages[$textPage]['fields'] as $key => [$label, $type, $default])
+                @foreach(data_get($textPages, (string) $textPage . '.fields', []) as $key => [$label, $type, $default])
                     @php $value = old($key, $textValues[$key] ?? $default); @endphp
                     <div class="mb-3">
                         <label class="form-label" for="page-text-{{ $key }}">{{ $label }}</label>
@@ -81,18 +89,18 @@
             <table class="table table-bordered" id="pageItemTable">
                 <thead>
                     <tr>
-                        <th>Id</th>
+                        <th>#</th>
                         @if($config['image'])<th>Image</th>@endif
                         <th>Title</th>
                         @if($config['description'])<th>{{ $config['description_label'] ?? 'Description' }}</th>@endif
                         @if(!empty($config['contact']))<th>Phone / Email</th>@endif
-                        <th>Order</th>
+                        <th>Display order</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($items as $key => $item)
+                    @forelse($items as $key => $item)
                     <tr class="{{ $item->trashed() ? 'table-light text-muted' : '' }}">
                         <td>{{ $key + 1 }}</td>
                         @if($config['image'])
@@ -111,7 +119,13 @@
                         <td>@include('admin.partials.status-cell', ['model' => $item])</td>
                         <td>@include('admin.partials.action-cell', ['model' => $item, 'base' => 'page-items', 'title' => $item->title])</td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="{{ $columnCount }}" class="text-center text-muted">
+                            No content items yet. Use “Add Content Item” to create the first one.
+                        </td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

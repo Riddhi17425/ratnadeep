@@ -170,7 +170,7 @@
     </section>
 
     <!-- Careers -->
-    <section class="mt_80 contact-careers-section">
+    <!-- <section class="mt_80 contact-careers-section">
         <div class="container">
             <div class="text-center section-header-gap">
                 <div class="section-badge">
@@ -194,6 +194,6 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 </main>
 @endsection

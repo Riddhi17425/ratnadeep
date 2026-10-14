@@ -2,6 +2,23 @@
 .page-careers .inner-head .inner-lead {
     max-width: 1400px;
 }
+.page-careers .careers-filters {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    width: max-content;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 8px;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+}
+.page-careers .careers-filters .inner-filter {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
 .page-careers .careers-role {
     display: flex;
     justify-content: space-between;

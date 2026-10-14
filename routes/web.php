@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\{
     CertificateController,
     ManufactureStageController,
     ProductController,
+    JobAreaController,
     JobOpeningController,
     JobApplicationController,
     PageItemController,
@@ -98,6 +99,10 @@ Route::middleware(['auth', 'role:admin,super_admin'])->prefix('admin')->group(fu
     Route::delete('products/{id}/force-delete', [ProductController::class, 'forceDelete'])->name('products.force-delete');
 
     // Careers: job openings + submitted applications
+    Route::resource('job-areas', JobAreaController::class)->except('show')
+        ->parameters(['job-areas' => 'jobArea']);
+    Route::put('job-areas/{id}/restore', [JobAreaController::class, 'restore'])->name('job-areas.restore');
+    Route::delete('job-areas/{id}/force-delete', [JobAreaController::class, 'forceDelete'])->name('job-areas.force-delete');
     Route::resource('job-openings', JobOpeningController::class)->except('show')
         ->parameters(['job-openings' => 'job_opening']);
     Route::post('job-openings/{job_opening}/status', [JobOpeningController::class, 'updateStatus'])->name('job-openings.status');

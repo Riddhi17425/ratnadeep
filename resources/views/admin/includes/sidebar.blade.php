@@ -53,13 +53,6 @@
         </li>
 
         <li>
-            <a class="m-link {{ request()->routeIs('about-logos.*') ? 'active' : '' }}" href="{{ route('about-logos.index') }}">
-                <i class="icofont-image fs-5"></i>
-                <span>About Page Logos</span>
-            </a>
-        </li>
-
-        <li>
             <a class="m-link {{ request()->routeIs('certificates.*') ? 'active' : '' }}" href="{{ route('certificates.index') }}">
                 <i class="icofont-certificate-alt-1 fs-5"></i>
                 <span>Certificates</span>
@@ -67,15 +60,16 @@
         </li>
 
         <li>
-            <a class="m-link {{ request()->routeIs('manufacture-stages.*') ? 'active' : '' }}" href="{{ route('manufacture-stages.index') }}">
-                <i class="icofont-industries-1 fs-5"></i>
-                <span>Manufacture Stages</span>
-            </a>
-        </li>
-        <li>
             <a class="m-link {{ request()->routeIs('products.*') ? 'active' : '' }}" href="{{ route('products.index') }}">
                 <i class="icofont-box fs-5"></i>
                 <span>Products</span>
+            </a>
+        </li>
+
+        <li>
+            <a class="m-link {{ request()->routeIs('job-areas.*') ? 'active' : '' }}" href="{{ route('job-areas.index') }}">
+                <i class="icofont-listing-box fs-5"></i>
+                <span>Job Areas</span>
             </a>
         </li>
 

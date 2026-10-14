@@ -12,11 +12,14 @@ class ProductController extends Controller
     {
         $products = Product::where('status', 1)->orderBy('sort_order')->orderBy('id')->get();
 
-        // Filter tabs = active categories (material families)
-        $categories = Category::where('status', 1)->orderBy('id')->get();
+        // Show only active categories that have at least one active product.
+        $productCategoryIds = $products->pluck('category_id')->filter()->unique();
+        $categories = Category::where('status', 1)
+            ->whereIn('id', $productCategoryIds)
+            ->orderBy('id')
+            ->get();
 
-        // Default tab: the first family that has products (Figma opens on "Stainless Steel")
-        $activeCategoryId = $categories->first(fn ($category) => $products->contains('category_id', $category->id))?->id;
+        $activeCategoryId = $categories->first()?->id;
 
         return view('front.products', compact('products', 'categories', 'activeCategoryId'));
     }

@@ -11,8 +11,14 @@
 
                 <div class="mb-3">
                     <label class="form-label">Title <span class="text-danger">*</span></label>
-                    <input type="text" name="title" class="form-control" value="{{ old('title', $category->title) }}">
+                    <input type="text" name="title" id="category-title" class="form-control" value="{{ old('title', $category->title) }}">
                     @error('title') <small class="text-danger">{{ $message }}</small> @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Slug</label>
+                    <input type="text" name="slug" id="category-slug" class="form-control" value="{{ old('slug', $category->slug) }}">
+                    @error('slug') <small class="text-danger">{{ $message }}</small> @enderror
                 </div>
 
                 <div class="mb-3">
@@ -78,4 +84,5 @@
         $('#description').summernote({ height: 250 });
     });
 </script>
+@include('admin.partials.slug-generator', ['titleId' => 'category-title', 'slugId' => 'category-slug'])
 @endpush

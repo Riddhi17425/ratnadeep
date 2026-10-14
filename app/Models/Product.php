@@ -32,13 +32,13 @@ class Product extends Model
         parent::boot();
 
         static::creating(function ($product) {
-            if (empty($product->slug)) {
-                $product->slug = static::uniqueSlug($product->title);
-            }
+            $product->slug = static::uniqueSlug($product->slug ?: $product->title);
         });
 
         static::updating(function ($product) {
-            if ($product->isDirty('title') && !$product->isDirty('slug')) {
+            if ($product->isDirty('slug')) {
+                $product->slug = static::uniqueSlug($product->slug ?: $product->title, $product->id);
+            } elseif ($product->isDirty('title')) {
                 $product->slug = static::uniqueSlug($product->title, $product->id);
             }
         });

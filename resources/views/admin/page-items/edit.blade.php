@@ -1,7 +1,8 @@
 @extends('admin.layouts.master')
 @section('content')
 <div class="body-wrapper">
-    <h2>Edit Item</h2>
+    <h2>Edit Content Item</h2>
+    <p class="text-muted">{{ $config['page'] }} / {{ $config['label'] }}</p>
 
     <div class="card">
         <div class="card-body">

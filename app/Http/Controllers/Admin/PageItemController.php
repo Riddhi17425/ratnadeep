@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\Concerns\ManagesFiles;
 use App\Http\Controllers\Controller;
+use App\Models\AboutLogo;
 use App\Models\PageItem;
 use App\Models\PageText;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 /**
@@ -32,18 +32,57 @@ class PageItemController extends Controller
         return $key;
     }
 
+    private function initializeDefaults(string $section): void
+    {
+        if (PageItem::withTrashed()->where('section', $section)->exists()) {
+            return;
+        }
+
+        $defaults = $this->sections()[$section]['defaults'] ?? [];
+
+        if ($section === 'about.certifications') {
+            $defaults = AboutLogo::where('status', 1)
+                ->whereNull('deleted_at')
+                ->orderBy('id')
+                ->get(['title', 'image', 'alt_image_text'])
+                ->map(fn ($logo) => [
+                    'title' => $logo->title,
+                    'image' => $logo->image,
+                    'alt_image_text' => $logo->alt_image_text,
+                ])
+                ->all();
+        }
+
+        foreach ($defaults as $sortOrder => $item) {
+            PageItem::create(array_merge($item, [
+                'section' => $section,
+                'sort_order' => $sortOrder,
+                'status' => 1,
+            ]));
+        }
+    }
+
+    private function contentGroups(array $sections, array $textPages): array
+    {
+        $groups = [];
+
+        foreach ($sections as $key => $section) {
+            $groups[$section['page']]['sections'][$key] = $section;
+        }
+
+        foreach ($textPages as $key => $page) {
+            $groups[$page['label']]['text_page'] = $key;
+        }
+
+        return $groups;
+    }
+
     // Active + trashed together, one section at a time
     public function index(Request $request)
     {
         $sections = $this->sections();
         $textPages = config('page_texts');
-        $contentGroups = [];
-        foreach ($sections as $key => $sectionConfig) {
-            $contentGroups[$sectionConfig['page']]['sections'][$key] = $sectionConfig;
-        }
-        foreach ($textPages as $key => $page) {
-            $contentGroups[$page['label']]['text_page'] = $key;
-        }
+        $contentGroups = $this->contentGroups($sections, $textPages);
 
         $selected = $request->query('section');
         $textPage = null;
@@ -59,6 +98,7 @@ class PageItemController extends Controller
             $textValues = PageText::where('page', $page)->pluck('value', 'key')->all();
         } else {
             $section = isset($sections[$selected]) ? $selected : array_key_first($sections);
+            $this->initializeDefaults($section);
             $items = PageItem::withTrashed()->where('section', $section)->orderBy('sort_order')->orderBy('id')->get();
         }
 
@@ -123,13 +163,7 @@ class PageItemController extends Controller
     public function store(Request $request)
     {
         $section = $this->sectionOrFail($request->input('section'));
-        $validator = Validator::make($request->all(), $this->rules($section));
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
-        $data = $this->cleanData($validator->validated(), $section);
+        $data = $this->cleanData($request->validate($this->rules($section)), $section);
 
         if ($request->hasFile('image') && $this->sections()[$section]['image']) {
             $data['image'] = $this->uploadFile($request->file('image'), $this->uploadPath);
@@ -143,17 +177,9 @@ class PageItemController extends Controller
 
     public function update(Request $request, PageItem $page_item)
     {
-        $section = $page_item->section;
-        $this->sectionOrFail($section);
+        $section = $this->sectionOrFail($page_item->section);
         $request->merge(['section' => $section]);
-
-        $validator = Validator::make($request->all(), $this->rules($section));
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
-        $data = $this->cleanData($validator->validated(), $section);
+        $data = $this->cleanData($request->validate($this->rules($section)), $section);
 
         if ($request->hasFile('image') && $this->sections()[$section]['image']) {
             $this->deleteFile($page_item->image);

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\JobArea;
 use App\Models\JobOpening;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class JobOpeningController extends Controller
 {
@@ -19,23 +21,33 @@ class JobOpeningController extends Controller
 
     public function create()
     {
-        return view('admin.job-openings.create', ['areas' => config('page_content.job_areas')]);
+        return view('admin.job-openings.create', ['areas' => $this->areas()]);
     }
 
     public function edit(JobOpening $job_opening)
     {
         return view('admin.job-openings.edit', [
             'jobOpening' => $job_opening,
-            'areas'      => config('page_content.job_areas'),
+            'areas'      => $this->areas(),
         ]);
     }
 
-    private function rules(): array
+    private function areas()
     {
+        return JobArea::where('status', 1)->orderBy('sort_order')->orderBy('name')->get();
+    }
+
+    private function rules(?JobOpening $jobOpening = null): array
+    {
+        $availableAreas = $this->areas()->pluck('name')->all();
+        if ($jobOpening && $jobOpening->area) {
+            $availableAreas[] = $jobOpening->area;
+        }
+
         return [
             'title'         => 'required|string|max:255',
             'department'    => 'nullable|string|max:255',
-            'area'          => 'required|string|max:100',
+            'area'          => ['required', 'string', 'max:255', Rule::in(array_unique($availableAreas))],
             'location'      => 'nullable|string|max:255',
             'experience'    => 'nullable|string|max:255',
             'qualification' => 'nullable|string|max:255',
@@ -61,7 +73,7 @@ class JobOpeningController extends Controller
 
     public function update(Request $request, JobOpening $job_opening)
     {
-        $validator = Validator::make($request->all(), $this->rules());
+        $validator = Validator::make($request->all(), $this->rules($job_opening));
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();

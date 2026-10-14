@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class BlogController extends Controller
 {
@@ -35,7 +36,7 @@ class BlogController extends Controller
         return [
             'category_id'          => 'nullable|exists:categories,id',
             'title'                => 'required|string|max:255',
-            'url'                  => 'required|string|max:255|unique:blogs,url,' . $blogId,
+            'url'                  => ['required', 'string', 'max:255', Rule::unique('blogs', 'url')->ignore($blogId)],
             'date'                 => 'required|date',
             'short_description'    => 'required|string',
             'long_description'     => 'required|string',
@@ -58,6 +59,27 @@ class BlogController extends Controller
         ];
     }
 
+    private function prepareSlug(Request $request, ?Blog $blog = null): void
+    {
+        $title = trim($request->input('title', ''));
+        $titleSlug = Str::slug($title) ?: 'blog';
+        $slugInput = Str::slug(trim($request->input('url', '')));
+        $generateFromTitle = $slugInput === '' || ($blog && $blog->title !== $title && (
+            $slugInput === Str::slug($blog->url) || $slugInput === $titleSlug
+        ));
+        $slug = $generateFromTitle ? $titleSlug : $slugInput;
+
+        if ($generateFromTitle) {
+            $base = $slug;
+            $suffix = 2;
+            while (Blog::withTrashed()->where('url', $slug)->when($blog, fn ($query) => $query->where('id', '!=', $blog->id))->exists()) {
+                $slug = $base . '-' . $suffix++;
+            }
+        }
+
+        $request->merge(['url' => $slug]);
+    }
+
     private function prepareFaqs(Request $request)
     {
         $faqs = [];
@@ -78,6 +100,7 @@ class BlogController extends Controller
 
     public function store(Request $request)
     {
+        $this->prepareSlug($request);
         $validator = Validator::make($request->all(), $this->rules());
 
         if ($validator->fails()) {
@@ -119,6 +142,7 @@ class BlogController extends Controller
 
     public function update(Request $request, Blog $blog)
     {
+        $this->prepareSlug($request, $blog);
         $validator = Validator::make($request->all(), $this->rules($blog->id));
 
         if ($validator->fails()) {

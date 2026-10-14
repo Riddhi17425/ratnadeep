@@ -30,13 +30,13 @@
 
                 <div class="mb-3">
                     <label class="form-label">Title <span class="text-danger">*</span></label>
-                    <input type="text" name="title" class="form-control" value="{{ old('title') }}">
+                    <input type="text" name="title" id="blog-title" class="form-control" value="{{ old('title') }}">
                     @error('title') <small class="text-danger">{{ $message }}</small> @enderror
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">URL Slug <span class="text-danger">*</span></label>
-                    <input type="text" name="url" class="form-control" value="{{ old('url') }}" placeholder="e.g. my-blog-post-title">
+                    <label class="form-label">Slug <span class="text-danger">*</span></label>
+                    <input type="text" name="url" id="blog-slug" class="form-control" value="{{ old('url') }}" placeholder="Generated from title">
                     @error('url') <small class="text-danger">{{ $message }}</small> @enderror
                 </div>
 
@@ -192,4 +192,5 @@
         });
     });
 </script>
+@include('admin.partials.slug-generator', ['titleId' => 'blog-title', 'slugId' => 'blog-slug'])
 @endpush

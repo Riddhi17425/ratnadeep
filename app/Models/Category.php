@@ -20,14 +20,29 @@ class Category extends Model
         parent::boot();
 
         static::creating(function ($category) {
-            $category->slug = Str::slug($category->title) . '-' . uniqid();
+            $category->slug = static::uniqueSlug($category->slug ?: $category->title);
         });
 
         static::updating(function ($category) {
-            if ($category->isDirty('title')) {
-                $category->slug = Str::slug($category->title) . '-' . uniqid();
+            if ($category->isDirty('slug')) {
+                $category->slug = static::uniqueSlug($category->slug ?: $category->title, $category->id);
+            } elseif ($category->isDirty('title')) {
+                $category->slug = static::uniqueSlug($category->title, $category->id);
             }
         });
+    }
+
+    public static function uniqueSlug(string $value, $ignoreId = null): string
+    {
+        $base = Str::slug($value) ?: 'category';
+        $slug = $base;
+        $suffix = 2;
+
+        while (static::withTrashed()->where('slug', $slug)->when($ignoreId, fn ($query) => $query->where('id', '!=', $ignoreId))->exists()) {
+            $slug = $base . '-' . $suffix++;
+        }
+
+        return $slug;
     }
 
     public function banners()

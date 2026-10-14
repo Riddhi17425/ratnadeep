@@ -20,6 +20,7 @@
     $specs = collect($product->specs ?? []);
     $grades = collect($product->grades ?? []);
     $overview = collect($product->overview ?? []);
+    $heroCopy = $product->hero_text ?: $product->summary;
 @endphp
 <main class="page-inner page-product-detail">
     <!-- Hero -->
@@ -43,7 +44,7 @@
                         <h1 class="hero-title">{{ $product->title }}</h1>
                     </div>
                     <div class="inner-hero-copy">
-                        <p class="hero-subtitle">{{ $product->hero_text ?: $product->summary }}</p>
+                        <div class="hero-subtitle">{!! $heroCopy !!}</div>
                         <div class="hero-buttons">
                             <a href="{{ route('contact') }}#write-to-us" class="com_btn_red">{{ pt('product_detail.hero_button_1') }} <span class="ms-2">{!! $arrow !!}</span></a>
                             @if($product->datasheet)
@@ -71,9 +72,9 @@
                 </div>
                 <div class="inner-split-text">
                     @forelse($overview as $paragraph)
-                        <p>{{ $paragraph }}</p>
+                        {!! \Illuminate\Support\Str::contains($paragraph, '<') ? $paragraph : '<p>' . e($paragraph) . '</p>' !!}
                     @empty
-                        <p>{{ $product->summary }}</p>
+                        {!! \Illuminate\Support\Str::contains($product->summary ?? '', '<') ? $product->summary : '<p>' . e($product->summary) . '</p>' !!}
                         <p>For dimensions, grades and specifications for this range, please speak to our engineers.</p>
                     @endforelse
                 </div>
@@ -93,7 +94,7 @@
                             <span class="pd-feature-num">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                             <div>
                                 <h3 class="pd-feature-title">{{ $feature['title'] ?? '' }}</h3>
-                                <p class="pd-feature-text">{{ $feature['text'] ?? '' }}</p>
+                                <div class="pd-feature-text">{!! $feature['text'] ?? '' !!}</div>
                             </div>
                         </div>
                     @endforeach

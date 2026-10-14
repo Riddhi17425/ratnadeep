@@ -107,7 +107,7 @@
                     <li><a href="{{ route('about') }}">About us </a></li>
                     <li class="nav-item-has-mega">
                         <a href="#" class="nav-mega-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="productsMegaMenu">
-                            Industries <span class="dot"></span>
+                            Products <span class="dot"></span>
                         </a>
                         @include('front.layouts.partials.products-mega-menu')
                     </li>
@@ -115,7 +115,7 @@
                     <li><a href="{{ route('packaging') }}">Packaging & Shipping</a></li>
                     <li><a href="{{ route('blogs') }}">Blogs</a></li>
                     <li><a href="{{ route('events') }}">Events</a></li>
-                    <li><a href="{{ route('contact') }}">Contact Us</a></li>
+                    <li><a href="{{ route('careers') }}">Careers</a></li>
                 </ul>
             </nav>
             <div class="header-actions">

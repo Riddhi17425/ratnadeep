@@ -9,6 +9,8 @@ use App\Models\Industry;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
@@ -42,11 +44,17 @@ class ProductController extends Controller
         ];
     }
 
-    private function rules(): array
+    private function rules(?Product $product = null): array
     {
+        $slugRule = Rule::unique('products', 'slug');
+        if ($product) {
+            $slugRule->ignore($product->id);
+        }
+
         return [
             'category_id'      => 'required|exists:categories,id',
             'title'            => 'required|string|max:255',
+            'slug'             => ['nullable', 'string', 'max:255', $slugRule],
             'type'             => 'nullable|string|max:255',
             'summary'          => 'nullable|string',
             'image'            => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
@@ -73,6 +81,13 @@ class ProductController extends Controller
             'sort_order'       => 'nullable|integer|min:0',
             'status'           => 'required|in:0,1',
         ];
+    }
+
+    private function normalizeSlug(Request $request): void
+    {
+        if ($request->filled('slug')) {
+            $request->merge(['slug' => Str::slug($request->input('slug'))]);
+        }
     }
 
     /** Turns the form fields into the JSON columns of the product. */
@@ -124,6 +139,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+        $this->normalizeSlug($request);
         $validator = Validator::make($request->all(), $this->rules());
 
         if ($validator->fails()) {
@@ -143,7 +159,8 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-        $validator = Validator::make($request->all(), $this->rules());
+        $this->normalizeSlug($request);
+        $validator = Validator::make($request->all(), $this->rules($product));
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();

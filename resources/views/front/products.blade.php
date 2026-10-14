@@ -84,7 +84,7 @@
                                 <h2 class="inner-card-title">{{ $product->title }}</h2>
                                 <span class="catalog-card-arrow" aria-hidden="true">{!! $arrow !!}</span>
                             </div>
-                            <p class="inner-card-text">{{ $product->summary }}</p>
+                            <p class="inner-card-text">{{ strip_tags($product->summary ?? '') }}</p>
                         </a>
                     </article>
                 @endforeach

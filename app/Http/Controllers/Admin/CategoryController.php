@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
@@ -24,10 +25,16 @@ class CategoryController extends Controller
         return view('admin.categories.create');
     }
 
-    public function store(Request $request)
+    private function rules(?Category $category = null): array
     {
-        $validator = Validator::make($request->all(), [
+        $slugRule = Rule::unique('categories', 'slug');
+        if ($category) {
+            $slugRule->ignore($category->id);
+        }
+
+        return [
             'title'             => 'required|string|max:255',
+            'slug'              => ['nullable', 'string', 'max:255', $slugRule],
             'description'       => 'nullable|string',
             'shortdescription'  => 'nullable|string',
             'metatitle'         => 'nullable|string|max:255',
@@ -35,13 +42,20 @@ class CategoryController extends Controller
             'image'             => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'alt_image_text'    => 'nullable|string|max:255',
             'status'            => 'required|in:0,1',
-        ]);
+        ];
+    }
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
+    private function normalizeSlug(Request $request): void
+    {
+        if ($request->filled('slug')) {
+            $request->merge(['slug' => Str::slug($request->input('slug'))]);
         }
+    }
 
-        $data = $validator->validated();
+    public function store(Request $request)
+    {
+        $this->normalizeSlug($request);
+        $data = $request->validate($this->rules());
 
         if ($request->hasFile('image')) {
             $data['image'] = $this->uploadImage($request->file('image'));
@@ -60,22 +74,8 @@ class CategoryController extends Controller
 
     public function update(Request $request, Category $category)
     {
-        $validator = Validator::make($request->all(), [
-            'title'             => 'required|string|max:255',
-            'description'       => 'nullable|string',
-            'shortdescription'  => 'nullable|string',
-            'metatitle'         => 'nullable|string|max:255',
-            'metadescription'   => 'nullable|string',
-            'image'             => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'alt_image_text'    => 'nullable|string|max:255',
-            'status'            => 'required|in:0,1',
-        ]);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
-        $data = $validator->validated();
+        $this->normalizeSlug($request);
+        $data = $request->validate($this->rules($category));
 
         if ($request->hasFile('image')) {
             $this->deleteImage($category->image);

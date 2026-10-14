@@ -448,13 +448,33 @@ body {
 
 .lang-icon-globe {
     position: absolute;
-    left: 16px;
+    left: 14px;
     z-index: 5;
     pointer-events: none;
 }
 
 .language-select-native {
     display: none;
+}
+
+.header-actions .select2-container--default .select2-selection--single {
+    height: 38px !important;
+}
+
+.header-actions .select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 38px !important;
+    padding-left: 36px !important;
+    padding-right: 24px !important;
+}
+
+.header-actions .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 38px !important;
+    right: 10px !important;
+}
+
+.header-actions .com_btn_red {
+    padding: 7px 16px;
+    font-size: 13px;
 }
 
 .select2-container--default .select2-selection--single {
