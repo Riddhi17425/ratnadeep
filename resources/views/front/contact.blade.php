@@ -44,56 +44,173 @@
                         </div>
                         <h2 class="section-title text-start contact-form-title">Let's Discuss Your Requirements</h2>
                     </div>
-
-                    <form class="contact-form" action="#" method="post">
+                    <form id="contactInquiryForm"
+                        class="contact-form"
+                        action="{{ route('contact.submit') }}"
+                        method="POST"
+                        novalidate>
                         @csrf
+                        <input type="hidden" name="inquiry_type" value="page">
+
+                        <div id="contactFormMessage" class="mb-3" role="alert" aria-live="polite"></div>
+
                         <div class="contact-form-row">
                             <div class="contact-field">
-                                <input type="text" name="full_name" id="full_name" placeholder="Full Name*:" required>
+                                <input type="text"
+                                    name="name"
+                                    id="full_name"
+                                    placeholder="Full Name*:"
+                                    value="{{ old('name') }}"
+                                    maxlength="255"
+                                    required>
+                                    <span class="text-danger field-error" data-error-for="name"></span>
+                                @error('name')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
+
                             <div class="contact-field">
-                                <input type="text" name="company_name" id="company_name" placeholder="Company Name*:" required>
+                                <input type="text"
+                                    name="company"
+                                    id="company_name"
+                                    placeholder="Company Name*:"
+                                    value="{{ old('company') }}"
+                                    maxlength="255"
+                                    required>
+                                    <span class="text-danger field-error" data-error-for="company"></span>
+                                @error('company')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
+
                         <div class="contact-form-row">
                             <div class="contact-field">
-                                <input type="tel" name="phone" id="phone" placeholder="Phone Number*:" required>
+                                <input type="email"
+                                    name="email"
+                                    id="email"
+                                    placeholder="Email Address*:"
+                                    value="{{ old('email') }}"
+                                    maxlength="255"
+                                    required>
+                                    <span class="text-danger field-error" data-error-for="email"></span>
+                                @error('email')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
+
                             <div class="contact-field">
-                                <input type="email" name="email" id="email" placeholder="Email Address*:" required>
+                                <input type="tel"
+                                    name="phone"
+                                    id="phone"
+                                    placeholder="Phone Number*:"
+                                    value="{{ old('phone') }}"
+                                    maxlength="50"
+                                    required>
+                                    <span class="text-danger field-error" data-error-for="phone"></span>
+                                @error('phone')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
+
                         <div class="contact-form-row">
                             <div class="contact-field contact-field--select">
-                                <select name="city" id="city" required>
-                                    <option value="" selected disabled>City*:</option>
-                                    <option value="mumbai">Mumbai</option>
-                                    <option value="ahmedabad">Ahmedabad</option>
-                                    <option value="mehsana">Mehsana</option>
-                                    <option value="other">Other</option>
+                                <select name="country" id="country" required>
+                                    <option value="">Select Country*:</option>
+
+                                    @foreach ($countries as $country)
+                                        <option value="{{ $country->name }}"
+                                            {{ old('country') == $country->name ? 'selected' : '' }}>
+                                            {{ $country->name }}
+                                        </option>
+                                    @endforeach
                                 </select>
-                                <svg class="contact-select-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+                                <span class="text-danger field-error" data-error-for="country"></span>
+
+                                @error('country')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
-                            <div class="contact-field contact-field--select">
-                                <select name="state" id="state" required>
-                                    <option value="" selected disabled>State*:</option>
-                                    <option value="maharashtra">Maharashtra</option>
-                                    <option value="gujarat">Gujarat</option>
-                                    <option value="other">Other</option>
-                                </select>
-                                <svg class="contact-select-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            
+                            <div class="contact-field">
+                                <input type="text"
+                                    name="city"
+                                    id="city"
+                                    placeholder="City*:"
+                                    value="{{ old('city') }}"
+                                    required>
+                                    <span class="text-danger field-error" data-error-for="city"></span>
+                                @error('city')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
-                        <div class="contact-form-row">
-                            <div class="contact-field contact-field--full">
-                                <input type="text" name="requirement" id="requirement" placeholder="Requirement :">
+
+                        <div class="contact-form-row contact-row-full">
+                            <div class="contact-field contact-field-full contact-field--select">
+                                <select name="product" id="product">
+                                    <option value="">Select Product</option>
+
+                                    @foreach ($products as $product)
+                                        <option value="{{ $product->title }}"
+                                            {{ old('product') === $product->title ? 'selected' : '' }}>
+                                            {{ $product->title }}
+                                        </option>
+                                    @endforeach
+
+                                    <option value="Other"
+                                        {{ old('product') === 'Other' ? 'selected' : '' }}>
+                                        Other
+                                    </option>
+                                </select>
+                                <span class="text-danger field-error" data-error-for="product"></span>
+                                @error('product')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
+
+                        <div class="contact-form-row contact-row-full">
+                            <div class="contact-field">
+                                <textarea name="requirement_details"
+                                    id="requirement"
+                                    placeholder="Requirement:"
+                                    maxlength="10000">{{ old('requirement_details') }}</textarea>
+                                    <span class="text-danger field-error" data-error-for="requirement_details"></span>
+                                @error('requirement_details')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        @if ($errors->any())
+                            <div class="text-danger mb-3">
+                                Please correct the errors above and submit again.
+                            </div>
+                        @endif
+
+                        @if (session('error'))
+                            <div class="text-danger mb-3">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+
                         <div class="contact-form-actions">
-                            <button type="submit" class="com_btn_red contact-submit-btn">Submit <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+                            <button type="submit" class="com_btn_red contact-submit-btn">
+                                Submit
+                                <span class="ms-2">
+                                    <svg width="20" height="9" viewBox="0 0 20 9"
+                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75"
+                                            stroke="currentColor" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </button>
                         </div>
-                    </form>
-                    
+                    </form>                    
                 </div>
                 <div class="contact-map-col">
                     <div class="contact-map-wrap">
@@ -196,4 +313,178 @@
         </div>
     </section> -->
 </main>
+
+<script>
+(function () {
+    function initializeContactForm() {
+        const form = document.getElementById('contactInquiryForm');
+
+        if (!form || form.dataset.ajaxInitialized === 'true') {
+            return;
+        }
+
+        const submitButton = form.querySelector('.contact-submit-btn');
+        const messageBox = document.getElementById('contactFormMessage');
+
+        if (!submitButton || !messageBox) {
+            console.error('Contact form elements are missing.');
+            return;
+        }
+
+        form.dataset.ajaxInitialized = 'true';
+
+        function clearErrors() {
+            form.querySelectorAll('.field-error').forEach(function (element) {
+                element.textContent = '';
+            });
+
+            form.querySelectorAll('.is-invalid').forEach(function (element) {
+                element.classList.remove('is-invalid');
+            });
+
+            messageBox.textContent = '';
+            messageBox.className = 'mb-3';
+        }
+
+        function showMessage(message, type) {
+            messageBox.textContent = message;
+            messageBox.className =
+                'mb-3 ' + (type === 'success' ? 'text-success' : 'text-danger');
+        }
+
+        function showErrors(errors) {
+            Object.keys(errors).forEach(function (fieldName) {
+                const field = Array.from(form.elements).find(function (element) {
+                    return element.name === fieldName;
+                });
+
+                const errorContainer = Array.from(
+                    form.querySelectorAll('[data-error-for]')
+                ).find(function (element) {
+                    return element.getAttribute('data-error-for') === fieldName;
+                });
+
+                if (errorContainer) {
+                    errorContainer.textContent = errors[fieldName][0];
+                }
+
+                if (field) {
+                    field.classList.add('is-invalid');
+                }
+            });
+        }
+
+        function clearFieldError(field) {
+            if (!field || !field.name) return;
+
+            const errorContainer = Array.from(
+                form.querySelectorAll('[data-error-for]')
+            ).find(function (element) {
+                return element.getAttribute('data-error-for') === field.name;
+            });
+
+            if (errorContainer) {
+                errorContainer.textContent = '';
+            }
+
+            field.classList.remove('is-invalid');
+        }
+
+        form.addEventListener('input', function (event) {
+            clearFieldError(event.target);
+        });
+
+        form.addEventListener('change', function (event) {
+            clearFieldError(event.target);
+        });
+
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            if (submitButton.disabled) return;
+
+            clearErrors();
+
+            const originalButtonText = submitButton.innerHTML;
+
+            submitButton.disabled = true;
+            submitButton.innerHTML = 'Submitting...';
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin'
+                });
+
+                const contentType = response.headers.get('content-type') || '';
+
+                if (!contentType.includes('application/json')) {
+                    throw new Error(
+                        'The server did not return JSON. Check the Laravel response.'
+                    );
+                }
+
+                const result = await response.json();
+
+                if (response.status === 422) {
+                    showErrors(result.errors || {});
+
+                    showMessage(
+                        result.message ||
+                        'Please correct the errors and try again.',
+                        'error'
+                    );
+
+                    // Do not force scrolling or focus the first field.
+                    return;
+                }
+
+                if (!response.ok || !result.success) {
+                    showMessage(
+                        result.message ||
+                        'Unable to submit your enquiry. Please try again.',
+                        'error'
+                    );
+
+                    return;
+                }
+
+                showMessage(
+                    result.message || 'Enquiry submitted successfully.',
+                    'success'
+                );
+
+                window.location.assign(@json(route('thankyou')));
+
+            } catch (error) {
+                console.error('Contact form submission failed:', error);
+
+                showMessage(
+                    'A network or server error occurred. Please try again.',
+                    'error'
+                );
+
+            } finally {
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalButtonText;
+            }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener(
+            'DOMContentLoaded',
+            initializeContactForm,
+            { once: true }
+        );
+    } else {
+        initializeContactForm();
+    }
+})();
+</script>
 @endsection
