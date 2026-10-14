@@ -5,7 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\AboutLogo;
 use App\Models\JobApplication;
 use App\Models\JobOpening;
+use App\Models\Country;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use App\Models\ContactInquiry;
+use Carbon\Carbon;
 
 class FrontController extends Controller
 {
@@ -23,7 +30,10 @@ class FrontController extends Controller
 
     public function contact()
     {
-        return view('front.contact');
+        $countries = Country::orderBy('name')->get();
+        $products = Product::orderBy('title')->get();
+
+        return view('front.contact', compact('countries', 'products'));
     }
 
     public function events()
@@ -100,5 +110,238 @@ class FrontController extends Controller
             'reasons'      => getPageItems('applications.reasons'),
             'faqs'         => getFaqs('applications'),
         ]);
+    }
+
+    public function submitContactInquiry(Request $request)
+    {
+        // 1. Server-side validation
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => [
+                    'required',
+                    'string',
+                    'max:255',
+                    function ($attribute, $value, $fail) {
+                        if (trim($value) === '') {
+                            $fail('Full name is required.');
+                        }
+
+                        if (preg_match('/https?:\/\/|www\./i', $value)) {
+                            $fail('URLs are not allowed in the full name.');
+                        }
+                    },
+                ],
+
+                'email' => [
+                    'required',
+                    'string',
+                    'email',
+                    'max:255',
+                ],
+
+                'phone' => [
+                    'required',
+                    'string',
+                    'max:50',
+                    'regex:/^\+?[0-9\s().-]+$/',
+                    'regex:/[0-9]/',
+                ],
+
+                'company' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                ],
+
+                'country' => [
+                    'required',
+                    'string',
+                    'max:255',
+                ],
+
+                'city' => [
+                    'required_if:inquiry_type,page',
+                    'nullable',
+                    'string',
+                    'max:255',
+                ],
+
+                'product' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                ],
+
+                'requirement_details' => [
+                    'nullable',
+                    'string',
+                    'max:10000',
+                ],
+
+                'inquiry_type' => [
+                    'nullable',
+                    'string',
+                    'in:page,popup',
+                ],
+            ],
+            [
+                'name.required' => 'Full name is required.',
+                'name.max' => 'Full name must not exceed 255 characters.',
+
+                'email.required' => 'Email is required.',
+                'email.email' => 'Please enter a valid email address.',
+                'email.max' => 'Email must not exceed 255 characters.',
+
+                'phone.required' => 'Phone number is required.',
+                'phone.max' => 'Phone number must not exceed 50 characters.',
+                'phone.regex' => 'Please enter a valid phone number.',
+
+                'company.max' => 'Company name must not exceed 255 characters.',
+
+                'country.required' => 'Country is required.',
+                'country.max' => 'Country must not exceed 255 characters.',
+
+                'city.required_if' => 'City is required.',
+
+                'product.max' => 'Product must not exceed 255 characters.',
+
+                'requirement_details.max' =>
+                    'Requirement details must not exceed 10000 characters.',
+
+                'inquiry_type.in' => 'Invalid inquiry type.',
+            ]
+        );
+
+        if ($validator->fails()) {
+            if ($request->ajax() || $request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Please correct the errors and try again.',
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
+
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // 2. Normalize input
+        $data = $validator->validated();
+
+        $data['name'] = trim($data['name']);
+        $data['email'] = trim($data['email']);
+        $data['phone'] = trim($data['phone']);
+        $data['company'] = isset($data['company'])
+            ? trim($data['company'])
+            : null;
+        $data['country'] = trim($data['country']);
+        $data['city'] = isset($data['city'])
+            ? trim($data['city'])
+            : null;
+        $data['product'] = isset($data['product'])
+            ? trim($data['product'])
+            : null;
+        $data['requirement_details'] = isset($data['requirement_details'])
+            ? trim($data['requirement_details'])
+            : null;
+
+        $inquiryType = $data['inquiry_type'] ?? 'page';
+
+        // Preserve the original product value for Google Sheets.
+        $productForSheet = $data['product'] ?? '';
+
+        // Store NULL in the database when product is "Other".
+        $productForDb = ($productForSheet === 'Other')
+            ? null
+            : ($productForSheet !== '' ? $productForSheet : null);
+
+        // 3. Save the enquiry in your database
+        try {
+            $inquiry = ContactInquiry::create([
+                'name' => $data['name'],
+                'company' => $data['company'] ?: null,
+                'email' => $data['email'],
+                'phone' => $data['phone'],
+                'country' => $data['country'],
+                'city' => $data['city'] ?: null,
+                'product' => $productForDb,
+                'requirement_details' =>
+                    $data['requirement_details'] ?: null,
+                'inquiry_type' => $inquiryType,
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Contact inquiry database save failed.', [
+                'error' => $e->getMessage(),
+            ]);
+
+            if ($request->ajax() || $request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unable to submit your enquiry. Please try again.',
+                ], 500);
+            }
+
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Unable to submit your enquiry. Please try again.');
+        }
+
+        // 4. Send the enquiry to Google Sheets
+        $timestamp = Carbon::now()->format('Y-m-d H:i:s');
+
+        $sheetsData = [
+            'inquiry_type' => $inquiryType,
+            'name' => $inquiry->name ?? '',
+            'company' => $inquiry->company ?? '',
+            'email' => $inquiry->email ?? '',
+            'phone' => $inquiry->phone ?? '',
+            'country' => $inquiry->country ?? '',
+            'city' => $inquiry->city ?? '',
+            'product' => $productForSheet,
+            'requirement_details' => $inquiry->requirement_details ?? '',
+            'date' => $timestamp,
+        ];
+
+        try {
+            $response = Http::asJson()
+                ->acceptJson()
+                ->timeout(20)
+                ->post(
+                    'https://script.google.com/macros/s/AKfycbx38n4Q_0_jxRpnJg-P56WBuNP07s0dCUGD21KAbxnbB3i8dbk3GIwrwDAhdNljH8AJ1A/exec',
+                    $sheetsData
+                );
+
+            $sheetResult = $response->json();
+
+            if (
+                !$response->successful() ||
+                !is_array($sheetResult) ||
+                ($sheetResult['status'] ?? null) !== 'success'
+            ) {
+                Log::error('Google Sheets rejected or failed to confirm inquiry.', [
+                    'http_status' => $response->status(),
+                    'response' => $response->body(),
+                    'inquiry_id' => $inquiry->id,
+                ]);
+            }
+        } catch (\Throwable $e) {
+            Log::error('Google Sheets request exception.', [
+                'error' => $e->getMessage(),
+                'inquiry_id' => $inquiry->id,
+            ]);
+        }
+
+        // 5. Return the response
+        if ($request->ajax() || $request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Your enquiry has been submitted successfully.',
+            ]);
+        }
+
+        return redirect()->route('thankyou')
+            ->with('success', 'Your message has been sent successfully.');
     }
 }
