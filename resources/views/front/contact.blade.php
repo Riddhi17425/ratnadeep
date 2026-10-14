@@ -45,142 +45,55 @@
                         <h2 class="section-title text-start contact-form-title">Let's Discuss Your Requirements</h2>
                     </div>
 
-                    <form class="quote-form" id="contact-enquiry-form" action="{{ route('contact.submit') }}" method="POST">
-
-                    @csrf
-
-                    <div class="form-row">
-
-                        <div class="form-group">
-
-                            <label>Full Name <span class="text-danger">*</span></label>
-
-                            <input type="text" name="name" placeholder="John Doe" value="{{ old('name') }}"
-                                oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '').replace(/\s{2,}/g, ' ').trimStart();">
-
-                            @error('name')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-
+                    <form class="contact-form" action="#" method="post">
+                        @csrf
+                        <div class="contact-form-row">
+                            <div class="contact-field">
+                                <input type="text" name="full_name" id="full_name" placeholder="Full Name*:" required>
+                            </div>
+                            <div class="contact-field">
+                                <input type="text" name="company_name" id="company_name" placeholder="Company Name*:" required>
+                            </div>
                         </div>
-
-                        <div class="form-group">
-
-                            <label>Company</label>
-
-                            <input type="text" name="company" placeholder="Company name"
-                                value="{{ old('company') }}">
-
-                            @error('company')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-
+                        <div class="contact-form-row">
+                            <div class="contact-field">
+                                <input type="tel" name="phone" id="phone" placeholder="Phone Number*:" required>
+                            </div>
+                            <div class="contact-field">
+                                <input type="email" name="email" id="email" placeholder="Email Address*:" required>
+                            </div>
                         </div>
-
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Email <span class="text-danger">*</span></label>
-                            <input type="email" name="email" placeholder="john@company.com"
-                                value="{{ old('email') }}">
-                            @error('email')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                        <div class="contact-form-row">
+                            <div class="contact-field contact-field--select">
+                                <select name="city" id="city" required>
+                                    <option value="" selected disabled>City*:</option>
+                                    <option value="mumbai">Mumbai</option>
+                                    <option value="ahmedabad">Ahmedabad</option>
+                                    <option value="mehsana">Mehsana</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <svg class="contact-select-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </div>
+                            <div class="contact-field contact-field--select">
+                                <select name="state" id="state" required>
+                                    <option value="" selected disabled>State*:</option>
+                                    <option value="maharashtra">Maharashtra</option>
+                                    <option value="gujarat">Gujarat</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <svg class="contact-select-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </div>
                         </div>
-                       <div class="form-group">
-                        <label>Phone <span class="text-danger">*</span></label>
-                        <input type="tel" id="phone" placeholder="99999 99999" value="{{ old('phone') }}" required title="Please add Phone Number">
-                        <input type="hidden" name="phone" id="phone_number">
-                        @error('phone')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Country <span class="text-danger">*</span></label>
-                            <select name="country" id="country">
-                                <option value="" disabled {{ old('country') ? '' : 'selected' }}>Select Country
-                                </option>
-                                @foreach ($countries as $country)
-                                    <option value="{{ $country->name }}"
-                                        {{ old('country') === $country->name ? 'selected' : '' }}>{{ $country->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('country')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                            <i class="fa-solid fa-chevron-down select-icon"></i>
+                        <div class="contact-form-row">
+                            <div class="contact-field contact-field--full">
+                                <input type="text" name="requirement" id="requirement" placeholder="Requirement :">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>City <span class="text-danger">*</span></label>
-                            <input type="text" name="city" id="city" placeholder="Ahmedabad"
-                                value="{{ old('city') }}"
-                                oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '').replace(/\s{2,}/g, ' ').trimStart();">
-                            @error('city')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                        <div class="contact-form-actions">
+                            <button type="submit" class="com_btn_red contact-submit-btn">Submit <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
                         </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Product</label>
-                            <select name="product">
-                                <option value="" disabled {{ old('product') ? '' : 'selected' }}>Select Product
-                                </option>
-                                @foreach ($products as $product)
-                                    <option value="{{ $product->title }}"
-                                        {{ old('product') === $product->title ? 'selected' : '' }}>
-                                        {{ $product->title }}</option>
-                                @endforeach
-                                <option value="Other" {{ old('product') === 'Other' ? 'selected' : '' }}>Other
-                                </option>
-                            </select>
-                            @error('product')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                            <i class="fa-solid fa-chevron-down select-icon"></i>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-
-                        <label>Requirement Details</label>
-
-                        <textarea name="requirement_details"
-                            placeholder="Describe your project requirement....">{{ old('requirement_details') }}</textarea>
-
-                        @error('requirement_details')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-
-                    </div>
-
-                    <button type="submit" class="com_btn" id="contactSubmitBtn">
-
-                        Get Quote <svg class="ms-2" width="18" height="18" viewBox="0 0 18 18"
-                            fill="none" xmlns="http://www.w3.org/2000/svg">
-
-                            <path
-                                d="M10.3767 15.4809C10.4038 15.5485 10.451 15.6062 10.5118 15.6462C10.5727 15.6862 10.6443 15.7067 10.7171 15.7048C10.7899 15.7029 10.8604 15.6788 10.9191 15.6358C10.9779 15.5927 11.022 15.5327 11.0456 15.4638L15.6858 1.90015C15.7087 1.8369 15.713 1.76844 15.6984 1.7028C15.6837 1.63716 15.6507 1.57704 15.6032 1.52949C15.5556 1.48193 15.4955 1.44891 15.4298 1.43427C15.3642 1.41963 15.2958 1.42399 15.2325 1.44684L1.66888 6.08702C1.59999 6.11065 1.53998 6.15478 1.49689 6.2135C1.45381 6.27222 1.42972 6.34271 1.42785 6.41552C1.42599 6.48832 1.44644 6.55996 1.48646 6.62081C1.52648 6.68165 1.58416 6.7288 1.65175 6.75592L7.31278 9.02604C7.49174 9.09769 7.65433 9.20484 7.79076 9.34103C7.92719 9.47721 8.03463 9.63962 8.10661 9.81845L10.3767 15.4809Z"
-                                stroke="white" stroke-width="1.42775" stroke-linecap="round"
-                                stroke-linejoin="round" />
-
-                            <path d="M15.6008 1.53223L7.79102 9.3413" stroke="white" stroke-width="1.42775"
-                                stroke-linecap="round" stroke-linejoin="round" />
-
-                        </svg>
-
-                    </button>
-
-                    <p class="form-footer">Our team typically responds within 24 business hours.</p>
-
-                </form>
-
+                    </form>
+                    
                 </div>
                 <div class="contact-map-col">
                     <div class="contact-map-wrap">
@@ -284,99 +197,3 @@
     </section>
 </main>
 @endsection
-
-<script>
-    $(document).ready(function () {
-        let isProductSubmitting = false;
-
-        $('#contact-enquiry-form').on('submit', function (e) {
-            e.preventDefault();
-
-            if (isProductSubmitting) {
-                return;
-            }
-
-            const form = this;
-            const $form = $(form);
-            const $button = $('#productSubmitBtn');
-            const $message = $('#popup-enquiry-message');
-
-            // Remove errors from the previous submission.
-            $form.find('.server-validation-error').remove();
-
-            $message.hide().removeClass('text-success text-danger').text('');
-
-            isProductSubmitting = true;
-
-            $button.prop('disabled', true).text('Submitting...');
-
-            $.ajax({
-                url: $form.attr('action'),
-                type: 'POST',
-                data: $form.serialize(),
-                dataType: 'json',
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-
-                success: function (response) {
-                    if (response.success) {
-                        $message
-                            .addClass('text-success')
-                            .text(response.message)
-                            .show();
-
-                        form.reset();
-
-                        // Allow the product field to be populated again
-                        // when another product is selected.
-                        $('#popup-product-name').val('');
-                    } else {
-                        $message
-                            .addClass('text-danger')
-                            .text(response.message || 'Please try again.')
-                            .show();
-                    }
-                },
-
-                error: function (xhr) {
-                    if (xhr.status === 422 && xhr.responseJSON) {
-                        const errors = xhr.responseJSON.errors || {};
-
-                        $.each(errors, function (field, messages) {
-                            const $input = $form.find('[name="' + field + '"]');
-
-                            if ($input.length && messages.length) {
-                                const $error = $('<div>', {
-                                    class: 'server-validation-error text-danger'
-                                }).text(messages[0]);
-
-                                $input.closest('.form-group').append($error);
-                            }
-                        });
-
-                        $message
-                            .addClass('text-danger')
-                            .text(xhr.responseJSON.message || 'Please correct the errors.')
-                            .show();
-                    } else {
-                        $message
-                            .addClass('text-danger')
-                            .text(
-                                xhr.responseJSON?.message ||
-                                'Unable to submit your enquiry. Please try again.'
-                            )
-                            .show();
-                    }
-                },
-
-                complete: function () {
-                    isProductSubmitting = false;
-
-                    $button.prop('disabled', false).text('Send Enquiry');
-                }
-            });
-        });
-    });
-</script>
