@@ -93,7 +93,7 @@
                         <div class="product-info">
                             <div class="product-header">
                                 <h3 class="product-title">{{ strtoupper($category->title) }}</h3>
-                                <a href="{{ route('home') }}#products" class="product-arrow"><span class="arrow-icon"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                                <a href="{{ route('product.detail', $category->slug) }}" class="product-arrow"><span class="arrow-icon"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
                             </div>
                             <p class="product-desc">{{ ucfirst(Str::words(strip_tags($category->description), 35, '...')) }}</p>
                         </div>

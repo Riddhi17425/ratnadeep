@@ -158,6 +158,9 @@
             @if(session('careers_success'))
                 <div class="careers-alert careers-alert--success" role="status">{{ session('careers_success') }}</div>
             @endif
+            @if(session('careers_error'))
+                <div class="careers-alert careers-alert--error" role="alert">{{ session('careers_error') }}</div>
+            @endif
             @if($errors->any())
                 <div class="careers-alert careers-alert--error" role="alert">
                     <strong>Please fix the following:</strong>
@@ -182,7 +185,7 @@
                     </div>
                     <div class="careers-field">
                         <label for="career_phone">Phone Number *:</label>
-                        <input type="tel" name="phone" id="career_phone" placeholder="Enter your Phone Number" value="{{ old('phone') }}" required maxlength="50">
+                        <input type="tel" name="phone" id="career_phone" placeholder="Enter your Phone Number" value="{{ old('phone') }}" required minlength="7" maxlength="15" pattern="[0-9]{7,15}" inputmode="numeric" title="Enter a phone number using 7 to 15 digits.">
                     </div>
                     <div class="careers-field">
                         <label for="career_position">Position Applied For *:</label>
@@ -214,7 +217,7 @@
                     </div>
                 </div>
                 <div class="careers-form-actions">
-                    <button type="submit" class="com_btn_red careers-submit">Submit <span class="ms-2">{!! $arrow !!}</span></button>
+                    <button type="submit" class="com_btn_red careers-submit"><span class="careers-submit-label">Submit</span> <span class="ms-2">{!! $arrow !!}</span></button>
                 </div>
             </form>
         </div>
@@ -302,14 +305,61 @@ document.addEventListener('DOMContentLoaded', function () {
     // show the chosen resume file name
     var fileInput = document.getElementById('career_resume');
     var fileLabel = document.getElementById('career_resume_label');
+    var careersForm = document.querySelector('.careers-form');
+    var submitButton = careersForm ? careersForm.querySelector('.careers-submit') : null;
     if (fileInput && fileLabel) {
         fileInput.addEventListener('change', function () {
             fileLabel.textContent = fileInput.files.length ? fileInput.files[0].name : 'Attach Your Resume In PDF, Word Format';
         });
     }
 
+    if (careersForm && fileInput && submitButton) {
+        $.validator.addMethod('careerResumeSize', function (value, element) {
+            return this.optional(element) || element.files[0].size <= 5 * 1024 * 1024;
+        }, 'The resume may not be larger than 5 MB.');
+
+        $('#career_phone').on('input', function () {
+            this.value = this.value.replace(/\D/g, '').slice(0, 15);
+        });
+
+        $(careersForm).validate({
+            ignore: ':hidden:not(#career_resume)',
+            errorElement: 'span',
+            errorClass: 'careers-validation-error',
+            errorPlacement: function (error, element) {
+                if (element.attr('type') === 'file') {
+                    error.insertAfter(element.closest('.careers-upload'));
+                    return;
+                }
+
+                error.insertAfter(element);
+            },
+            rules: {
+                full_name: { required: true, maxlength: 255 },
+                email: { required: true, email: true, maxlength: 255 },
+                phone: { required: true, digits: true, minlength: 7, maxlength: 15 },
+                position: { required: true },
+                experience: { required: true, maxlength: 255 },
+                linkedin: { maxlength: 255 },
+                resume: { required: true, extension: 'pdf|doc|docx', careerResumeSize: true }
+            },
+            messages: {
+                email: { email: 'Please enter a valid email address.' },
+                position: { required: 'Please select a position.' },
+                resume: { extension: 'Please attach your resume as a PDF or Word file.' }
+            },
+            submitHandler: function (form) {
+                submitButton.disabled = true;
+                submitButton.setAttribute('aria-busy', 'true');
+                submitButton.querySelector('.careers-submit-label').textContent = 'Submitting...';
+                form.submit();
+                return false;
+            }
+        });
+    }
+
     // after a submit (success or errors) land on the form
-    @if(session('careers_success') || $errors->any())
+    @if(session('careers_success') || session('careers_error') || $errors->any())
         var apply = document.getElementById('apply');
         if (apply) { apply.scrollIntoView(); }
     @endif

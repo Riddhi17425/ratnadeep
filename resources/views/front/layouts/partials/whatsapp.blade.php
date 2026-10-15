@@ -129,6 +129,12 @@
     #wa-phone:focus {
         border-color: #e31e24;
     }
+    .wa-validation-error {
+        display: block;
+        color: #d9534f;
+        font-size: 12px;
+        margin: -4px 0 8px;
+    }
     #wa-textarea {
         width: 100%;
         height: 100px;
@@ -186,20 +192,18 @@
             <h4>Ratnadeep</h4>
             <p>Welcome to Ratnadeep! How can we help you?</p>
         </div>
-        <form id="whatsapForm">
+        <form id="whatsapForm" action="{{ route('whatsapp.submit') }}" method="POST">
+            @csrf
             <div class="wa-body whatsappform">
-                <input type="tel" id="wa-phone" name="phone" required autocomplete="off">
-                 <small id="wa-phone-error" style="color:#d9534f; font-size:12px; display:none;">
-                    Please enter a valid phone number.
-                </small>
-               <textarea id="wa-textarea" name="message_display" placeholder="Type your message here..."></textarea>
-                <input type="hidden" id="wa_full_phone" name="number">
-                <input type="hidden" id="wa_message_hidden" name="message">
+                <input type="tel" id="wa-phone" name="phone_input" required minlength="7" maxlength="15" inputmode="numeric" autocomplete="off">
+               <textarea id="wa-textarea" name="message" maxlength="10000" placeholder="Type your message here..."></textarea>
+                <input type="hidden" id="wa_full_phone" name="phone">
+               <div id="wa-submit-error" role="alert" style="color:#d9534f; font-size:12px; display:none; margin-bottom:10px;"></div>
                <button class="wa-send" type="submit" id="waSendBtn">
                     <span class="btn-text">Start Chat on WhatsApp</span>
                     <span class="btn-loader" style="display:none;">
                         <span class="spinner-border spinner-border-sm" style="width:16px;height:16px;border-width:2px;"></span>
-                        Sending...
+                        Submitting...
                     </span>
                 </button>
             </div>
@@ -208,9 +212,13 @@
 </div>
 <!-- Latest JS -->
 <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.4/build/js/intlTelInput.min.js"></script>
+@push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/additional-methods.min.js"></script>
+@endpush
 <script>
     let iti;
-    document.addEventListener("DOMContentLoaded", async function() {
+    document.addEventListener("DOMContentLoaded", function() {
         const phoneInput = document.querySelector("#wa-phone");
         iti = window.intlTelInput(phoneInput, {
             initialCountry: "auto",
@@ -225,32 +233,98 @@
                     });
             },
             separateDialCode: true,
+            formatAsYouType: false,
             loadUtils: () => import(
                 "https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.4/build/js/utils.js")
         });
-            document
-                .getElementById("whatsapForm")
-                .addEventListener("submit", function (e) {
-                    e.preventDefault();
-                    // 1. Validate the phone number - block submit if invalid
-                    if (!iti.isValidNumber()) {
-                        document.getElementById("wa-phone-error").style.display = "block";
-                        return;
+
+        $.validator.addMethod("validWhatsAppPhone", function(value, element) {
+            return this.optional(element) || (/^[0-9]{7,15}$/.test(value) && iti.isValidNumber());
+        }, "Enter a valid phone number using digits only.");
+
+        $(phoneInput).on("input", function() {
+            this.value = this.value.replace(/\D/g, "").slice(0, 15);
+        });
+
+        $("#whatsapForm").validate({
+            ignore: [],
+            errorElement: "small",
+            errorClass: "wa-validation-error",
+            errorPlacement: function(error, element) {
+                if (element.attr("id") === "wa-phone") {
+                    error.insertAfter($(element).closest(".iti"));
+                    return;
+                }
+
+                error.insertAfter(element);
+            },
+            rules: {
+                phone_input: {
+                    required: true,
+                    digits: true,
+                    minlength: 7,
+                    maxlength: 15,
+                    validWhatsAppPhone: true
+                },
+                message: { maxlength: 10000 }
+            },
+            submitHandler: function(form) {
+                const button = document.getElementById("waSendBtn");
+                const buttonText = button.querySelector(".btn-text");
+                const buttonLoader = button.querySelector(".btn-loader");
+                const submitError = document.getElementById("wa-submit-error");
+                const userPhone = iti.getNumber();
+                const messageText = document.getElementById("wa-textarea").value;
+                const finalMessage = "Hello, my contact number is " + userPhone + ".\n\n" + messageText;
+                const waUrl = "https://wa.me/912223805700?text=" + encodeURIComponent(finalMessage);
+                const chatWindow = window.open("about:blank", "_blank");
+
+                document.getElementById("wa_full_phone").value = userPhone;
+                submitError.textContent = "";
+                submitError.style.display = "none";
+                button.disabled = true;
+                buttonText.style.display = "none";
+                buttonLoader.style.display = "inline-flex";
+
+                (async function() {
+                    try {
+                        const formData = new FormData(form);
+                        formData.delete("phone_input");
+                        const response = await fetch(form.action, {
+                            method: "POST",
+                            headers: {
+                                "Accept": "application/json",
+                                "X-Requested-With": "XMLHttpRequest"
+                            },
+                            body: formData
+                        });
+                        const result = await response.json();
+
+                        if (!response.ok || !result.success) {
+                            throw new Error(result.message || "Unable to submit your enquiry. Please try again.");
+                        }
+
+                        if (chatWindow) {
+                            chatWindow.location = waUrl;
+                        }
+                        toggleWAModal();
+                        document.getElementById("wa-textarea").value = "";
+                    } catch (error) {
+                        if (chatWindow) {
+                            chatWindow.close();
+                        }
+                        submitError.textContent = error.message || "Unable to submit your enquiry. Please try again.";
+                        submitError.style.display = "block";
+                    } finally {
+                        button.disabled = false;
+                        buttonText.style.display = "inline";
+                        buttonLoader.style.display = "none";
                     }
-                    document.getElementById("wa-phone-error").style.display = "none";
-                    // 2. Get the message
-                    let userPhone = iti.getNumber();
-                    let messageText = document.getElementById("wa-textarea").value;
-                    // Add the phone to the message context if needed
-                    let finalMessage = "Hello, my contact number is " + userPhone + ".\n\n" + messageText;
-                    // 3. Open WhatsApp in new tab for Ratnadeep's number
-                    let ratnadeepPhone = "912223805700";
-                    let waUrl = "https://wa.me/" + ratnadeepPhone + "?text=" + encodeURIComponent(finalMessage);
-                    window.open(waUrl, '_blank');
-                    // 4. Close Modal
-                    toggleWAModal();
-                    document.getElementById("wa-textarea").value = "";
-                });
+                })();
+
+                return false;
+            }
+        });
     });
     function toggleWAModal() {
         const modal = document.getElementById("hnoww-wa-modal");

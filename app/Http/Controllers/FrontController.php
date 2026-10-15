@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AboutLogo;
-use App\Models\JobApplication;
+use App\Models\Career;
 use App\Models\JobArea;
 use App\Models\JobOpening;
 use App\Models\Country;
@@ -14,7 +14,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use App\Models\ContactInquiry;
+use App\Models\WhatsappInquiry;
 use Carbon\Carbon;
 
 class FrontController extends Controller
@@ -146,24 +149,108 @@ class FrontController extends Controller
 
     public function applyForJob(Request $request)
     {
+        $activeAreas = JobArea::where('status', 1)->pluck('name');
+        $availablePositions = JobOpening::where('status', 1)
+            ->whereIn('area', $activeAreas)
+            ->pluck('title')
+            ->push('General application')
+            ->unique()
+            ->all();
+
         $data = $request->validate([
-            'full_name'  => 'required|string|max:255',
-            'email'      => 'required|email|max:255',
-            'phone'      => 'required|string|max:50',
-            'position'   => 'required|string|max:255',
-            'experience' => 'required|string|max:255',
-            'linkedin'   => 'nullable|string|max:255',
-            'resume'     => 'required|file|mimes:pdf,doc,docx|max:5120',
+            'full_name'  => ['required', 'string', 'max:255'],
+            'email'      => ['required', 'string', 'email', 'max:255'],
+            'phone'      => ['required', 'string', 'regex:/^[0-9]{7,15}$/'],
+            'position'   => ['required', 'string', 'max:255', Rule::in($availablePositions)],
+            'experience' => ['required', 'string', 'max:255'],
+            'linkedin'   => ['nullable', 'string', 'max:255'],
+            'resume'     => ['required', 'file', 'mimes:pdf,doc,docx', 'max:5120'],
         ], [
+            'phone.regex'  => 'Please enter a phone number using 7 to 15 digits only.',
+            'position.in'  => 'Please select an available position.',
             'resume.max'   => 'The resume may not be larger than 5 MB.',
             'resume.mimes' => 'Please attach your resume as a PDF or Word file.',
         ]);
 
-        // Stored privately (storage/app/private/resumes); only the admin can download it.
-        $data['resume'] = $request->file('resume')->store('resumes', 'local');
-        $data['job_opening_id'] = JobOpening::where('title', $data['position'])->value('id');
+        foreach (['full_name', 'email', 'phone', 'position', 'experience', 'linkedin'] as $field) {
+            if (isset($data[$field])) {
+                $data[$field] = trim($data[$field]);
+            }
+        }
 
-        JobApplication::create($data);
+        $resumePath = null;
+        try {
+            $resumePath = $request->file('resume')->store('resumes', 'local');
+            if (!$resumePath) {
+                throw new \RuntimeException('Resume could not be stored.');
+            }
+
+            $career = Career::create([
+                'full_name' => $data['full_name'],
+                'email' => $data['email'],
+                'phone' => $data['phone'],
+                'position' => $data['position'],
+                'experience' => $data['experience'],
+                'linkedin' => $data['linkedin'] ?: null,
+                'resume' => $resumePath,
+            ]);
+        } catch (\Throwable $e) {
+            if ($resumePath) {
+                Storage::disk('local')->delete($resumePath);
+            }
+
+            Log::error('Career application database save failed.', [
+                'error' => $e->getMessage(),
+            ]);
+
+            return redirect(route('careers') . '#apply')
+                ->withInput()
+                ->with('careers_error', 'Unable to submit your application. Please try again.');
+        }
+
+        $sheetData = [
+            'full_name' => $career->full_name,
+            'email' => $career->email,
+            'phone' => $career->phone,
+            'position' => $career->position,
+            'experience' => $career->experience,
+            'linkedin' => $career->linkedin ?? '',
+            'resume' => $request->file('resume')->getClientOriginalName(),
+        ];
+
+        try {
+            $response = Http::asJson()
+                ->acceptJson()
+                ->timeout(30)
+                ->post(
+                    'https://script.google.com/macros/s/AKfycbyUcCwn2GKMhUOKwdA3Zg9s4EgOobo-a7-sWlZKnDRG9Wu_R8vzQmeq9GIVO1KIHXt36Q/exec',
+                    $sheetData
+                );
+
+            $sheetResult = $response->json();
+            if (
+                !$response->successful() ||
+                !is_array($sheetResult) ||
+                ($sheetResult['status'] ?? null) !== 'success'
+            ) {
+                Log::error('Google Sheets career application save was not confirmed.', [
+                    'career_id' => $career->id,
+                    'http_status' => $response->status(),
+                    'response' => $response->body(),
+                ]);
+
+                return redirect(route('careers') . '#apply')
+                    ->with('careers_error', 'Your application was saved, but spreadsheet storage could not be confirmed. Please contact HR rather than submitting again.');
+            }
+        } catch (\Throwable $e) {
+            Log::error('Google Sheets career application request failed.', [
+                'career_id' => $career->id,
+                'error' => $e->getMessage(),
+            ]);
+
+            return redirect(route('careers') . '#apply')
+                ->with('careers_error', 'Your application was saved, but spreadsheet storage could not be confirmed. Please contact HR rather than submitting again.');
+        }
 
         return redirect(route('careers') . '#apply')
             ->with('careers_success', 'Thank you! Your application has been submitted. Our HR team will get in touch with you.');
@@ -197,6 +284,79 @@ class FrontController extends Controller
             'applications' => getPageItems('applications.items'),
             'reasons'      => getPageItems('applications.reasons'),
             'faqs'         => getFaqs('applications'),
+        ]);
+    }
+
+    public function submitWhatsAppInquiry(Request $request)
+    {
+        $data = $request->validate([
+            'phone' => ['required', 'string', 'regex:/^\\+[1-9][0-9]{6,14}$/'],
+            'message' => ['nullable', 'string', 'max:10000'],
+        ]);
+
+        $phone = trim($data['phone']);
+        $message = trim($data['message'] ?? '');
+
+        try {
+            $inquiry = WhatsappInquiry::create([
+                'phone' => $phone,
+                'message' => $message ?: null,
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('WhatsApp inquiry database save failed.', [
+                'error' => $e->getMessage(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Unable to submit your enquiry. Please try again.',
+            ], 500);
+        }
+
+        try {
+            $response = Http::asJson()
+                ->acceptJson()
+                ->timeout(30)
+                ->post(
+                    'https://script.google.com/macros/s/AKfycbyUcCwn2GKMhUOKwdA3Zg9s4EgOobo-a7-sWlZKnDRG9Wu_R8vzQmeq9GIVO1KIHXt36Q/exec',
+                    [
+                        'phone' => $phone,
+                        'message' => $message,
+                    ]
+                );
+
+            $sheetResult = $response->json();
+            if (
+                !$response->successful() ||
+                !is_array($sheetResult) ||
+                ($sheetResult['status'] ?? null) !== 'success'
+            ) {
+                Log::error('Google Sheets WhatsApp inquiry save was not confirmed.', [
+                    'inquiry_id' => $inquiry->id,
+                    'http_status' => $response->status(),
+                    'response' => $response->body(),
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Your enquiry was saved, but spreadsheet storage could not be confirmed. Please try again later.',
+                ], 502);
+            }
+        } catch (\Throwable $e) {
+            Log::error('Google Sheets WhatsApp inquiry request failed.', [
+                'inquiry_id' => $inquiry->id,
+                'error' => $e->getMessage(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Your enquiry was saved, but spreadsheet storage could not be confirmed. Please try again later.',
+            ], 502);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Your enquiry has been submitted successfully.',
         ]);
     }
 

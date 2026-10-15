@@ -27,7 +27,7 @@ class ProductController extends Controller
     public function show(string $slug)
     {
         $product = Product::with('category')->where('slug', $slug)->where('status', 1)->firstOrFail();
-
+    
         return view('front.product-detail', [
             'product'    => $product,
             'industries' => $product->industriesForDetail(),

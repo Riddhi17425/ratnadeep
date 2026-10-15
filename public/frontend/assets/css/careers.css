@@ -90,6 +90,11 @@
     gap: 10px;
     position: relative;
 }
+.page-careers .careers-validation-error {
+    color: #d9534f;
+    font-size: 14px;
+    line-height: 20px;
+}
 .page-careers .careers-field label {
     font-size: 20px;
     line-height: 28px;
