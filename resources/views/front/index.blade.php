@@ -22,6 +22,7 @@
                         ? asset($banner->image)
                         : asset(($category && $category->image) ? $category->image : 'frontend/assets/images/Stainless Steel-slider.webp');
                     $badgeTitle = $category ? $category->title : $banner->title;
+                    $shortnote = $banner->shortnote ?: ($category ? $category->shortdescription : '');
                     $rawTitle = $banner->title ?: ($category ? ($category->shortdescription ?: $category->title) : '');
                     $heroTitle = Str::title(Str::words(strip_tags($rawTitle), 12, ''));
                     $rawSubtitle = $banner->description ?: ($category ? $category->description : '');
@@ -32,7 +33,7 @@
                         <div class="hero-content">
                             <div class="hero-badge">
                                 <span class="badge-dot"></span>
-                                <span>{{ $badgeTitle }}</span>
+                                <span>{{ $shortnote }}</span>
                             </div>
                             <h1 class="hero-title">{{ $heroTitle }}</h1>
                             <p class="hero-subtitle">{{ $heroSubtitle }}</p>
