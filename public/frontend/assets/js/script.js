@@ -48,6 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
+            // a bare "#" (e.g. the Products menu trigger) is not a valid selector
+            if (this.getAttribute('href').length < 2) return;
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
                 target.scrollIntoView({
@@ -61,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (mainNav && mainNav.classList.contains('nav-active')) {
                 mainNav.classList.remove('nav-active');
                 menuToggle.classList.remove('is-active');
+                document.body.classList.remove('menu-open');
             }
         });
     });
@@ -72,8 +75,39 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileMenuToggle.addEventListener('click', () => {
             mobileMenuToggle.classList.toggle('is-active');
             mainNav.classList.toggle('nav-active');
+            document.body.classList.toggle('menu-open', mainNav.classList.contains('nav-active'));
+        });
+
+        // leaving the mobile layout (rotate / resize) closes the menu and unlocks the page scroll
+        window.matchMedia('(max-width: 1080px)').addEventListener('change', (e) => {
+            if (!e.matches) {
+                mobileMenuToggle.classList.remove('is-active');
+                mainNav.classList.remove('nav-active');
+                document.body.classList.remove('menu-open');
+            }
         });
     }
+
+    // Language selector: sits in the header on desktop, inside the mobile menu on small screens
+    (function placeLanguageSelector() {
+        const wrapper = document.querySelector('.language-select-wrapper');
+        const actions = document.querySelector('.header-actions');
+        const nav = document.querySelector('.main-nav');
+        if (!wrapper || !actions || !nav) return;
+
+        const mobileQuery = window.matchMedia('(max-width: 1080px)');
+
+        function place() {
+            if (mobileQuery.matches) {
+                if (wrapper.parentElement !== nav) nav.appendChild(wrapper);
+            } else if (wrapper.parentElement !== actions) {
+                actions.insertBefore(wrapper, actions.firstChild);
+            }
+        }
+
+        place();
+        mobileQuery.addEventListener('change', place);
+    })();
 
     // Products mega menu
     (function initProductsMegaMenu() {

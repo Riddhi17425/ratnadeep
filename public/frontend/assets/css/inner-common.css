@@ -704,3 +704,108 @@
         top: 120px;
     }
 }
+
+/* =====================================================
+   Card hover effects (same behaviour as .feature-card on the homepage / about page:
+   stronger border, soft shadow, big number sweeps to red)
+   ===================================================== */
+.page-inner .num-card,
+.page-inner .approach-card,
+.page-inner .pd-feature,
+.page-inner .export-card,
+.page-inner .careers-location-card {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+.page-inner .num-card-num,
+.page-inner .approach-card-num,
+.page-inner .pd-feature-num {
+    background: linear-gradient(120deg, #d8d5e5 0%, #d8d5e5 35%, #ffffff 50%, var(--primary-red) 65%, var(--primary-red) 100%);
+    background-size: 300% 100%;
+    background-position: 0% 0%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    display: inline-block;
+    transition: background-position 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.page-inner .num-card-title,
+.page-inner .approach-card-title,
+.page-inner .pd-feature-title,
+.page-inner .careers-role-title,
+.page-inner .careers-location-title,
+.page-inner .export-card-title,
+.page-inner .faq-question {
+    transition: color 0.3s ease;
+}
+.page-inner .careers-role {
+    transition: border-color 0.3s ease, padding-left 0.3s ease;
+}
+.page-inner .pd-grade {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.page-inner .pd-industry img {
+    transition: transform 0.5s ease;
+}
+
+@media (hover: hover) {
+    .page-inner .num-card:hover,
+    .page-inner .approach-card:hover,
+    .page-inner .pd-feature:hover {
+        border-color: rgba(94, 77, 205, 0.55);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    }
+    .page-inner .num-card:hover .num-card-num,
+    .page-inner .approach-card:hover .approach-card-num,
+    .page-inner .pd-feature:hover .pd-feature-num {
+        background-position: 100% 0%;
+        transform: scale(1.1) translateY(-4px);
+    }
+    .page-inner .num-card:hover .num-card-title,
+    .page-inner .approach-card:hover .approach-card-title,
+    .page-inner .pd-feature:hover .pd-feature-title {
+        color: var(--primary-red);
+    }
+
+    .page-inner .export-card:hover,
+    .page-inner .careers-location-card:hover {
+        border-color: #939de2;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    }
+    .page-inner .export-card:hover .export-card-title,
+    .page-inner .careers-location-card:hover .careers-location-title {
+        color: var(--primary-red);
+    }
+
+    .page-inner .careers-role:hover {
+        border-bottom-color: var(--icon-purple);
+    }
+    .page-inner .careers-role:hover .careers-role-title {
+        color: var(--primary-red);
+    }
+
+    .page-inner .inner-card:hover .inner-card-title {
+        color: var(--primary-red);
+    }
+    .page-inner .inner-card-title {
+        transition: color 0.3s ease;
+    }
+
+    .page-inner .pd-grade:hover {
+        background: var(--icon-purple);
+        color: var(--white);
+    }
+    .page-inner .pd-industry:hover img {
+        transform: scale(1.06);
+    }
+
+    .page-inner .faq-question:hover {
+        color: var(--primary-red);
+    }
+}
+
+/* Elements that are waiting to slide in from the side (scroll animations) must never widen the page.
+   "clip" (unlike "hidden") does not create a scroll container, so the sticky sections keep working. */
+.page-inner {
+    overflow-x: clip;
+}

@@ -3,7 +3,7 @@
 @section('title', 'About Us | Ratnadeep Metal & Tubes Ltd.')
 
 @section('page_css')
-<link rel="stylesheet" href="{{ asset('frontend/assets/css/about.css') }}">
+<link rel="stylesheet" href="{{ asset('frontend/assets/css/about.css') }}?v={{ filemtime(public_path('frontend/assets/css/about.css')) }}">
 @endsection
 
 @section('content')
@@ -48,23 +48,23 @@
             <div class="about-company-stats stats-grid">
                 <div class="stat-item">
                     <h3 class="stat-number"><span class="counter-value" data-target="{{ pt('about.stat_workforce_value') }}">{{ pt('about.stat_workforce_value') }}</span>+</h3>
-                    <p class="stat-label">{{ pt('about.stat_workforce_label') }}</p>
+                    <p class="stat-label">{{ ptu('about.stat_workforce_label') }}</p>
                 </div>
                 <div class="stat-item">
                     <h3 class="stat-number"><span class="counter-value" data-target="{{ pt('about.stat_countries_value') }}">{{ pt('about.stat_countries_value') }}</span>+</h3>
-                    <p class="stat-label">{{ pt('about.stat_countries_label') }}</p>
+                    <p class="stat-label">{{ ptu('about.stat_countries_label') }}</p>
                 </div>
                 <div class="stat-item">
                     <h3 class="stat-number"><span class="counter-value" data-target="{{ pt('about.stat_revenue_value') }}">{{ pt('about.stat_revenue_value') }}</span>+ Million $</h3>
-                    <p class="stat-label">{{ pt('about.stat_revenue_label') }}</p>
+                    <p class="stat-label">{{ ptu('about.stat_revenue_label') }}</p>
                 </div>
                 <div class="stat-item">
                     <h3 class="stat-number"><span class="counter-value" data-target="{{ pt('about.stat_production_value') }}">{{ pt('about.stat_production_value') }}</span>+</h3>
-                    <p class="stat-label">{{ pt('about.stat_production_label') }}</p>
+                    <p class="stat-label">{{ ptu('about.stat_production_label') }}</p>
                 </div>
                 <div class="stat-item">
                     <h3 class="stat-number"><span class="counter-value" data-target="{{ pt('about.stat_area_value') }}">{{ pt('about.stat_area_value') }}</span>+</h3>
-                    <p class="stat-label">{{ pt('about.stat_area_label') }}</p>
+                    <p class="stat-label">{{ ptu('about.stat_area_label') }}</p>
                 </div>
             </div>
         </div>
@@ -397,7 +397,35 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 5000);
     }
 
+    // Keep the text panel as tall as the longest stage so the layout never jumps when the stage changes.
+    var panel = titleEl.closest('.about-stages-panel');
+
+    function equalizePanel() {
+        if (!panel) { return; }
+        var currentTitle = titleEl.textContent;
+        var currentText = textEl.textContent;
+        var tallest = 0;
+
+        panel.style.minHeight = '';
+        stages.forEach(function (stage) {
+            titleEl.textContent = stage.title;
+            textEl.textContent = stage.text;
+            tallest = Math.max(tallest, panel.offsetHeight);
+        });
+        titleEl.textContent = currentTitle;
+        textEl.textContent = currentText;
+        panel.style.minHeight = tallest + 'px';
+    }
+
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(equalizePanel, 150);
+    });
+    window.addEventListener('load', equalizePanel);
+
     setStage(0, true);
+    equalizePanel();
     startAutoPlay();
 });
 </script>

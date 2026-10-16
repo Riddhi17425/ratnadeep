@@ -49,6 +49,7 @@
                                 <li><a href="{{ route('packaging') }}">Packaging & Shipping</a></li>
                                 <li><a href="{{ route('blogs') }}">Blogs</a></li>
                                 <li><a href="{{ route('events') }}">Events</a></li>
+                                <li><a href="{{ route('contact') }}">Careers</a></li>
                                 <li><a href="{{ route('contact') }}">Contact Us</a></li>
                             </ul>
                         </div>
@@ -69,8 +70,13 @@
                                 <span class="contact-label">Contact us:</span>
                                 <p class="contact-text">
                                     @if(!empty($setting->contacts) && is_array($setting->contacts))
-                                        @foreach($setting->contacts as $contact)
-                                            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $contact) }}" target="_blank" style="color: inherit; text-decoration: none;">{{ $contact }}</a>{{ !$loop->last ? ' | ' : '' }}
+                                        {{-- two numbers per line --}}
+                                        @foreach(collect($setting->contacts)->chunk(2) as $contactRow)
+                                            <span class="d-block">
+                                                @foreach($contactRow as $contact)
+                                                    <a href="tel:{{ preg_replace('/[^0-9+]/', '', $contact) }}" target="_blank" style="color: inherit; text-decoration: none;">{{ $contact }}</a>{{ !$loop->last ? ' | ' : '' }}
+                                                @endforeach
+                                            </span>
                                         @endforeach
                                     @else
                                         <a href="tel:+912223805700" target="_blank" style="color: inherit; text-decoration: none;">+91 22 2380 5700</a> | <a href="tel:+912223805701" target="_blank" style="color: inherit; text-decoration: none;">+91 22 2380 5701</a>
@@ -82,7 +88,7 @@
                                 <p class="contact-text">
                                     @if(!empty($setting->emails) && is_array($setting->emails))
                                         @foreach($setting->emails as $email)
-                                            <a href="mailto:{{ $email }}">{{ $email }}</a>{{ !$loop->last ? ' | ' : '' }}
+                                            <a href="mailto:{{ $email }}" class="d-block">{{ $email }}</a>
                                         @endforeach
                                     @else
                                         <a href="mailto:info@ratnadeepmetal.com">info@ratnadeepmetal.com</a>
@@ -189,7 +195,7 @@
     <script src="{{ asset('frontend/assets/js/gsap-animations.js') }}"></script>
 
     <!-- Custom JS -->
-    <script src="{{ asset('frontend/assets/js/script.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/script.js') }}?v={{ filemtime(public_path('frontend/assets/js/script.js')) }}"></script>
     <script>
         // Helper to read cookies
         function getCookie(name) {

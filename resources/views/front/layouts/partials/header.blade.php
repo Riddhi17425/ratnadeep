@@ -14,8 +14,8 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
     <!-- Fancybox CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/responsive.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/style.css') }}?v={{ filemtime(public_path('frontend/assets/css/style.css')) }}">
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/responsive.css') }}?v={{ filemtime(public_path('frontend/assets/css/responsive.css')) }}">
     @yield('page_css')
     @stack('styles')
     <style>
@@ -102,7 +102,7 @@
             <a href="{{ route('home') }}" class="logo">
                 <img src="{{ asset('frontend/assets/images/header-logo.svg') }}" alt="Ratnadeep Metal and Tubes Limited">
             </a>
-            <nav class="main-nav">
+            <nav class="main-nav" data-lenis-prevent>
                 <ul class="nav-links">
                     <li><a href="{{ route('about') }}">About us </a></li>
                     <li class="nav-item-has-mega">
@@ -136,7 +136,7 @@
                         <option value="it" data-flag="it">Italian</option>
                     </select>
                 </div>
-                <a href="{{ route('contact') }}#write-to-us" class="com_btn_red">Enquire Now</a>
+                <a href="{{ route('contact') }}#write-to-us" class="com_btn_red">Contact Us</a>
             </div>
             
             <!-- Mobile Menu Toggle -->

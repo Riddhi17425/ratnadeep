@@ -123,6 +123,16 @@ if (!function_exists('ptb')) {
     }
 }
 
+if (!function_exists('ptu')) {
+    /** Page text where a trailing "(unit)" goes on its own line: "Annual Revenue (Million $)". */
+    function ptu(string $path)
+    {
+        $text = e(pt($path));
+
+        return new \Illuminate\Support\HtmlString(preg_replace('/\s*(\([^()]*\))\s*$/', '<br>$1', $text));
+    }
+}
+
 if (!function_exists('pt_image')) {
     /** Image url for a page text of type image (uploaded path or the Figma default asset). */
     function pt_image(string $path): string

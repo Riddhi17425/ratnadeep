@@ -4,11 +4,11 @@
 }
 .page-careers .careers-filters {
     flex-wrap: nowrap;
-    justify-content: flex-start;
-    width: max-content;
+    /* centred when it fits, starts at the left (scrollable) when it does not */
+    justify-content: safe center;
+    width: 100%;
     max-width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+    min-width: 0;
     overflow-x: auto;
     overflow-y: hidden;
     padding-bottom: 8px;

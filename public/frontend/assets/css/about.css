@@ -376,6 +376,73 @@
 .page-about .about-stages-indicator.active {
     background: var(--primary-red);
 }
+/* Six stages: image follows the content height on desktop, text sizes follow the site ladder */
+@media (min-width: 1025px) {
+    .page-about .about-stages-grid {
+        grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+        gap: 60px;
+        align-items: stretch;
+    }
+    .page-about .about-stages-media {
+        position: relative;
+        height: auto;
+        min-height: 420px;
+    }
+    .page-about .about-stages-image {
+        position: absolute;
+        inset: 0;
+    }
+    .page-about .about-stages-content {
+        justify-content: center;
+    }
+}
+@media (max-width: 1776px) {
+    .page-about .about-stages-title {
+        font-size: 54px;
+        line-height: 1.2;
+    }
+    .page-about .about-stages-heading {
+        font-size: 30px;
+    }
+}
+@media (max-width: 1537px) {
+    .page-about .about-stages-title {
+        font-size: 46px;
+    }
+    .page-about .about-stages-content {
+        gap: 32px;
+    }
+}
+@media (max-width: 1441px) {
+    .page-about .about-stages-grid {
+        gap: 40px;
+    }
+    .page-about .about-stages-media {
+        min-height: 380px;
+    }
+    .page-about .about-stages-title {
+        font-size: 42px;
+    }
+    .page-about .about-stages-heading {
+        font-size: 28px;
+    }
+    .page-about .about-stages-text {
+        font-size: 16px;
+        line-height: 26px;
+    }
+}
+@media (max-width: 1281px) {
+    .page-about .about-stages-title {
+        font-size: 36px;
+    }
+    .page-about .about-stages-heading {
+        font-size: 24px;
+        margin-bottom: 12px;
+    }
+    .page-about .about-stages-content {
+        gap: 24px;
+    }
+}
 .page-about .about-careers-section {
     padding-bottom: 20px;
 }
@@ -699,7 +766,8 @@
         gap: 20px;
     }
     .page-about .about-stages-media {
-        height: 320px;
+        height: 240px;
+        min-height: 0;
     }
     .page-about .about-stages-title {
         font-size: 44px;
@@ -831,7 +899,7 @@
         gap: 16px;
     }
     .page-about .about-stages-media {
-        height: 280px;
+        height: 200px;
     }
     .page-about .about-stages-title {
         font-size: 36px;

@@ -1864,3 +1864,65 @@
         width: 100% !important;
     }
 }
+/* --- LANGUAGE SELECTOR INSIDE THE MOBILE MENU --- */
+@media (max-width: 1080px) {
+    .main-nav > .language-select-wrapper {
+        display: flex !important;
+        align-self: flex-start;
+        margin: 24px 25px 0;
+        flex-shrink: 0;
+    }
+
+    .main-nav > .language-select-wrapper .select2-container {
+        width: 170px !important;
+    }
+
+    /* the list opens upwards-safe inside the scrolling menu */
+    .main-nav > .language-select-wrapper .select2-dropdown {
+        z-index: 1100;
+    }
+}
+
+/* --- MOBILE MENU: scroll area starts below the header, so the list never slides under the logo --- */
+@media (max-width: 1080px) {
+    .main-nav {
+        top: var(--header-bottom, 100px) !important;
+        height: calc(100vh - var(--header-bottom, 100px)) !important;
+        height: calc(100dvh - var(--header-bottom, 100px)) !important;
+        padding-top: 8px !important;
+        padding-bottom: 130px !important; /* last item clears the WhatsApp button */
+        justify-content: flex-start !important;
+        overflow-y: auto !important;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .header.is-mega-open .products-mega-menu,
+    .nav-item-has-mega.is-open .products-mega-menu {
+        padding: 6px 0 22px 14px !important;
+    }
+
+    .products-mega-range-list {
+        gap: 8px !important;
+    }
+
+    .products-mega-range-list a {
+        padding: 12px 16px !important;
+        line-height: 1.4 !important;
+    }
+
+    /* page behind the open menu does not scroll */
+    body.menu-open {
+        overflow: hidden;
+    }
+}
+
+/* Mobile mega-menu: height follows the list (the desktop panel is a fixed 520px) */
+@media (max-width: 1080px) {
+    .products-mega-layout,
+    .products-mega-col {
+        height: auto !important;
+        min-height: 0 !important;
+    }
+}
