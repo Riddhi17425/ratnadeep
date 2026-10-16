@@ -11,6 +11,7 @@
 @php
     $arrow = '<svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     $defaultFilter = $activeCategoryId ?: 'all';
+    $isCategoryFiltered = request()->filled('category');
 @endphp
 <main class="page-inner page-products">
     <!-- Hero -->
@@ -73,7 +74,7 @@
 
             <div class="catalog-grid">
                 @foreach($products as $product)
-                    <article class="inner-card catalog-card {{ $product->is_wide ? 'catalog-card--wide' : '' }}" data-family="{{ $product->category_id }}">
+                    <article class="inner-card catalog-card {{ $product->is_wide && !$isCategoryFiltered ? 'catalog-card--wide' : '' }}" data-family="{{ $product->category_id }}">
                         <a href="{{ route('product.detail', $product->slug) }}" class="catalog-card-link">
                             <div class="inner-card-media">
                                 @if($product->image)

@@ -86,18 +86,18 @@
             
             <div class="products-grid mobile-slider">
                 @foreach($categories as $category)
-                    <div class="product-card {{ $loop->iteration == 5 ? 'span-2' : '' }}">
+                    <a href="{{ route('products', ['category' => $category->id]) }}" class="product-card {{ $loop->iteration == 5 ? 'span-2' : '' }}">
                         <div class="product-image">
                             <img src="{{ $category->image ? asset($category->image) : asset('frontend/assets/images/Stainless Steel.webp') }}" alt="{{ $category->alt_image_text ?: $category->title }}">
                         </div>
                         <div class="product-info">
                             <div class="product-header">
                                 <h3 class="product-title">{{ strtoupper($category->title) }}</h3>
-                                <a href="{{ route('product.detail', $category->slug) }}" class="product-arrow"><span class="arrow-icon"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                                <span class="product-arrow"><span class="arrow-icon"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
                             </div>
                             <p class="product-desc">{{ ucfirst(Str::words(strip_tags($category->description), 35, '...')) }}</p>
                         </div>
-                    </div>
+                    </a>
                 @endforeach
             </div>
         </div>

@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -26,36 +25,6 @@ class Product extends Model
         'industry_ids' => 'array',
         'is_wide'      => 'boolean',
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($product) {
-            $product->slug = static::uniqueSlug($product->slug ?: $product->title);
-        });
-
-        static::updating(function ($product) {
-            if ($product->isDirty('slug')) {
-                $product->slug = static::uniqueSlug($product->slug ?: $product->title, $product->id);
-            } elseif ($product->isDirty('title')) {
-                $product->slug = static::uniqueSlug($product->title, $product->id);
-            }
-        });
-    }
-
-    public static function uniqueSlug(string $title, $ignoreId = null): string
-    {
-        $base = Str::slug(str_replace(['“', '”'], '', $title)) ?: 'product';
-        $slug = $base;
-        $i = 2;
-
-        while (static::withTrashed()->where('slug', $slug)->when($ignoreId, fn ($q) => $q->where('id', '!=', $ignoreId))->exists()) {
-            $slug = $base . '-' . $i++;
-        }
-
-        return $slug;
-    }
 
     public function category()
     {

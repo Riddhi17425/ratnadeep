@@ -955,6 +955,8 @@ body {
 .product-card {
     display: flex;
     flex-direction: column;
+    color: inherit;
+    text-decoration: none;
 }
 
 .product-card.span-2 {

@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $products = Product::where('status', 1)->orderBy('sort_order')->orderBy('id')->get();
 
@@ -19,7 +20,10 @@ class ProductController extends Controller
             ->orderBy('id')
             ->get();
 
-        $activeCategoryId = $categories->first()?->id;
+        $requestedCategoryId = $request->query('category');
+        $activeCategoryId = $categories->contains('id', $requestedCategoryId)
+            ? (int) $requestedCategoryId
+            : $categories->first()?->id;
 
         return view('front.products', compact('products', 'categories', 'activeCategoryId'));
     }

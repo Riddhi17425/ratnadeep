@@ -11,7 +11,10 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $categories = Category::where('status', 1)->whereNull('deleted_at')->latest()->get();
+        $categories = Category::where('status', 1)
+            ->whereHas('products', fn ($query) => $query->where('status', 1))
+            ->latest()
+            ->get();
         $banners = Banner::with('category')->where('status', 1)->whereNull('deleted_at')->latest()->get();
         $industries = getActiveIndustries(4);
         $blogs = getActiveBlogs(3);

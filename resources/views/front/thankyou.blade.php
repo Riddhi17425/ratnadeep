@@ -22,7 +22,7 @@
             <h3>Your enquiry has been submitted successfully.</h3>
 
             <p>
-                Thank you for contacting us. Our team has received your enquiry
+                Our team has received your enquiry
                 and will get back to you as soon as possible.
             </p>
 

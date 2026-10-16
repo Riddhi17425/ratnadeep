@@ -216,6 +216,7 @@ class FrontController extends Controller
             'experience' => $career->experience,
             'linkedin' => $career->linkedin ?? '',
             'resume' => $request->file('resume')->getClientOriginalName(),
+            'created_at' => Carbon::now()->toDateTimeString(),
         ];
 
         try {
@@ -223,7 +224,7 @@ class FrontController extends Controller
                 ->acceptJson()
                 ->timeout(30)
                 ->post(
-                    'https://script.google.com/macros/s/AKfycbyUcCwn2GKMhUOKwdA3Zg9s4EgOobo-a7-sWlZKnDRG9Wu_R8vzQmeq9GIVO1KIHXt36Q/exec',
+                    'https://script.google.com/macros/s/AKfycby-2B_j5u-o7slOEdFElT2Xw1nALNCy087Mf0bQRts-i8YL6HRRMihwj2TkdIY3BUos/exec',
                     $sheetData
                 );
 
@@ -252,8 +253,7 @@ class FrontController extends Controller
                 ->with('careers_error', 'Your application was saved, but spreadsheet storage could not be confirmed. Please contact HR rather than submitting again.');
         }
 
-        return redirect(route('careers') . '#apply')
-            ->with('careers_success', 'Thank you! Your application has been submitted. Our HR team will get in touch with you.');
+        return redirect()->route('thankyou');
     }
 
     public function packagingShipping()
@@ -318,10 +318,11 @@ class FrontController extends Controller
                 ->acceptJson()
                 ->timeout(30)
                 ->post(
-                    'https://script.google.com/macros/s/AKfycbyUcCwn2GKMhUOKwdA3Zg9s4EgOobo-a7-sWlZKnDRG9Wu_R8vzQmeq9GIVO1KIHXt36Q/exec',
+                    'https://script.google.com/macros/s/AKfycbw7yuh4dRpEh_qi1IyQX2tKXznB5BbA06b7N5IMTZ2MlBZelhDblejYslwCdJTWmYrsNA/exec',
                     [
                         'phone' => $phone,
                         'message' => $message,
+                        'created_at' => Carbon::now()->toDateTimeString(),
                     ]
                 );
 

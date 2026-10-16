@@ -212,7 +212,7 @@
                             <svg width="28" height="35" viewBox="0 0 28 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.5 1H4a3 3 0 0 0-3 3v27a3 3 0 0 0 3 3h20a3 3 0 0 0 3-3V11.5L16.5 1Z" stroke="#413185" stroke-width="2" stroke-linejoin="round"/><path d="M16 1v11h11M14 28V16m0 0-4.5 4.5M14 16l4.5 4.5" stroke="#413185" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             <span id="career_resume_label">Attach Your Resume In PDF, Word Format</span>
                             <strong>Max Size: 5 Mb</strong>
-                            <input type="file" name="resume" id="career_resume" accept=".pdf,.doc,.docx" required>
+                            <input type="file" name="resume" id="career_resume" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" required>
                         </label>
                     </div>
                 </div>

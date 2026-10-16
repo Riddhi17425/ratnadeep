@@ -165,6 +165,13 @@
     .wa-send:hover {
         background: #e31e24; /* Ratnadeep Red on hover */
     }
+    .wa-send:disabled {
+        cursor: wait;
+        opacity: 0.75;
+    }
+    .wa-send:disabled:hover {
+        background: #1C1731;
+    }
     @media(max-width:768px) {
         .wa-modal {
             width: 320px;
@@ -199,7 +206,7 @@
                <textarea id="wa-textarea" name="message" maxlength="10000" placeholder="Type your message here..."></textarea>
                 <input type="hidden" id="wa_full_phone" name="phone">
                <div id="wa-submit-error" role="alert" style="color:#d9534f; font-size:12px; display:none; margin-bottom:10px;"></div>
-               <button class="wa-send" type="submit" id="waSendBtn">
+               <button class="wa-send" type="submit" id="waSendBtn" aria-busy="false">
                     <span class="btn-text">Start Chat on WhatsApp</span>
                     <span class="btn-loader" style="display:none;">
                         <span class="spinner-border spinner-border-sm" style="width:16px;height:16px;border-width:2px;"></span>
@@ -283,6 +290,7 @@
                 submitError.textContent = "";
                 submitError.style.display = "none";
                 button.disabled = true;
+                button.setAttribute("aria-busy", "true");
                 buttonText.style.display = "none";
                 buttonLoader.style.display = "inline-flex";
 
@@ -317,6 +325,7 @@
                         submitError.style.display = "block";
                     } finally {
                         button.disabled = false;
+                        button.setAttribute("aria-busy", "false");
                         buttonText.style.display = "inline";
                         buttonLoader.style.display = "none";
                     }
