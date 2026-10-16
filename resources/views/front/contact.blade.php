@@ -25,7 +25,7 @@
                     <p class="hero-subtitle">Reach out to Ratnadeep Metal And Tubes Limited for pipe and tube manufacturing solutions, technical support, or project enquiries. From product selection to timely delivery, our team is here to help.</p>
                     <div class="hero-buttons">
                         <a href="#write-to-us" class="com_btn_red">Request a Technical Quote <span class="ms-2"><svg width="20" height="9" viewBox="0 0 20 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0.75L18.75 4.5L15 8.25M18.75 4.5H0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-                        <a href="{{ route('home') }}#products" class="com_btn_outline_white">Explore Products</a>
+                        <a href="{{ route('products') }}" class="com_btn_outline_white">Explore Products</a>
                     </div>
                 </div>
             </div>

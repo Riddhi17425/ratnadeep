@@ -35,7 +35,7 @@
                         <div class="company-col">
                             <h4 class="footer-heading">Company</h4>
                             <ul class="footer-links">
-                                <li><a href="{{ route('about') }}">Overview</a></li>
+                                <li><a href="{{ route('about') }}">About Us</a></li>
                                 <li><a href="{{ route('inspection') }}">Inspection & Quality Testing</a></li>
                                 <li><a href="{{ route('certifications') }}">Certifications</a></li>
                                 <li><a href="{{ route('clients') }}">Clients</a></li>
