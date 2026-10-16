@@ -11,7 +11,7 @@
                 <h2 class="section-title inner-title">{{ pt($page . '.faq_title') }}</h2>
                 <p class="inner-lead inner-lead--sm">{{ pt($page . '.faq_text') }}</p>
             </div>
-            <div class="faq-list">
+            <div class="faq-list" data-exclusive="{{ in_array($page, ['applications', 'packaging'], true) ? 'true' : 'false' }}">
                 @foreach($faqs as $faq)
                     <div class="faq-item {{ $loop->first ? 'is-open' : '' }}">
                         <button type="button" class="faq-question" aria-expanded="{{ $loop->first ? 'true' : 'false' }}">

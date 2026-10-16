@@ -32,7 +32,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about-us', [FrontController::class, 'about'])->name('about');
 Route::get('/blogs', [FrontBlogController::class, 'index'])->name('blogs');
 Route::get('/blog/{slug}', [FrontBlogController::class, 'detail'])->name('blog.detail');
-Route::get('/blog-detail/{slug}', fn ($slug) => redirect()->route('blog.detail', $slug, 301));
+// Route::get('/blog-detail/{slug}', fn ($slug) => redirect()->route('blog.detail', $slug, 301));
 Route::get('/certifications', [FrontCertificationController::class, 'index'])->name('certifications');
 Route::get('/clients', [FrontController::class, 'clients'])->name('clients');
 Route::get('/contact-us', [FrontController::class, 'contact'])->name('contact');

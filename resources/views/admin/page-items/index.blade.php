@@ -10,7 +10,7 @@
             'description' => false,
             'contact' => false,
         ]
-        : data_get($sections, (string) $section, []);
+        : ($sections[(string) $section] ?? []);
     $pageContentTitle = $config['page'] . ' Content';
     $columnCount = 5 + (int) (bool) $config['image'] + (int) $config['description'] + (int) !empty($config['contact']);
 @endphp
