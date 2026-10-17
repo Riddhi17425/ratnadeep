@@ -28,6 +28,7 @@ class IndustryController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title'           => 'required|string|max:255',
+            'short_description' => 'nullable|string|max:500',
             'image'           => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'alt_image_text'  => 'nullable|string|max:255',
             'status'          => 'required|in:0,1',
@@ -58,6 +59,7 @@ class IndustryController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title'           => 'required|string|max:255',
+            'short_description' => 'nullable|string|max:500',
             'image'           => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'alt_image_text'  => 'nullable|string|max:255',
             'status'          => 'required|in:0,1',

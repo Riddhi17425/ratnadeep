@@ -15,6 +15,12 @@
                 </div>
 
                 <div class="mb-3">
+                    <label class="form-label">Short Description</label>
+                    <textarea name="short_description" class="form-control" rows="3" maxlength="500">{{ old('short_description') }}</textarea>
+                    @error('short_description') <small class="text-danger">{{ $message }}</small> @enderror
+                </div>
+
+                <div class="mb-3">
                     <label class="form-label">Image</label>
                     <input type="file" name="image" class="form-control">
                     @error('image') <small class="text-danger">{{ $message }}</small> @enderror

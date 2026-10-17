@@ -7,6 +7,7 @@ use App\Models\Career;
 use App\Models\JobArea;
 use App\Models\JobOpening;
 use App\Models\Country;
+use App\Models\Industry;
 use App\Models\PageItem;
 use App\Models\Product;
 use App\Models\UpcomingEvent;
@@ -281,6 +282,7 @@ class FrontController extends Controller
     public function applications()
     {
         return view('front.applications', [
+            'industries'   => Industry::where('status', 1)->orderByDesc('title')->get(),
             'applications' => getPageItems('applications.items'),
             'reasons'      => getPageItems('applications.reasons'),
             'faqs'         => getFaqs('applications'),

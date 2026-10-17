@@ -16,6 +16,12 @@
                 </div>
 
                 <div class="mb-3">
+                    <label class="form-label">Short Description</label>
+                    <textarea name="short_description" class="form-control" rows="3" maxlength="500">{{ old('short_description', $industry->short_description) }}</textarea>
+                    @error('short_description') <small class="text-danger">{{ $message }}</small> @enderror
+                </div>
+
+                <div class="mb-3">
                     <label class="form-label">Image</label><br>
                     @if($industry->image)
                         <img src="{{ asset($industry->image) }}" width="80" class="mb-2 d-block">

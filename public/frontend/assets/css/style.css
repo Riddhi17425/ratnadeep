@@ -14,7 +14,9 @@
     --icon-purple: #413185;
     --hero-gradient: linear-gradient(180deg, rgba(28, 23, 49, 0.00) 61.35%, #1C1731 88.6%), linear-gradient(270deg, rgba(70, 65, 91, 0.00) 43.71%, #1C1731 97.2%);
 }
-
+a{
+    text-decoration: unset;
+}
 * {
     margin: 0;
     padding: 0;

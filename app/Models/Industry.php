@@ -12,6 +12,7 @@ class Industry extends Model
 
     protected $fillable = [
         'title',
+        'short_description',
         'image',
         'alt_image_text',
         'status',

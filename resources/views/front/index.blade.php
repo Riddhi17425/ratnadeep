@@ -28,7 +28,7 @@
                     $rawSubtitle = $banner->description ?: ($category ? $category->description : '');
                     $heroSubtitle = ucfirst(Str::words(strip_tags($rawSubtitle), 25, '...'));
                 @endphp
-                <div class="slick-slide-item h-100 position-relative" data-category-id="{{ $banner->category_id }}" style="background-image:var(--hero-gradient), url('{{ $bgImage }}'); background-position: center; background-size: cover; background-repeat: no-repeat;">
+                <div class="slick-slide-item h-100 position-relative" data-category-id="{{ $banner->category_id }}" style="background-image: url('{{ $bgImage }}'); background-position: center; background-size: cover; background-repeat: no-repeat;">
                     <div class="container hero-content-wrapper h-100">
                         <div class="hero-content">
                             <div class="hero-badge">

@@ -39,6 +39,7 @@
                 </div>
             </div>
         </div>
+       
     </section>
 
     <!-- Intro -->
@@ -56,7 +57,7 @@
     </section>
 
     <!-- Applications grid -->
-    @if($applications->isNotEmpty())
+    @if($industries->isNotEmpty())
     <section class="inner-section" id="applications-list">
         <div class="container-fluid">
             <div class="inner-badge-wrap">
@@ -67,15 +68,13 @@
                 <h2 class="section-title inner-title">{{ pt('applications.list_title') }}</h2>
             </div>
             <div class="apps-grid">
-                @foreach($applications as $app)
+                @foreach($industries as $industry)
                     <article class="inner-card">
                         <div class="inner-card-media">
-                            @if($app->image)
-                                <img src="{{ asset($app->image) }}" alt="{{ $app->alt_image_text ?: $app->title }}" loading="lazy">
-                            @endif
+                            <img src="{{ $industry->image ? asset($industry->image) : asset('frontend/assets/images/Oil & Gas.webp') }}" alt="{{ $industry->alt_image_text ?: $industry->title }}" loading="lazy">
                         </div>
-                        <h3 class="inner-card-title">{{ $app->title }}</h3>
-                        <p class="inner-card-text">{{ $app->description }}</p>
+                        <h3 class="inner-card-title">{{ Str::title($industry->title) }}</h3>
+                        <p class="inner-card-text">{{ $industry->short_description ?: 'Reliable piping solutions engineered to meet the demands of this industry.' }}</p>
                     </article>
                 @endforeach
             </div>

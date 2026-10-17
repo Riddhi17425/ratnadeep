@@ -14,7 +14,7 @@ return [
             'hero_badge' => ['Hero badge', 'text', 'MANUFACTURING EXCELLENCE SINCE 1981'],
             'hero_title' => ['Hero title', 'textarea', "Manufacturing Excellence\nStrengthened by Experience"],
             'hero_subtitle' => ['Hero text', 'textarea', 'For over four decades, Ratnadeep Metal And Tubes Limited has been a trusted pipe and tube manufacturer, delivering seamless and welded pipes and tubes supported by advanced manufacturing infrastructure, in-house testing, and disciplined quality systems for industrial applications across domestic and international markets.'],
-            'hero_image' => ['Hero banner image', 'image', 'frontend/assets/images/About/about-hero.png'],
+            'hero_image' => ['Hero banner image', 'image', 'frontend/assets/images/About/about-hero.webp'],
             'hero_button_1' => ['Hero button 1', 'text', 'Explore Our Manufacturing'],
             'hero_button_2' => ['Hero button 2', 'text', 'View Product Portfolio'],
             'company_badge' => ['Company badge', 'text', 'OUR COMPANY'],
