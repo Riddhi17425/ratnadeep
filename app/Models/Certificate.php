@@ -12,6 +12,7 @@ class Certificate extends Model
 
     protected $fillable = [
         'title',
+        'sub_title',
         'image',
         'alt_image_text',
         'status',

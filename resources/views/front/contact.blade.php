@@ -236,50 +236,50 @@
             <div class="contact-locations-grid">
                 <div class="contact-location-card">
                     <h3 class="contact-location-title">Registered Office</h3>
-                    <p class="contact-location-address">402, Sai Prasad Apartment, Usmanpura, Ahmedabad – 380 013, Gujarat, India.</p>
+                    <p class="contact-location-address"><a href="https://www.google.com/maps/search/?api=1&query=402+Sai+Prasad+Apartment+Usmanpura+Ahmedabad+380013+Gujarat+India" target="_blank" rel="noopener">402, Sai Prasad Apartment, Usmanpura, Ahmedabad – 380 013, Gujarat, India.</a></p>
                     <div class="contact-location-meta">
                         <span class="contact-location-label">Contact us:</span>
-                        <a href="tel:+918238092054">+91 82380 92054</a>
+                        <a href="tel:+918238092054" target="_blank">+91 82380 92054</a>
                     </div>
                     <div class="contact-location-meta">
                         <span class="contact-location-label">Email us:</span>
-                        <a href="mailto:ro@ratnadeepmetal.com">ro@ratnadeepmetal.com</a>
+                        <a href="mailto:ro@ratnadeepmetal.com" target="_blank">ro@ratnadeepmetal.com</a>
                     </div>
                 </div>
                 <div class="contact-location-card">
                     <h3 class="contact-location-title">Corporate Office:</h3>
-                    <p class="contact-location-address">102, "Rajgiri", 196/198, Khetwadi Back Road, Mumbai – 400 004, Maharashtra, India.</p>
+                    <p class="contact-location-address"><a href="https://www.google.com/maps/search/?api=1&query=102+Rajgiri+196%2F198+Khetwadi+Back+Road+Mumbai+400004+Maharashtra+India" target="_blank" rel="noopener">102, "Rajgiri", 196/198, Khetwadi Back Road, Mumbai – 400 004, Maharashtra, India.</a></p>
                     <div class="contact-location-meta">
                         <span class="contact-location-label">Contact us:</span>
-                        <a href="tel:02266362742">022-66362742</a>
+                        <a href="tel:02266362742" target="_blank">022-66362742</a>
                     </div>
                     <div class="contact-location-meta">
                         <span class="contact-location-label">Email us:</span>
-                        <a href="mailto:info@ratnadeepmetal.com">info@ratnadeepmetal.com</a>
+                        <a href="mailto:info@ratnadeepmetal.com" target="_blank">info@ratnadeepmetal.com</a>
                     </div>
                 </div>
                 <div class="contact-location-card">
                     <h3 class="contact-location-title">Manufacturing site:</h3>
-                    <p class="contact-location-address">Survey No. 1015, Village Rajpur, Taluka Kadi, District Mehsana - 382 715, Gujarat, India.</p>
+                    <p class="contact-location-address"><a href="https://www.google.com/maps/search/?api=1&query=Survey+No+1015+Village+Rajpur+Taluka+Kadi+District+Mehsana+382715+Gujarat+India" target="_blank" rel="noopener">Survey No. 1015, Village Rajpur, Taluka Kadi, District Mehsana - 382 715, Gujarat, India.</a></p>
                     <div class="contact-location-meta">
                         <span class="contact-location-label">Contact us:</span>
-                        <a href="tel:+919724303768">+91 97243 03768</a>
+                        <a href="tel:+919724303768" target="_blank">+91 97243 03768</a>
                     </div>
                     <div class="contact-location-meta">
                         <span class="contact-location-label">Email us:</span>
-                        <a href="mailto:works@ratnadeepmetal.com">works@ratnadeepmetal.com</a>
+                        <a href="mailto:works@ratnadeepmetal.com" target="_blank">works@ratnadeepmetal.com</a>
                     </div>
                 </div>
                 <div class="contact-location-card">
                     <h3 class="contact-location-title">Europe Sales:</h3>
-                    <p class="contact-location-address">Gritec Metals, S.L. Calle Barroso 6, 3a 29001 Málaga Spain</p>
+                    <p class="contact-location-address"><a href="https://www.google.com/maps/search/?api=1&query=Gritec+Metals+S.L.+Calle+Barroso+6+29001+M%C3%A1laga+Spain" target="_blank" rel="noopener">Gritec Metals, S.L. Calle Barroso 6, 3a 29001 Málaga Spain</a></p>
                     <div class="contact-location-meta">
                         <span class="contact-location-label">Contact us:</span>
-                        <a href="tel:+34656727439">+34 656 727439</a>
+                        <a href="tel:+34656727439" target="_blank">+34 656 727439</a>
                     </div>
                     <div class="contact-location-meta">
                         <span class="contact-location-label">Email us:</span>
-                        <a href="mailto:sales@gritecmetals.com">sales@gritecmetals.com</a>
+                        <a href="mailto:sales@gritecmetals.com" target="_blank">sales@gritecmetals.com</a>
                     </div>
                 </div>
             </div>

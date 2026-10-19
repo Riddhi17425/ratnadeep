@@ -113,7 +113,7 @@
     <!-- Export Options -->
     <section class="inner-section">
         <div class="container-fluid">
-            <div class="inner-feature">
+            <div class="inner-feature inner-feature--sticky">
                 <div class="inner-feature-media">
                     <img src="{{ pt_image('packaging.export_image') }}" alt="{{ pt('packaging.export_title') }}">
                 </div>

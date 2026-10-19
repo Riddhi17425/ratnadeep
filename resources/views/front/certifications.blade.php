@@ -49,6 +49,9 @@
                         </a>
                         <div class="cert-listing-body">
                             <h2 class="cert-listing-title">{{ $certificate->title }}</h2>
+                            @if($certificate->sub_title)
+                                <p class="cert-listing-desc">{{ $certificate->sub_title }}</p>
+                            @endif
                         </div>
                     </article>
                 @empty
