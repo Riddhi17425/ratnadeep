@@ -14,7 +14,7 @@
 @if($config['description'])
     <div class="mb-3">
         <label class="form-label">{{ $config['description_label'] ?? 'Description' }}</label>
-        <textarea name="description" rows="4" class="form-control">{{ old('description', data_get($item ?? null, 'description', '')) }}</textarea>
+        <textarea name="description" rows="4" class="form-control page-item-description">{{ old('description', data_get($item ?? null, 'description', '')) }}</textarea>
         @error('description') <small class="text-danger">{{ $message }}</small> @enderror
     </div>
 @endif
@@ -68,3 +68,11 @@
         @error('status') <small class="text-danger">{{ $message }}</small> @enderror
     </div>
 </div>
+
+@push('scripts')
+<script>
+    $(document).ready(function () {
+        $('.page-item-description').summernote({ height: 200 });
+    });
+</script>
+@endpush

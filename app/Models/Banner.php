@@ -13,6 +13,7 @@ class Banner extends Model
     protected $fillable = [
         'category_id',
         'title',
+        'sequence',
         'shortnote',
         'description',
         'image',

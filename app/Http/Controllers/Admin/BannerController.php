@@ -17,7 +17,7 @@ class BannerController extends Controller
     // Ab active + trashed dono ek sath layenge
     public function index()
     {
-        $banners = Banner::withTrashed()->with('category')->latest()->get();
+        $banners = Banner::withTrashed()->with('category')->orderBy('sequence')->orderByDesc('id')->get();
         return view('admin.banners.index', compact('banners'));
     }
 
@@ -173,6 +173,7 @@ class BannerController extends Controller
         return [
             'category_id'     => ['nullable', 'exists:categories,id', $categoryRule],
             'title'           => 'required|string|max:255',
+            'sequence'        => 'required|integer|min:1',
             'shortnote'       => 'nullable|string|max:255',
             'description'     => 'nullable|string',
             'image'           => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',

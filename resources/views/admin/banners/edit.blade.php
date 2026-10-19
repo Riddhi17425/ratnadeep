@@ -29,6 +29,12 @@
                 </div>
 
                 <div class="mb-3">
+                    <label class="form-label">Sequence <span class="text-danger">*</span></label>
+                    <input type="number" name="sequence" min="1" class="form-control" value="{{ old('sequence', $banner->sequence) }}">
+                    @error('sequence') <small class="text-danger">{{ $message }}</small> @enderror
+                </div>
+
+                <div class="mb-3">
                     <label class="form-label">Short Note</label>
                     <input type="text" name="shortnote" class="form-control" value="{{ old('shortnote', $banner->shortnote) }}">
                 </div>

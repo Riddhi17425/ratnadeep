@@ -6,7 +6,6 @@ use App\Http\Controllers\Admin\{
     CategoryController,
     BannerController,
     AboutLogoController,
-    IndustryController,
     UpcomingEventController,
     BlogController,
     SettingController,
@@ -71,10 +70,6 @@ Route::middleware(['auth', 'role:admin,super_admin'])->prefix('admin')->group(fu
         ->parameters(['about-logos' => 'aboutLogo']);
     Route::put('about-logos/{id}/restore', [AboutLogoController::class, 'restore'])->name('about-logos.restore');
     Route::delete('about-logos/{id}/force-delete', [AboutLogoController::class, 'forceDelete'])->name('about-logos.force-delete');
-    Route::resource('industries', IndustryController::class);
-    Route::post('industries/{industry}/status', [IndustryController::class, 'updateStatus'])->name('industries.status');
-    Route::put('industries/{id}/restore', [IndustryController::class, 'restore'])->name('industries.restore');
-    Route::delete('industries/{id}/force-delete', [IndustryController::class, 'forceDelete'])->name('industries.force-delete');
     Route::resource('upcoming-events', UpcomingEventController::class)
     ->parameters(['upcoming-events' => 'upcoming_event']);
     Route::post('upcoming-events/{upcoming_event}/status', [UpcomingEventController::class, 'updateStatus'])->name('upcoming-events.status');

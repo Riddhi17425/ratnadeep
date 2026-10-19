@@ -18,9 +18,17 @@
 
 <div class="mb-3">
     <label class="form-label">Answer <span class="text-danger">*</span></label>
-    <textarea name="answer" rows="5" class="form-control">{{ old('answer', $f->answer ?? '') }}</textarea>
+    <textarea name="answer" rows="5" class="form-control faq-answer">{{ old('answer', $f->answer ?? '') }}</textarea>
     @error('answer') <small class="text-danger">{{ $message }}</small> @enderror
 </div>
+
+@push('scripts')
+<script>
+    $(document).ready(function () {
+        $('.faq-answer').summernote({ height: 200 });
+    });
+</script>
+@endpush
 
 <div class="row">
     <div class="col-md-3 mb-3">

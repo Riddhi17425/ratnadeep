@@ -15,10 +15,13 @@ class HomeController extends Controller
             ->whereHas('products', fn ($query) => $query->where('status', 1))
             ->latest()
             ->get();
-        $banners = Banner::with('category')->where('status', 1)->whereNull('deleted_at')->latest()->get();
-        $industries = getActiveIndustries(4);
+        $banners = Banner::with('category')->where('status', 1)->whereNull('deleted_at')
+            ->orderBy('sequence')
+            ->orderByDesc('id')
+            ->get();
+        $applications = getPageItems('applications.items')->take(4);
         $blogs = getActiveBlogs(3);
 
-        return view('front.index', compact('categories', 'banners', 'industries', 'blogs'));
+        return view('front.index', compact('categories', 'banners', 'applications', 'blogs'));
     }
 }

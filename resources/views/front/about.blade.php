@@ -246,7 +246,7 @@
         <div class="container-fluid">
             <div class="about-stages-grid">
                 <div class="about-stages-media">
-                    <img src="{{ pt_image('about.stages_image') }}" alt="Ratnadeep pipe and tube manufacturing" class="about-stages-image">
+                    <img src="{{ data_get($firstStage, 'image') ? asset(data_get($firstStage, 'image')) : pt_image('about.stages_image') }}" alt="{{ data_get($firstStage, 'alt_image_text') ?: $firstStage->title }}" class="about-stages-image" id="aboutStageImage">
                 </div>
                 <div class="about-stages-content">
                     <div class="about-stages-intro">
@@ -330,14 +330,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var titleEl = document.getElementById('aboutStageTitle');
     var textEl = document.getElementById('aboutStageText');
+    var imageEl = document.getElementById('aboutStageImage');
     var indicatorsWrap = document.getElementById('aboutStagesIndicators');
 
-    if (!titleEl || !textEl || !indicatorsWrap) {
+    if (!titleEl || !textEl || !imageEl || !indicatorsWrap) {
         return;
     }
 
     titleEl.style.transition = 'opacity 0.4s ease-in-out';
     textEl.style.transition = 'opacity 0.4s ease-in-out';
+    imageEl.style.transition = 'opacity 0.4s ease-in-out';
 
     var indicators = indicatorsWrap.querySelectorAll('.about-stages-indicator');
     var activeIndex = 0;
@@ -354,17 +356,23 @@ document.addEventListener('DOMContentLoaded', function () {
         if (initial) {
             titleEl.textContent = stage.title;
             textEl.textContent = stage.text;
+            imageEl.src = stage.image;
+            imageEl.alt = stage.alt;
         } else {
             isAnimating = true;
             titleEl.style.opacity = 0;
             textEl.style.opacity = 0;
+            imageEl.style.opacity = 0;
 
             setTimeout(function() {
                 titleEl.textContent = stage.title;
                 textEl.textContent = stage.text;
+                imageEl.src = stage.image;
+                imageEl.alt = stage.alt;
                 
                 titleEl.style.opacity = 1;
                 textEl.style.opacity = 1;
+                imageEl.style.opacity = 1;
                 
                 setTimeout(function() {
                     isAnimating = false;

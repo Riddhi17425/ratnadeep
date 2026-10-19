@@ -195,11 +195,11 @@
             </div>
             
             <div class="industries-grid mobile-slider">
-                @foreach($industries as $industry)
+                @foreach($applications as $application)
                     <div class="industry-card">
-                        <img src="{{ $industry->image ? asset($industry->image) : asset('frontend/assets/images/Oil & Gas.webp') }}" alt="{{ $industry->alt_image_text ?: $industry->title }}">
+                        <img src="{{ $application->image ? asset($application->image) : asset('frontend/assets/images/Oil & Gas.webp') }}" alt="{{ $application->alt_image_text ?: $application->title }}">
                         <div class="industry-overlay">
-                            <h3 class="industry-title">{{ Str::title($industry->title) }}</h3>
+                            <h3 class="industry-title">{{ Str::title($application->title) }}</h3>
                         </div>
                     </div>
                 @endforeach

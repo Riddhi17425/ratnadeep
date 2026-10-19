@@ -7,7 +7,6 @@ use App\Models\Career;
 use App\Models\JobArea;
 use App\Models\JobOpening;
 use App\Models\Country;
-use App\Models\Industry;
 use App\Models\PageItem;
 use App\Models\Product;
 use App\Models\UpcomingEvent;
@@ -70,6 +69,8 @@ class FrontController extends Controller
         $stageData = $stages->map(fn ($stage) => [
             'title' => $stage->title,
             'text' => $stage->description,
+            'image' => data_get($stage, 'image') ? asset(data_get($stage, 'image')) : pt_image('about.stages_image'),
+            'alt' => data_get($stage, 'alt_image_text') ?: $stage->title,
         ])->values();
 
         return view('front.about', compact('certifications', 'values', 'strengths', 'stages', 'stageData'));
@@ -282,7 +283,6 @@ class FrontController extends Controller
     public function applications()
     {
         return view('front.applications', [
-            'industries'   => Industry::where('status', 1)->orderByDesc('title')->get(),
             'applications' => getPageItems('applications.items'),
             'reasons'      => getPageItems('applications.reasons'),
             'faqs'         => getFaqs('applications'),

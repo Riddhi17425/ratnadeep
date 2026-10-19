@@ -24,13 +24,6 @@
                 </a>
             </li>
 
-            <li>
-    <a class="m-link {{ request()->routeIs('industries.*') ? 'active' : '' }}" href="{{ route('industries.index') }}">
-        <i class="icofont-building-alt fs-5"></i>
-        <span>Industries</span>
-    </a>
-</li>
-
         <li>
             <a class="m-link {{ request()->routeIs('upcoming-events.*') ? 'active' : '' }}" href="{{ route('upcoming-events.index') }}">
                 <i class="icofont-calendar fs-5"></i>
