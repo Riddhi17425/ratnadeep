@@ -91,7 +91,7 @@ if (!function_exists('pageTextRows')) {
 
 if (!function_exists('pt')) {
     /** Page text: pt('careers.hero_title'). Falls back to the Figma default from config/page_texts.php. */
-    function pt(string $path, $default = null): string
+    function pt(string $path, $default = null)
     {
         [$page, $key] = array_pad(explode('.', $path, 2), 2, null);
         $rows = pageTextRows($page);
@@ -99,6 +99,11 @@ if (!function_exists('pt')) {
 
         if ($value === null || trim((string) $value) === '') {
             $value = config("page_texts.{$page}.fields.{$key}.2", $default ?? '');
+        }
+
+        $field = config("page_texts.{$page}.fields.{$key}");
+        if (($field[1] ?? null) === 'textarea' && preg_match('/<\/?[a-z][^>]*>/i', (string) $value)) {
+            return new \Illuminate\Support\HtmlString((string) $value);
         }
 
         return (string) $value;
@@ -109,7 +114,12 @@ if (!function_exists('ptl')) {
     /** Multi-line page text, escaped, new lines as <br>. */
     function ptl(string $path)
     {
-        return new \Illuminate\Support\HtmlString(nl2br(e(pt($path))));
+        $value = pt($path);
+        if ($value instanceof \Illuminate\Support\HtmlString) {
+            return $value;
+        }
+
+        return new \Illuminate\Support\HtmlString(nl2br(e($value)));
     }
 }
 
@@ -117,7 +127,12 @@ if (!function_exists('ptb')) {
     /** Page text where **word** becomes <strong>word</strong>. */
     function ptb(string $path)
     {
-        $text = e(pt($path));
+        $value = pt($path);
+        if ($value instanceof \Illuminate\Support\HtmlString) {
+            return $value;
+        }
+
+        $text = e($value);
 
         return new \Illuminate\Support\HtmlString(preg_replace('/\*\*(.+?)\*\*/s', '<strong>$1</strong>', $text));
     }

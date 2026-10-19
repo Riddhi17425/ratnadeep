@@ -132,7 +132,7 @@
                         <span class="num-card-num">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                         <div>
                             <h3 class="num-card-title">{{ $reason->title }}</h3>
-                            <p class="num-card-text">{{ $reason->description }}</p>
+                            <div class="num-card-text">{!! $reason->description !!}</div>
                         </div>
                     </div>
                 @endforeach
@@ -238,7 +238,7 @@
                 @foreach($locations as $location)
                     <div class="careers-location-card">
                         <h3 class="careers-location-title">{{ $location->title }}</h3>
-                        <p class="careers-location-address">{{ $location->description }}</p>
+                        <div class="careers-location-address">{!! $location->description !!}</div>
                         @if($location->phone)
                             <div class="careers-location-meta">
                                 <span class="careers-location-label">Contact us:</span>

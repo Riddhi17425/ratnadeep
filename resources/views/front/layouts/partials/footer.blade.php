@@ -49,7 +49,7 @@
                                 <li><a href="{{ route('packaging') }}">Packaging & Shipping</a></li>
                                 <li><a href="{{ route('blogs') }}">Blogs</a></li>
                                 <li><a href="{{ route('events') }}">Events</a></li>
-                                <li><a href="{{ route('contact') }}">Careers</a></li>
+                                <li><a href="{{ route('careers') }}">Careers</a></li>
                                 <li><a href="{{ route('contact') }}">Contact Us</a></li>
                             </ul>
                         </div>

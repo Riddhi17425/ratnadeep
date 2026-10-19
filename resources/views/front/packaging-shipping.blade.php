@@ -76,7 +76,7 @@
                             @endif
                         </div>
                         <h3 class="inner-card-title">{{ $option->title }}</h3>
-                        <p class="inner-card-text">{{ $option->description }}</p>
+                        <div class="inner-card-text">{!! $option->description !!}</div>
                     </article>
                 @endforeach
             </div>
@@ -101,7 +101,7 @@
                         <span class="num-card-num">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                         <div>
                             <h3 class="num-card-title">{{ $item->title }}</h3>
-                            <p class="num-card-text">{{ $item->description }}</p>
+                            <div class="num-card-text">{!! $item->description !!}</div>
                         </div>
                     </div>
                 @endforeach
@@ -136,7 +136,7 @@
                                     </div>
                                 @endif
                                 <h3 class="export-card-title">{{ $export->title }}</h3>
-                                <p class="export-card-text">{{ $export->description }}</p>
+                                <div class="export-card-text">{!! $export->description !!}</div>
                             </div>
                         @endforeach
                     </div>
