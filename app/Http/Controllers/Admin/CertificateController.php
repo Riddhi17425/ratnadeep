@@ -28,6 +28,7 @@ class CertificateController extends Controller
     {
         return [
             'title'           => 'required|string|max:255',
+            'sub_title'       => 'nullable|string|max:255',
             'image'           => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'alt_image_text'  => 'nullable|string|max:255',
             'status'          => 'required|in:0,1',

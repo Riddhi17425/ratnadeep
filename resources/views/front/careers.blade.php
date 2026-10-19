@@ -242,13 +242,13 @@
                         @if($location->phone)
                             <div class="careers-location-meta">
                                 <span class="careers-location-label">Contact us:</span>
-                                <a href="tel:{{ preg_replace('/[^0-9+]/', '', $location->phone) }}">{{ $location->phone }}</a>
+                                <a href="tel:{{ preg_replace('/[^0-9+]/', '', $location->phone) }}" target="_blank">{{ $location->phone }}</a>
                             </div>
                         @endif
                         @if($location->email)
                             <div class="careers-location-meta">
                                 <span class="careers-location-label">Email us:</span>
-                                <a href="mailto:{{ $location->email }}">{{ $location->email }}</a>
+                                <a href="mailto:{{ $location->email }}" target="_blank">{{ $location->email }}</a>
                             </div>
                         @endif
                     </div>
