@@ -32,36 +32,6 @@ class PageItemController extends Controller
         return $key;
     }
 
-    private function initializeDefaults(string $section): void
-    {
-        if (PageItem::withTrashed()->where('section', $section)->exists()) {
-            return;
-        }
-
-        $defaults = $this->sections()[$section]['defaults'] ?? [];
-
-        if ($section === 'about.certifications') {
-            $defaults = AboutLogo::where('status', 1)
-                ->whereNull('deleted_at')
-                ->orderBy('id')
-                ->get(['title', 'image', 'alt_image_text'])
-                ->map(fn ($logo) => [
-                    'title' => $logo->title,
-                    'image' => $logo->image,
-                    'alt_image_text' => $logo->alt_image_text,
-                ])
-                ->all();
-        }
-
-        foreach ($defaults as $sortOrder => $item) {
-            PageItem::create(array_merge($item, [
-                'section' => $section,
-                'sort_order' => $sortOrder,
-                'status' => 1,
-            ]));
-        }
-    }
-
     private function contentGroups(array $sections, array $textPages): array
     {
         $groups = [];
@@ -98,7 +68,6 @@ class PageItemController extends Controller
             $textValues = PageText::where('page', $page)->pluck('value', 'key')->all();
         } else {
             $section = isset($sections[$selected]) ? $selected : array_key_first($sections);
-            $this->initializeDefaults($section);
             $items = PageItem::withTrashed()->where('section', $section)->orderBy('sort_order')->orderBy('id')->get();
         }
 

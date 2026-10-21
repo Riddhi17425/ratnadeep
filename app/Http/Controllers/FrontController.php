@@ -30,41 +30,9 @@ class FrontController extends Controller
     public function about()
     {
         $certifications = getPageItems('about.certifications');
-        if ($certifications->isEmpty() && !$this->hasPageItems('about.certifications')) {
-            $certifications = AboutLogo::where('status', 1)->whereNull('deleted_at')->orderBy('id')->get();
-        }
         $values = getPageItems('about.values');
         $strengths = getPageItems('about.strengths');
         $stages = getPageItems('about.stages');
-
-        if ($values->isEmpty() && !$this->hasPageItems('about.values')) {
-            $values = collect([
-                ['title' => 'Manufacturing Excellence', 'description' => 'Every pipe and tube is manufactured through disciplined processes, advanced manufacturing infrastructure, and rigorous quality control to ensure consistent performance across industrial applications.'],
-                ['title' => 'Customer Commitment', 'description' => 'We support customers with reliable pipe and tube manufacturing solutions, responsive communication, dependable delivery, and a clear understanding of project requirements.'],
-                ['title' => 'Continuous Improvement', 'description' => 'We continuously strengthen our manufacturing capabilities, production technologies, and quality systems to meet evolving industry standards and customer expectations.'],
-                ['title' => 'Integrity in Operations', 'description' => 'From raw material inspection to final dispatch, every pipe and tube is backed by complete material traceability, documented quality assurance, and transparent manufacturing practices.'],
-            ])->map(fn ($item) => (object) $item);
-        }
-
-        if ($strengths->isEmpty() && !$this->hasPageItems('about.strengths')) {
-            $strengths = collect([
-                ['title' => 'Complete Material Traceability', 'description' => 'Every batch of raw material is fully documented and traceable from mill origin through all stages of production.', 'image' => 'frontend/assets/images/About/strength-1.png', 'alt_image_text' => 'Complete Material Traceability'],
-                ['title' => 'End-to-End In-House Manufacturing', 'description' => 'Equipped with specialized cold drawing, pilgering, and finishing lines for total quality assurance.', 'image' => 'frontend/assets/images/About/strength-2.png', 'alt_image_text' => 'End-to-End In-House Manufacturing'],
-                ['title' => 'Approved by Global Industries', 'description' => 'Recognized and certified by major international engineering consultants and certification bodies.', 'image' => 'frontend/assets/images/About/strength-3.png', 'alt_image_text' => 'Approved by Global Industries'],
-                ['title' => '100% Inspection Before Dispatch', 'description' => 'Comprehensive hydro, eddy-current, and ultrasonic testing to verify defect-free tubing.', 'image' => 'frontend/assets/images/About/strength-4.png', 'alt_image_text' => '100% Inspection Before Dispatch'],
-            ])->map(fn ($item) => (object) $item);
-        }
-
-        if ($stages->isEmpty() && !$this->hasPageItems('about.stages')) {
-            $stages = collect([
-                ['title' => 'Raw Material Inspection', 'description' => 'Every raw material batch is carefully inspected for chemical composition, mechanical properties, and dimensional accuracy before entering production, ensuring every pipe and tube begins with verified quality.'],
-                ['title' => 'Pipe Forming & Rolling', 'description' => 'Seamless and welded pipes and tubes are formed through controlled rolling, piercing, and welding processes managed in-house to maintain tighter tolerances, consistent dimensions, and reliable mechanical performance.'],
-                ['title' => 'Heat Treatment', 'description' => 'Heat treatment is carried out under controlled furnace conditions to achieve the required metallurgical structure, strength, and durability needed for demanding industrial and high-pressure applications.'],
-                ['title' => 'In-House Testing & NDT', 'description' => 'Every product undergoes rigorous in-house inspection and non-destructive testing, including dimensional verification and material validation, to confirm compliance with applicable standards before moving to finishing.'],
-                ['title' => 'Finishing & Marking', 'description' => 'Pipes and tubes are finished, marked, and documented with complete material traceability so every product can be identified, tracked, and supplied with the quality records required by global customers.'],
-                ['title' => 'Final Inspection & Dispatch', 'description' => 'Before dispatch, every order passes through final inspection and packing checks to ensure products leave our facility ready for dependable performance in domestic and international project environments.'],
-            ])->map(fn ($item) => (object) $item);
-        }
 
         $stageData = $stages->map(fn ($stage) => [
             'title' => $stage->title,
@@ -79,27 +47,6 @@ class FrontController extends Controller
     public function clients()
     {
         $clientLogos = getPageItems('clients.logos');
-
-        if ($clientLogos->isEmpty() && !$this->hasPageItems('clients.logos')) {
-            $clientLogos = collect([
-                ['title' => 'SABIC', 'image' => 'frontend/assets/images/Clients/sabic.svg'],
-                ['title' => 'Thyssenkrupp', 'image' => 'frontend/assets/images/Clients/thyssenkrupp.svg'],
-                ['title' => 'Reliance Industries Limited', 'image' => 'frontend/assets/images/Clients/reliance.png'],
-                ['title' => 'Técnicas Reunidas', 'image' => 'frontend/assets/images/Clients/tecnicas-reunidas.png'],
-                ['title' => 'Linde', 'image' => 'frontend/assets/images/Clients/linde.png'],
-                ['title' => 'Jacobs', 'image' => 'frontend/assets/images/Clients/jacobs.png'],
-                ['title' => 'Saipem', 'image' => 'frontend/assets/images/Clients/saipem.png'],
-                ['title' => 'NTPC', 'image' => 'frontend/assets/images/Clients/ntpc.svg'],
-                ['title' => 'BHEL', 'image' => 'frontend/assets/images/Clients/bhel.png'],
-                ['title' => 'Technip', 'image' => 'frontend/assets/images/Clients/technip.svg'],
-                ['title' => 'Tecnimont', 'image' => 'frontend/assets/images/Clients/tecnimont.png'],
-                ['title' => 'Engineers India Limited', 'image' => 'frontend/assets/images/Clients/eil.svg'],
-                ['title' => 'Thermo Cables', 'image' => 'frontend/assets/images/Clients/thermocables.png'],
-                ['title' => 'Valmet', 'image' => 'frontend/assets/images/Clients/valmet.png'],
-                ['title' => 'Yaar', 'image' => 'frontend/assets/images/Clients/yaar.png'],
-                ['title' => 'Petrofac', 'image' => 'frontend/assets/images/Clients/petrofac.png'],
-            ])->map(fn ($item) => (object) $item);
-        }
 
         $logoColumns = $clientLogos->count() > 2
             ? collect([$clientLogos->take(1)])

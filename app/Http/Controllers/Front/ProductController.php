@@ -33,8 +33,8 @@ class ProductController extends Controller
         $product = Product::with('category')->where('slug', $slug)->where('status', 1)->firstOrFail();
     
         return view('front.product-detail', [
-            'product'    => $product,
-            'industries' => $product->industriesForDetail(),
+            'product'      => $product,
+            'applications' => $product->applicationsForDetail(),
         ]);
     }
 }
