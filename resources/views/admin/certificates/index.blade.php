@@ -42,6 +42,7 @@
                                             type="checkbox"
                                             class="form-check-input status-toggle"
                                             data-id="{{ $certificate->id }}"
+                                            data-status-url="{{ route('certificates.status', $certificate->id) }}"
                                             {{ $certificate->status == 1 ? 'checked' : '' }}
                                             style="width: 3em; height: 1.5em; cursor: pointer;"
                                         >
@@ -211,13 +212,12 @@
 
         $(document).on('change', '.status-toggle', function () {
             var checkbox = $(this);
-            var id = checkbox.data('id');
             var isChecked = checkbox.is(':checked');
             var newStatus = isChecked ? 1 : 0;
             var statusText = checkbox.closest('.d-flex').find('.status-text');
 
             $.ajax({
-                url: '/admin/certificates/' + id + '/status',
+                url: checkbox.data('status-url'),
                 method: 'POST',
                 data: { _token: '{{ csrf_token() }}', status: newStatus },
                 success: function (response) {
