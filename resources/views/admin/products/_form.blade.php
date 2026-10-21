@@ -152,7 +152,7 @@
 </div>
 
 <div class="mb-3">
-    <label class="form-label">Application cards shown on the detail page <small class="text-muted">(from Page Content; none selected = first 4 active cards)</small></label>
+    <label class="form-label">Application cards shown on the detail page <small class="text-muted">(from Page Content; no selection = no cards shown)</small></label>
     <select name="industry_ids[]" class="form-select" multiple size="6">
         @foreach($applications as $application)
             <option value="{{ $application->id }}" {{ in_array($application->id, $selectedApplications) ? 'selected' : '' }}>{{ $application->title }}</option>
