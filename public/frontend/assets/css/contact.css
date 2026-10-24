@@ -139,6 +139,13 @@
     color: var(--text-muted);
     margin-bottom: 12px;
 }
+.page-contact .contact-location-address a {
+    color: inherit;
+    text-decoration: none;
+}
+.page-contact .contact-location-address a:hover {
+    color: var(--primary-red);
+}
 .page-contact .contact-location-meta {
     display: flex;
     flex-direction: column;

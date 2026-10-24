@@ -180,6 +180,7 @@
         $('#short_description').summernote({ height: 150 });
         $('#long_description').summernote({ height: 300 });
         $('#conclusion').summernote({ height: 200 });
+        $('#conclusion').summernote({ height: 200 });
 
         $('#add-faq').click(function () {
             var row = `

@@ -28,7 +28,7 @@ return new class extends Migration
             $table->json('features')->nullable();           // [{title, text}]
             $table->json('specs')->nullable();              // [{parameter, value, notes}]
             $table->json('grades')->nullable();             // [grade, ...]
-            $table->json('industry_ids')->nullable();       // ids from industries
+            $table->json('industry_ids')->nullable();       // selected application card IDs from page_items
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();
             $table->unsignedInteger('sort_order')->default(0);

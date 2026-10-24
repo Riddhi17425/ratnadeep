@@ -42,7 +42,8 @@ return [
         ],
         'about.stages' => [
             'page' => 'About Us', 'label' => 'Manufacturing Stages',
-            'description' => true, 'contact' => false, 'image' => false,
+            'description' => true, 'contact' => false, 'image' => 'image',
+            'image_hint' => 'Shown when this manufacturing stage is selected.',
             'defaults' => [
                 ['title' => 'Raw Material Inspection', 'description' => 'Every raw material batch is carefully inspected for chemical composition, mechanical properties, and dimensional accuracy before entering production, ensuring every pipe and tube begins with verified quality.'],
                 ['title' => 'Pipe Forming & Rolling', 'description' => 'Seamless and welded pipes and tubes are formed through controlled rolling, piercing, and welding processes managed in-house to maintain tighter tolerances, consistent dimensions, and reliable mechanical performance.'],

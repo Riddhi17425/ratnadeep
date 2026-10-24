@@ -16,6 +16,12 @@
                 </div>
 
                 <div class="mb-3">
+                    <label class="form-label">Sub Title</label>
+                    <input type="text" name="sub_title" class="form-control" value="{{ old('sub_title', $certificate->sub_title) }}">
+                    @error('sub_title') <small class="text-danger">{{ $message }}</small> @enderror
+                </div>
+
+                <div class="mb-3">
                     <label class="form-label">Image</label><br>
                     @if($certificate->image)
                         <img src="{{ asset($certificate->image) }}" width="80" class="mb-2 d-block">

@@ -31,18 +31,17 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    /** Industries picked for the detail page (falls back to the latest active ones). */
-    public function industriesForDetail(int $fallbackLimit = 4)
+    /** Active application cards picked for this product, in the selected order. */
+    public function applicationsForDetail()
     {
         $ids = array_values(array_filter((array) $this->industry_ids));
 
-        if ($ids) {
-            return Industry::where('status', 1)->whereIn('id', $ids)->get()
-                ->sortBy(fn ($industry) => array_search($industry->id, $ids))
-                ->values();
-        }
-
-        return Industry::where('status', 1)->latest()->take($fallbackLimit)->get();
+        return PageItem::where('section', 'applications.items')
+            ->where('status', 1)
+            ->whereIn('id', $ids)
+            ->get()
+            ->sortBy(fn ($application) => array_search($application->id, $ids))
+            ->values();
     }
 
     public function hasDetail(): bool

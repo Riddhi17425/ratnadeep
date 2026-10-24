@@ -56,9 +56,6 @@
                                 </time>
                             @endif
                             <h2 class="events-listing-title">{{ $event->title }}</h2>
-                            @if($event->short_description)
-                                <div class="events-listing-desc">{!! $event->short_description !!}</div>
-                            @endif
                             @if($event->reference)
                                 <p class="events-listing-contact">
                                     Contact Ref:
@@ -70,6 +67,9 @@
                                         {{ $event->reference }}
                                     @endif
                                 </p>
+                            @endif
+                            @if($event->short_description)
+                                <div class="events-listing-desc">{!! $event->short_description !!}</div>
                             @endif
                         </div>
                     </article>

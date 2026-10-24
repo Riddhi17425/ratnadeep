@@ -242,6 +242,16 @@
     width: 100%;
     height: auto;
 }
+/* Sticky media: image stays pinned while the taller copy column scrolls (desktop only) */
+@media (min-width: 1025px) {
+    .page-inner .inner-feature--sticky {
+        align-items: start;
+    }
+    .page-inner .inner-feature--sticky .inner-feature-media {
+        position: sticky;
+        top: 120px;
+    }
+}
 .page-inner .inner-feature-copy {
     display: flex;
     flex-direction: column;

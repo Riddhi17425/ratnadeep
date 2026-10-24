@@ -17,6 +17,7 @@
                         <th>Image</th>
                         <th>Title</th>
                         <th>Category</th>
+                        <th>Sequence</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -34,6 +35,7 @@
                         </td>
                         <td>{{ $banner->title }}</td>
                         <td>{{ $banner->category->title ?? 'N/A' }}</td>
+                        <td>{{ $banner->sequence }}</td>
                         <td>
                             @if($banner->trashed())
                                 <span class="badge bg-danger">Trashed</span>

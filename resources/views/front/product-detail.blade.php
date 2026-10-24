@@ -133,7 +133,7 @@
 
     <!-- Grades -->
     @if($grades->isNotEmpty())
-    <section class="inner-section">
+    <section class="inner-section mb-5">
         <div class="container-fluid">
             <div class="inner-badge-wrap">
                 <div class="section-badge">
@@ -161,8 +161,8 @@
     </section>
     @endif
 
-    <!-- Industries -->
-    @if($industries->isNotEmpty())
+    <!-- Applications -->
+    @if($applications->isNotEmpty())
     <section class="inner-section inner-section--last">
         <div class="container-fluid">
             <div class="inner-badge-wrap">
@@ -173,12 +173,12 @@
                 <h2 class="section-title inner-title">{{ pt('product_detail.industries_title') }}</h2>
             </div>
             <div class="pd-industries">
-                @foreach($industries as $industry)
+                @foreach($applications as $application)
                     <div class="pd-industry">
-                        @if($industry->image)
-                            <img src="{{ asset($industry->image) }}" alt="{{ $industry->alt_image_text ?: $industry->title }}" loading="lazy">
+                        @if($application->image)
+                            <img src="{{ asset($application->image) }}" alt="{{ $application->alt_image_text ?: $application->title }}" loading="lazy">
                         @endif
-                        <span>{{ $industry->title }}</span>
+                        <span>{{ $application->title }}</span>
                     </div>
                 @endforeach
             </div>

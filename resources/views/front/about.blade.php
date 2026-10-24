@@ -125,7 +125,7 @@
                         <div class="feature-number">{{ sprintf('%02d', $loop->iteration) }}</div>
                         <div class="feature-content">
                             <h3 class="feature-title">{{ $value->title }}</h3>
-                            <p class="feature-desc">{{ $value->description }}</p>
+                            <p class="feature-desc">{!! $value->description !!}</p>
                         </div>
                     </div>
                 @endforeach
@@ -150,7 +150,7 @@
                         <div class="about-strength-overlay {{ $loop->iteration === 2 ? 'about-strength-overlay--gradient' : '' }}"></div>
                         <div class="about-strength-content">
                             <h3 class="about-strength-title">{{ $strength->title }}</h3>
-                            <p class="about-strength-desc">{{ $strength->description }}</p>
+                            <p class="about-strength-desc">{!! $strength->description !!}</p>
                         </div>
                     </div>
                 @endforeach
@@ -246,7 +246,7 @@
         <div class="container-fluid">
             <div class="about-stages-grid">
                 <div class="about-stages-media">
-                    <img src="{{ pt_image('about.stages_image') }}" alt="Ratnadeep pipe and tube manufacturing" class="about-stages-image">
+                    <img src="{{ data_get($firstStage, 'image') ? asset(data_get($firstStage, 'image')) : pt_image('about.stages_image') }}" alt="{{ data_get($firstStage, 'alt_image_text') ?: $firstStage->title }}" class="about-stages-image" id="aboutStageImage">
                 </div>
                 <div class="about-stages-content">
                     <div class="about-stages-intro">
@@ -258,7 +258,7 @@
                     </div>
                     <div class="about-stages-panel">
                         <h3 class="about-stages-heading" id="aboutStageTitle">{{ $firstStage->title }}</h3>
-                        <p class="about-stages-text" id="aboutStageText">{{ $firstStage->description }}</p>
+                        <div class="about-stages-text" id="aboutStageText">{!! $firstStage->description !!}</div>
                     </div>
                     <div class="about-stages-indicators" id="aboutStagesIndicators" role="tablist" aria-label="Manufacturing stages">
                         @foreach($stages as $stage)
@@ -330,14 +330,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var titleEl = document.getElementById('aboutStageTitle');
     var textEl = document.getElementById('aboutStageText');
+    var imageEl = document.getElementById('aboutStageImage');
     var indicatorsWrap = document.getElementById('aboutStagesIndicators');
 
-    if (!titleEl || !textEl || !indicatorsWrap) {
+    if (!titleEl || !textEl || !imageEl || !indicatorsWrap) {
         return;
     }
 
     titleEl.style.transition = 'opacity 0.4s ease-in-out';
     textEl.style.transition = 'opacity 0.4s ease-in-out';
+    imageEl.style.transition = 'opacity 0.4s ease-in-out';
 
     var indicators = indicatorsWrap.querySelectorAll('.about-stages-indicator');
     var activeIndex = 0;
@@ -354,17 +356,23 @@ document.addEventListener('DOMContentLoaded', function () {
         if (initial) {
             titleEl.textContent = stage.title;
             textEl.textContent = stage.text;
+            imageEl.src = stage.image;
+            imageEl.alt = stage.alt;
         } else {
             isAnimating = true;
             titleEl.style.opacity = 0;
             textEl.style.opacity = 0;
+            imageEl.style.opacity = 0;
 
             setTimeout(function() {
                 titleEl.textContent = stage.title;
-                textEl.textContent = stage.text;
+                textEl.innerHTML = stage.text;
+                imageEl.src = stage.image;
+                imageEl.alt = stage.alt;
                 
                 titleEl.style.opacity = 1;
                 textEl.style.opacity = 1;
+                imageEl.style.opacity = 1;
                 
                 setTimeout(function() {
                     isAnimating = false;
@@ -409,7 +417,7 @@ document.addEventListener('DOMContentLoaded', function () {
         panel.style.minHeight = '';
         stages.forEach(function (stage) {
             titleEl.textContent = stage.title;
-            textEl.textContent = stage.text;
+                textEl.innerHTML = stage.text;
             tallest = Math.max(tallest, panel.offsetHeight);
         });
         titleEl.textContent = currentTitle;

@@ -5,7 +5,7 @@
     $specs = old('specs', data_get($product ?? null, 'specs', []));
     $overviewText = old('overview_text', $savedOverview ? implode("\n\n", $savedOverview) : '');
     $gradesText = old('grades_text', $savedGrades ? implode("\n", $savedGrades) : '');
-    $selectedIndustries = array_map('intval', old('industry_ids', data_get($product ?? null, 'industry_ids', [])));
+    $selectedApplications = array_map('intval', old('industry_ids', data_get($product ?? null, 'industry_ids', [])));
 @endphp
 
 <h5 class="mb-3">Listing card</h5>
@@ -152,13 +152,13 @@
 </div>
 
 <div class="mb-3">
-    <label class="form-label">Industries shown on the detail page <small class="text-muted">(from Industries; none selected = latest 4 active industries)</small></label>
+    <label class="form-label">Application cards shown on the detail page <small class="text-muted">(from Page Content; no selection = no cards shown)</small></label>
     <select name="industry_ids[]" class="form-select" multiple size="6">
-        @foreach($industries as $industry)
-            <option value="{{ $industry->id }}" {{ in_array($industry->id, $selectedIndustries) ? 'selected' : '' }}>{{ $industry->title }}</option>
+        @foreach($applications as $application)
+            <option value="{{ $application->id }}" {{ in_array($application->id, $selectedApplications) ? 'selected' : '' }}>{{ $application->title }}</option>
         @endforeach
     </select>
-    <small class="text-muted">Hold Ctrl / Cmd to select several. Cards follow the order of the Industries list.</small>
+    <small class="text-muted">Hold Ctrl / Cmd to select several. Cards follow the order of the Application Cards section in Page Content.</small>
     @error('industry_ids') <small class="text-danger d-block">{{ $message }}</small> @enderror
 </div>
 

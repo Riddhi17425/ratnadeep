@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\Faq;
-use App\Models\Industry;
 use App\Models\JobOpening;
 use App\Models\PageItem;
 use App\Models\Product;
@@ -18,9 +17,9 @@ class InnerPagesSeeder extends Seeder
 {
     public function run(): void
     {
+        $this->pageItems();
         $this->products();
         $this->jobOpenings();
-        $this->pageItems();
         $this->faqs();
     }
 
@@ -29,17 +28,15 @@ class InnerPagesSeeder extends Seeder
         return Category::whereRaw('LOWER(title) LIKE ?', ['%' . strtolower($needle) . '%'])->value('id');
     }
 
-    private function industryIds(array $needles): array
+    private function applicationIds(array $titles): array
     {
-        $ids = [];
-        foreach ($needles as $needle) {
-            $id = Industry::whereRaw('LOWER(title) LIKE ?', ['%' . strtolower($needle) . '%'])->value('id');
-            if ($id) {
-                $ids[] = $id;
-            }
-        }
-
-        return $ids;
+        return PageItem::where('section', 'applications.items')
+            ->where('status', 1)
+            ->whereIn('title', $titles)
+            ->get()
+            ->sortBy(fn ($application) => array_search($application->title, $titles))
+            ->pluck('id')
+            ->all();
     }
 
     private function products(): void
@@ -83,7 +80,7 @@ class InnerPagesSeeder extends Seeder
                     ['parameter' => 'Specifications', 'value' => 'ASTM, ASME, EN', 'notes' => 'Manufactured to applicable product specifications'],
                 ],
                 'grades' => ['TP 304/L/H', 'TP 316/L/H/Ti', 'TP 317/L', 'TP 321/H', 'TP 310/H/S', 'TP 347/H/HFG', 'TP 904L', 'UNS S31803', 'S32205', 'S32750', 'TP 904L', 'S32760'],
-                'industry_ids' => $this->industryIds(['oil', 'petrochem', 'power', 'automotive']),
+                'industry_ids' => $this->applicationIds(['Oil & Gas', 'Petrochemicals & Refineries', 'Power Plants', 'Automotive']),
             ],
             [
                 'title' => 'Stainless Steel Welded Straight & “U” Tubes',

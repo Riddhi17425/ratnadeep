@@ -61,7 +61,7 @@
                     <div class="mb-3">
                         <label class="form-label" for="page-text-{{ $key }}">{{ $label }}</label>
                         @if($type === 'textarea')
-                            <textarea id="page-text-{{ $key }}" name="{{ $key }}" rows="{{ max(2, min(8, (int) ceil(strlen($default) / 110) + 1)) }}" class="form-control">{{ $value }}</textarea>
+                            <textarea id="page-text-{{ $key }}" name="{{ $key }}" rows="{{ max(2, min(8, (int) ceil(strlen($default) / 110) + 1)) }}" class="form-control page-content-editor">{{ $value }}</textarea>
                         @elseif($type === 'image')
                             <input id="page-text-{{ $key }}" type="file" name="{{ $key }}" class="form-control">
                             <div class="mt-2 d-flex align-items-center gap-3">
@@ -135,6 +135,11 @@
 @endsection
 
 @push('scripts')
+    <script>
+        $(document).ready(function () {
+            $('.page-content-editor').summernote({ height: 250 });
+        });
+    </script>
     @unless($isTextPage)
     @include('admin.partials.crud-scripts', ['tableId' => 'pageItemTable', 'label' => 'item', 'base' => 'page-items'])
     @endunless

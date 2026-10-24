@@ -78,7 +78,7 @@
                         <span class="approach-card-num">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                         <div>
                             <h3 class="approach-card-title">{{ $step->title }}</h3>
-                            <p class="approach-card-text">{{ $step->description }}</p>
+                            <div class="approach-card-text">{!! $step->description !!}</div>
                         </div>
                     </div>
                 @endforeach
@@ -182,7 +182,7 @@
                         <span class="num-card-num">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                         <div>
                             <h3 class="num-card-title">{{ $reason->title }}</h3>
-                            <p class="num-card-text">{!! nl2br(e($reason->description)) !!}</p>
+                            <div class="num-card-text">{!! $reason->description !!}</div>
                         </div>
                     </div>
                 @endforeach

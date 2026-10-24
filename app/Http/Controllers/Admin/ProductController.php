@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Admin\Concerns\ManagesFiles;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
-use App\Models\Industry;
+use App\Models\PageItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -40,7 +40,11 @@ class ProductController extends Controller
     {
         return [
             'categories' => Category::where('status', 1)->orderBy('title')->get(),
-            'industries' => Industry::where('status', 1)->orderBy('title')->get(),
+            'applications' => PageItem::where('section', 'applications.items')
+                ->where('status', 1)
+                ->orderBy('sort_order')
+                ->orderBy('id')
+                ->get(),
         ];
     }
 
@@ -75,7 +79,12 @@ class ProductController extends Controller
             'specs.*.notes'    => 'nullable|string|max:255',
             'grades_text'      => 'nullable|string',
             'industry_ids'     => 'nullable|array',
-            'industry_ids.*'   => 'exists:industries,id',
+            'industry_ids.*'   => [
+                Rule::exists('page_items', 'id')
+                    ->where('section', 'applications.items')
+                    ->where('status', 1)
+                    ->whereNull('deleted_at'),
+            ],
             'meta_title'       => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
             'sort_order'       => 'nullable|integer|min:0',

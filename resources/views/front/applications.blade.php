@@ -57,7 +57,7 @@
     </section>
 
     <!-- Applications grid -->
-    @if($industries->isNotEmpty())
+    @if($applications->isNotEmpty())
     <section class="inner-section" id="applications-list">
         <div class="container-fluid">
             <div class="inner-badge-wrap">
@@ -68,13 +68,13 @@
                 <h2 class="section-title inner-title">{{ pt('applications.list_title') }}</h2>
             </div>
             <div class="apps-grid">
-                @foreach($industries as $industry)
+                @foreach($applications as $application)
                     <article class="inner-card">
                         <div class="inner-card-media">
-                            <img src="{{ $industry->image ? asset($industry->image) : asset('frontend/assets/images/Oil & Gas.webp') }}" alt="{{ $industry->alt_image_text ?: $industry->title }}" loading="lazy">
+                            <img src="{{ $application->image ? asset($application->image) : asset('frontend/assets/images/Oil & Gas.webp') }}" alt="{{ $application->alt_image_text ?: $application->title }}" loading="lazy">
                         </div>
-                        <h3 class="inner-card-title">{{ Str::title($industry->title) }}</h3>
-                        <p class="inner-card-text">{{ $industry->short_description ?: 'Reliable piping solutions engineered to meet the demands of this industry.' }}</p>
+                        <h3 class="inner-card-title">{{ Str::title($application->title) }}</h3>
+                        <div class="inner-card-text">{!! $application->description ?: 'Reliable piping solutions engineered to meet the demands of this application.' !!}</div>
                     </article>
                 @endforeach
             </div>
@@ -99,7 +99,7 @@
                         <span class="num-card-num">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                         <div>
                             <h3 class="num-card-title">{{ $reason->title }}</h3>
-                            <p class="num-card-text">{!! nl2br(e($reason->description)) !!}</p>
+                            <div class="num-card-text">{!! $reason->description !!}</div>
                         </div>
                     </div>
                 @endforeach
