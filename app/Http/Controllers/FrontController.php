@@ -228,7 +228,6 @@ class FrontController extends Controller
                     'https://script.google.com/macros/s/AKfycby-2B_j5u-o7slOEdFElT2Xw1nALNCy087Mf0bQRts-i8YL6HRRMihwj2TkdIY3BUos/exec',
                     $sheetData
                 );
-
             $sheetResult = $response->json();
             if (
                 !$response->successful() ||
